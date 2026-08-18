@@ -1,0 +1,21 @@
+# config/paths.yaml
+# Все пути к данным и выходным директориям
+
+dataset_root: "/home/alexsander/datasetGOSDUMA"
+
+data:
+  processed_dir: "data/processed"
+  region_file: "master_region_election.parquet"
+  precinct_file: "elections_precinct.parquet"
+  features_dir: "data/processed/features"
+
+output:
+  results_dir: "results"
+  predictions_dir: "predictions"
+  reports_dir: "reports"
+  logs_dir: "logs"
+
+metadata:
+  dir: "metadata"
+  elections_file: "elections.csv"
+  variables_file: "variables.yaml"
