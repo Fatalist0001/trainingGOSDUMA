@@ -469,6 +469,124 @@ def run_temporal_backtest(
     }
 
 
+def forecast_temporal(
+    model_name: str,
+    experiment_name: str,
+    feature_group: str = "ALL_FEATURES",
+    level: str = "region",
+    model_kwargs: dict | None = None,
+    normalize_predictions: bool = True,
+) -> dict[str, Any]:
+    """Train on all history and forecast a future election year (no ground truth).
+
+    Used for experiments C/D (target 2026). Builds training sequences from
+    ``train_years`` and predicts the future year for each region from its full
+    history context. Returns a predictions DataFrame (no metrics, since there is
+    no ground truth).
+    """
+    from ..data.features import (
+        get_feature_columns,
+        get_target_columns_from_df,
+        select_features,
+    )
+    from ..data.splits import get_experiment_splits, load_raw_region
+    from ..models.registry import get_model
+
+    model_kwargs = model_kwargs or {}
+    split = get_experiment_splits(experiment_name)
+    train_years = sorted(split.train_years)
+    test_year = split.test_years[0] if split.test_years else None
+
+    df = load_raw_region()
+    processed = select_features(df, feature_group)
+    target_columns = get_target_columns_from_df(processed, level)
+    feature_columns = get_feature_columns(processed, feature_group)
+    non_constant = [c for c in feature_columns if df[c].nunique(dropna=True) > 1]
+    dropped = sorted(set(feature_columns) - set(non_constant))
+    if dropped:
+        print(f"[preprocess] Dropping {len(dropped)} constant feature(s): {dropped}")
+    feature_columns = non_constant
+
+    # Training sequences (context -> next historical election).
+    X_train: list[np.ndarray] = []
+    y_train: list[np.ndarray] = []
+    for target_year in train_years:
+        if target_year == min(train_years):
+            continue
+        Xs, ys = _build_region_sequences(
+            df, feature_columns, target_columns, train_years, target_year
+        )
+        X_train.extend(Xs)
+        y_train.extend(ys)
+    if not X_train:
+        return {
+            "model": model_name,
+            "experiment": experiment_name,
+            "feature_group": feature_group,
+            "level": level,
+            "note": "no_train_data",
+            "n_train": 0,
+            "n_test": 0,
+        }
+
+    # Forecast sequences: each region's full history context -> future year.
+    region_col, year_col = "region_id", "year"
+    X_test: list[np.ndarray] = []
+    region_ids: list = []
+    for region, grp in df.groupby(region_col):
+        grp = grp.set_index(year_col)
+        ctx = [y for y in train_years if y in grp.index]
+        if not ctx:
+            continue
+        seq = grp.loc[sorted(ctx), feature_columns].values.astype(np.float32)
+        if seq.shape[0] == 0:
+            continue
+        X_test.append(seq)
+        region_ids.append(region)
+
+    y_train_arr = np.stack(y_train).astype(np.float32)
+    model = get_model(model_name, **model_kwargs)
+    model.fit(X_train, y_train_arr)
+
+    if not X_test:
+        return {
+            "model": model_name,
+            "experiment": experiment_name,
+            "feature_group": feature_group,
+            "level": level,
+            "note": "no_test_data",
+            "n_train": len(X_train),
+            "n_test": 0,
+            "forecast_year": test_year,
+        }
+
+    pred = model.predict(X_test)  # (n_regions, T)
+
+    if normalize_predictions:
+        pred = np.clip(pred, 0, None)
+        row_sum = pred.sum(axis=1, keepdims=True)
+        row_sum[row_sum == 0] = 1
+        pred = pred / row_sum * 100
+
+    pred_df = pd.DataFrame(pred, columns=[f"{c}_pred" for c in target_columns])
+    pred_df.insert(0, region_col, region_ids)
+    pred_df.insert(1, year_col, test_year)
+
+    return {
+        "model": model_name,
+        "experiment": experiment_name,
+        "feature_group": feature_group,
+        "level": level,
+        "forecast_year": test_year,
+        "predictions": pred_df,
+        "target_columns": target_columns,
+        "n_train": len(X_train),
+        "n_test": len(X_test),
+        "note": "forecast",
+    }
+
+
+
 def run_experiment(
     experiment_name: str,
     models: list[str],

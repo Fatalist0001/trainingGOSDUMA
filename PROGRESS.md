@@ -258,12 +258,17 @@ HistGradientBoosting, MLPSklearn, LinearRegression (бейзлайны искл�
 
 ## 17. Final Prediction 2026 (PLAN §57-60)
 
-| № | Задача | Статус |
-|---|--------|--------|
-| 17.1 | Final training on all history | ⏳ |
-| 17.2 | 2026 prediction script | ⏳ `scripts/predict_2026.py` |
-| 17.3 | Federal aggregation | ⏳ |
-| 17.4 | Seat allocation pipeline | ⏳ (отдельно, после benchmark) |
+Реализован `scripts/predict_2026.py` + `forecast_temporal` в `backtest.py`.
+Лучшая модель (Transformer, ALL) дообучается на всей истории (2003–2021) и
+прогнозирует 2026 для всех 83 регионов; усреднение по 5 seeds. Федеральный
+прогноз (взвешен по elector`ate):
+
+| № | Задача | Статус | Результат |
+|---|--------|--------|-----------|
+| 17.1 | Final training on all history | ✅ | Transformer на 2003–2021 |
+| 17.2 | 2026 prediction script | ✅ | `scripts/predict_2026.py` → `predictions/Transformer/C,D/2026_forecast.csv` |
+| 17.3 | Federal aggregation | ✅ | `results/forecast_{C,D}_Transformer_federal.csv` (UR 64.8 / KPRF 22.9 / LDPR 12.3) |
+| 17.4 | Seat allocation pipeline | ⏳ (отдельно, после отчёта) | |
 
 ---
 
@@ -297,7 +302,8 @@ HistGradientBoosting, MLPSklearn, LinearRegression (бейзлайны искл�
 1. ✅ **P0/P1/P2/P3 завершены**: P0 (baselines+Linear+Trees+KNN), P1 (MLPSklearn+MLPTorch), P2/P3 (GRU+LSTM+Transformer) запущены на A/B × 3 группы; результаты в `results/benchmark_all_*.csv`.
 2. ✅ **Ablation выполнен**: `make ablation` → `results/ablation_feature.csv` (Q2) и `results/ablation_history.csv` (Q3). ROSSTAT помогает при короткой истории (A); длинная история помогает временным моделям.
 3. ✅ **Ensemble выполнен** (Q10): `WeightedEnsemble`/`StackingEnsemble` в `ensemble.py`. Не превосходят лучшую одиночную модель (Transformer) и даже XGBoost.
-4. **Параллельно**: визуализация (`visualization/plots.py`), отчёт (`reports/FINAL_MODEL_REPORT.md`), `predict_2026.py` (эксперименты C/D).
+4. ✅ **Финальный прогноз 2026** (эксп. C/D): `scripts/predict_2026.py` (Transformer, ALL) → per-region и federal прогнозы в `predictions/` и `results/`.
+5. **Параллельно**: визуализация (`visualization/plots.py`), отчёт (`reports/FINAL_MODEL_REPORT.md`).
 
 ---
 
