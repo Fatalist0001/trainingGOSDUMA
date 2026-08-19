@@ -1,4 +1,5 @@
 """Preprocessing utilities: scaling, encoding, feature engineering."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -7,12 +8,14 @@ from typing import Literal
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.preprocessing import StandardScaler, RobustScaler, MinMaxScaler
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import MinMaxScaler, RobustScaler, StandardScaler
 
 
 @dataclass
 class PreprocessingConfig:
     """Configuration for preprocessing pipeline."""
+
     scaler_type: Literal["standard", "robust", "minmax"] = "standard"
     handle_missing: Literal["drop", "mean", "median", "zero"] = "mean"
     clip_outliers: bool = False
@@ -49,10 +52,13 @@ class StandardScalerWrapper(BaseEstimator, TransformerMixin):
         self,
         scaler_type: Literal["standard", "robust", "minmax"] = "standard",
         columns: list[str] | None = None,
+        handle_missing: Literal["median", "mean", "zero"] = "median",
     ):
         self.scaler_type = scaler_type
         self.columns = columns
+        self.handle_missing = handle_missing
         self.scaler_ = None
+        self.imputer_ = None
         self.feature_names_ = None
 
     def _get_scaler(self):
@@ -69,17 +75,24 @@ class StandardScalerWrapper(BaseEstimator, TransformerMixin):
         if self.columns is None:
             self.columns = X.select_dtypes(include=[np.number]).columns.tolist()
 
+        # Impute missing values using statistics from TRAIN only (no leakage).
+        # keep_empty_features keeps all-NaN columns (filled with 0) so the
+        # column count stays consistent with self.columns.
+        self.imputer_ = SimpleImputer(strategy=self.handle_missing, keep_empty_features=True)
+        X_imputed = self.imputer_.fit_transform(X[self.columns])
+
         self.scaler_ = self._get_scaler()
-        self.scaler_.fit(X[self.columns])
+        self.scaler_.fit(X_imputed)
         self.feature_names_ = self.columns
         return self
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
-        if self.scaler_ is None:
+        if self.scaler_ is None or self.imputer_ is None:
             raise ValueError("Scaler not fitted. Call fit() first.")
 
         X_out = X.copy()
-        X_out[self.columns] = self.scaler_.transform(X[self.columns])
+        X_imputed = self.imputer_.transform(X[self.columns])
+        X_out[self.columns] = self.scaler_.transform(X_imputed)
         return X_out
 
     def fit_transform(self, X: pd.DataFrame, y=None) -> pd.DataFrame:
@@ -195,7 +208,7 @@ class MissingValueHandler(BaseEstimator, TransformerMixin):
         elif self.strategy == "median":
             self.fill_values_ = X[numeric_cols].median().to_dict()
         elif self.strategy == "zero":
-            self.fill_values_ = {c: 0 for c in numeric_cols}
+            self.fill_values_ = dict.fromkeys(numeric_cols, 0)
         return self
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """Aggregate benchmark results into summary tables."""
+
 from __future__ import annotations
 
 import argparse
@@ -8,9 +9,10 @@ from pathlib import Path
 
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
 
-from src.utils.io import load_results, save_benchmark_table, get_output_dirs
+from src.utils.io import get_output_dirs, load_results, save_benchmark_table
 
 
 def aggregate_benchmark(
@@ -65,6 +67,7 @@ def aggregate_benchmark(
 
         # Get test years from experiment config
         from src.data.splits import get_experiment_splits
+
         try:
             split = get_experiment_splits(exp)
             test_years = split.test_years

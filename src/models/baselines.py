@@ -1,4 +1,5 @@
 """Baseline models for election forecasting."""
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
@@ -50,11 +51,7 @@ class NaivePreviousElection(BaseBaseline):
 
         # For each region, get the most recent election result
         X_sorted = X.sort_values(["region_id", "year"])
-        self.last_results_ = (
-            X_sorted.groupby("region_id")[self.party_column]
-            .last()
-            .to_dict()
-        )
+        self.last_results_ = X_sorted.groupby("region_id")[self.party_column].last().to_dict()
         return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
@@ -105,7 +102,9 @@ class HistoricalMean(BaseBaseline):
         def expanding_mean(group):
             return group.expanding(min_periods=self.min_periods).mean().shift(1)
 
-        X_sorted["hist_mean"] = X_sorted.groupby("region_id")[self.party_column].transform(expanding_mean)
+        X_sorted["hist_mean"] = X_sorted.groupby("region_id")[self.party_column].transform(
+            expanding_mean
+        )
 
         # Get the last available historical mean for each region
         last_means = X_sorted.dropna(subset=["hist_mean"]).groupby("region_id")["hist_mean"].last()
@@ -152,7 +151,7 @@ class WeightedHistoricalMean(BaseBaseline):
         """Compute decay weights for n historical points."""
         if self.decay == "exponential":
             # Exponential decay: w_i = decay_rate^i
-            weights = np.array([self.decay_rate ** i for i in range(n)])
+            weights = np.array([self.decay_rate**i for i in range(n)])
         elif self.decay == "linear":
             # Linear decay: w_i = 1 - i/n * (1 - decay_rate)
             weights = np.array([1 - (i / max(1, n - 1)) * (1 - self.decay_rate) for i in range(n)])
@@ -190,7 +189,7 @@ class WeightedHistoricalMean(BaseBaseline):
 
             # Use only last max_history values
             if n > self.max_history:
-                values = values[-self.max_history:]
+                values = values[-self.max_history :]
                 n = self.max_history
 
             weights = self._compute_weights(n)

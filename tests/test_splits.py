@@ -1,18 +1,18 @@
 """Tests for temporal splits and leakage detection."""
+
 from __future__ import annotations
 
-import pytest
-import pandas as pd
 import numpy as np
+import pytest
 
+from src.data.loader import load_elections_metadata, load_region
 from src.data.splits import (
-    get_experiment_splits,
+    TemporalSplitter,
     create_temporal_splits,
     filter_by_years,
-    TemporalSplitter,
+    get_experiment_splits,
     load_raw_region,
 )
-from src.data.loader import load_region, get_available_years, load_elections_metadata
 
 
 class TestTemporalSplits:
@@ -33,16 +33,16 @@ class TestTemporalSplits:
         assert split.val_years == [2021]
 
     def test_experiment_C_split(self):
-        """Test Experiment C: train=2003-2021, test=2024."""
+        """Test Experiment C: train=2003-2021, test=2026 (final prediction)."""
         split = get_experiment_splits("C")
         assert split.train_years == [2003, 2007, 2011, 2016, 2021]
-        assert split.test_years == [2024]
-        assert split.val_years == [2024]
+        assert split.test_years == [2026]
+        assert split.val_years == []
 
     def test_experiment_D_split(self):
-        """Test Experiment D: train=all, target=2026."""
+        """Test Experiment D: train=all parliamentary, target=2026."""
         split = get_experiment_splits("D")
-        assert split.train_years == [2003, 2007, 2011, 2016, 2021, 2024]
+        assert split.train_years == [2003, 2007, 2011, 2016, 2021]
         assert split.test_years == [2026]
         assert split.is_final is True
 
@@ -52,7 +52,9 @@ class TestTemporalSplits:
             split = get_experiment_splits(exp_name)
             max_train = max(split.train_years)
             min_test = min(split.test_years)
-            assert max_train < min_test, f"Leakage in {exp_name}: train max={max_train} >= test min={min_test}"
+            assert max_train < min_test, (
+                f"Leakage in {exp_name}: train max={max_train} >= test min={min_test}"
+            )
 
     def test_create_temporal_splits(self):
         """Test creating train/val/test DataFrames."""
@@ -93,14 +95,16 @@ class TestLeakageDetection:
 
     def test_no_target_in_features(self):
         """Ensure target columns are not in feature columns."""
-        from src.data.features import select_features, get_target_columns
+        from src.data.features import get_target_columns, select_features
 
         df = load_region("ALL_FEATURES")
         target_cols = get_target_columns("region")
         feature_cols = select_features(df, "ALL_FEATURES").columns
 
         for target in target_cols:
-            assert target not in feature_cols or target in df.columns, f"Target {target} in features"
+            assert target not in feature_cols or target in df.columns, (
+                f"Target {target} in features"
+            )
 
     def test_no_id_columns_in_features(self):
         """Ensure ID columns are not used as features."""
@@ -124,11 +128,9 @@ class TestLeakageDetection:
 
     def test_preprocessing_fit_on_train_only(self):
         """Verify preprocessing is fit only on training data."""
-        from src.data.preprocessing import fit_transform_train_test
-        from src.data.splits import create_temporal_splits
         from src.data.features import get_feature_columns
-        from src.data.splits import load_raw_region
-        import numpy as np
+        from src.data.preprocessing import fit_transform_train_test
+        from src.data.splits import create_temporal_splits, load_raw_region
 
         df = load_raw_region()
         train_df, _, test_df = create_temporal_splits(df, "A")
@@ -144,9 +146,7 @@ class TestLeakageDetection:
         valid_means = train_means[~np.isnan(train_means)]
         assert all(abs(m) < 1e-10 for m in valid_means), "Train not centered"
 
-        # Test should use train scaler params
-        test_means = test_scaled[feature_cols].mean()
-        # Test means can be non-zero (that's correct)
+        # Test should use train scaler params (means need not be ~0)
 
 
 class TestDataIntegrity:
@@ -163,7 +163,9 @@ class TestDataIntegrity:
         if existing:
             row_sums = parl_df[existing].sum(axis=1, skipna=True)
             # With only 3 main parties, sum should be > 40% and < 100%
-            assert (row_sums.between(40, 100)).all(), f"Party shares sum out of range: {row_sums.min():.1f}-{row_sums.max():.1f}"
+            assert (row_sums.between(40, 100)).all(), (
+                f"Party shares sum out of range: {row_sums.min():.1f}-{row_sums.max():.1f}"
+            )
 
     def test_no_nan_in_targets(self):
         """Check targets have no NaN for parliamentary elections."""

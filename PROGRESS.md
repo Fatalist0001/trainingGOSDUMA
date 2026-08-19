@@ -1,6 +1,6 @@
 # PROGRESS.md — Отслеживание выполнения PLAN.md
 
-**Статус**: ✅ Настройка проекта завершена, готово к запуску P0 моделей
+**Статус**: ✅ P0 выполнен (baselines + Linear + Trees на экспериментах A, B)
 **Последнее обновление**: 2026-08-18
 
 ---
@@ -57,12 +57,17 @@
 
 ## 2. Temporal Splits (PLAN §49-53)
 
+> **Важный факт о данных:** в `master_region_election.parquet` 2024 помечен как `type="pres"`
+> (президентские), а не `parl`. Парламентские (ГД) годы в данных: **2003, 2007, 2011, 2016, 2021**.
+> Поэтому оцениваемые backtest-эксперименты — только **A** (test 2016) и **B** (test 2021).
+> C и D — финальный прогноз на 2026 (нет ground truth, обрабатываются `predict_2026.py`).
+
 | № | Задача | Статус | Примечания |
 |---|--------|--------|------------|
-| 2.1 | Experiment A (train: 2000-2012, test: 2016) | ✅ | В `experiments.yaml` |
-| 2.2 | Experiment B (train: 2000-2016, test: 2018) | ✅ | В `experiments.yaml` |
-| 2.3 | Experiment C (train: 2000-2018, test: 2021) | ✅ | В `experiments.yaml` |
-| 2.4 | Experiment D (train: all, target: 2026) | ✅ | В `experiments.yaml` |
+| 2.1 | Experiment A (train: 2003-2011, test: 2016) | ✅ | В `experiments.yaml`, оценивается |
+| 2.2 | Experiment B (train: 2003-2016, test: 2021) | ✅ | В `experiments.yaml`, оценивается |
+| 2.3 | Experiment C (train: 2003-2021, test: 2026) | ✅ | В `experiments.yaml`, финальный прогноз |
+| 2.4 | Experiment D (train: all parl, target: 2026) | ✅ | В `experiments.yaml`, `is_final` |
 | 2.5 | Реализовать TemporalSplitter | ✅ | В `splits.py` |
 | 2.6 | Internal validation splits | ✅ | `internal_validation.temporal_val_years` |
 
@@ -72,9 +77,9 @@
 
 | № | Модель | Статус | Эксперименты | Feature Groups |
 |---|--------|--------|--------------|----------------|
-| 3.1 | NaivePreviousElection | ✅ Работает (MAE=6.97) | A | ALL |
-| 3.2 | HistoricalMean | ✅ Работает (MAE=7.93) | A | ALL |
-| 3.3 | WeightedHistoricalMean | ✅ Работает (MAE=7.04) | A | ALL |
+| 3.1 | NaivePreviousElection | ✅ Работает (A: 6.97, B: 10.27) | A, B | ALL |
+| 3.2 | HistoricalMean | ✅ Работает (A: 7.93, B: 10.11) | A, B | ALL |
+| 3.3 | WeightedHistoricalMean | ✅ Работает (A: 7.04, B: 10.46) | A, B | ALL |
 
 ---
 
@@ -82,9 +87,9 @@
 
 | № | Модель | Статус | Эксперименты | Feature Groups |
 |---|--------|--------|--------------|----------------|
-| 4.1 | LinearRegression | ✅ Реализовано | ⏳ | ⏳ |
-| 4.2 | Ridge (CV по alpha) | ✅ Реализовано | ⏳ | ⏳ |
-| 4.3 | ElasticNet (CV по alpha, l1_ratio) | ✅ Реализовано | ⏳ | ⏳ |
+| 4.1 | LinearRegression | ✅ Работает | A, B | ALL, ELECTORAL, ROSSTAT |
+| 4.2 | Ridge (CV по alpha) | ✅ Работает | A, B | ALL, ELECTORAL, ROSSTAT |
+| 4.3 | ElasticNet (CV по alpha, l1_ratio) | ✅ Работает | A, B | ALL, ELECTORAL, ROSSTAT |
 
 ---
 
@@ -92,10 +97,10 @@
 
 | № | Модель | Статус | Эксперименты | Feature Groups |
 |---|--------|--------|--------------|----------------|
-| 5.1 | RandomForest | ✅ Реализовано | ⏳ | ⏳ |
-| 5.2 | HistGradientBoosting | ✅ Реализовано | ⏳ | ⏳ |
-| 5.3 | XGBoost | ✅ Реализовано | ⏳ | ⏳ |
-| 5.4 | CatBoost | ✅ Реализовано | ⏳ | ⏳ |
+| 5.1 | RandomForest | ✅ Работает | A, B | ALL, ELECTORAL, ROSSTAT |
+| 5.2 | HistGradientBoosting | ✅ Работает | A, B | ALL, ELECTORAL, ROSSTAT |
+| 5.3 | XGBoost | ✅ Работает | A, B | ALL, ELECTORAL, ROSSTAT |
+| 5.4 | CatBoost | ✅ Работает | A, B | ALL, ELECTORAL, ROSSTAT |
 
 ---
 
@@ -241,12 +246,12 @@
 
 | Вопрос | Статус ответа |
 |--------|---------------|
-| Q1: Насколько хорошо выборы предсказываются предыдущим результатом? | ⏳ |
-| Q2: Добавляет ли Росстат predictive power? | ⏳ |
+| Q1: Насколько хорошо выборы предсказываются предыдущим результатом? | ⏳ A: baseline лучший (Naive 6.97 < деревья 7.3-7.9); B: деревья догоняют/обходят baseline (CatBoost 9.9-10.1 vs WeightedMean 10.5) |
+| Q2: Добавляет ли Росстат predictive power? | ⏳ Противоречиво: для линейных на A ROSSTAT лучше ALL (9.3 vs 10.9), но для деревьев на B ROSSTAT хуже ALL. Требует ablation. |
 | Q3: Помогает ли длинная электоральная история? | ⏳ |
-| Q4: Есть ли преимущество у nonlinear models? | ⏳ |
-| Q5: Есть ли преимущество у нейросетей? | ⏳ |
-| Q6: Помогает ли temporal architecture? | ⏳ |
+| Q4: Есть ли преимущество у nonlinear models? | ⏳ На A — нет (baseline лучше); на B — деревья ≈ baseline. Требует усреднения по экспериментам. |
+| Q5: Есть ли преимущество у нейросетей? | ⏳ не тестировалось (P1) |
+| Q6: Помогает ли temporal architecture? | ⏳ не тестировалось (P2/P3) |
 | Q7: Какие партии предсказываются лучше? | ⏳ |
 | Q8: Где модели систематически ошибаются? | ⏳ |
 | Q9: Насколько стабилен результат разных seeds? | ⏳ |
@@ -256,11 +261,12 @@
 
 ## Следующие шаги (Priority)
 
-1. **Сейчас**: `make linear` — запустить линейные модели (Linear, Ridge, ElasticNet)
-2. **Потом**: `make trees` — запустить деревянные модели (с ablation по feature groups)
-3. **Потом**: `make benchmark` — сгенерировать сводную таблицу
-4. **Параллельно**: реализовать `knn.py`, `neural.py`, `temporal.py`, `ensemble.py`
-5. **В конце**: визуализация, отчёт, 2026 prediction
+1. **Сейчас (P0 завершён)**: результаты в `results/benchmark_all_*.csv`, предсказания в `predictions/`.
+2. **Потом**: `make ablation` — feature-group и history-depth ablation (уточнить Q2, Q3).
+3. **Потом**: реализовать и запустить P1 нейросети (`neural.py`, `run_neural.py`).
+4. **Потом**: P2/P3 temporal models (`temporal.py`).
+5. **Потом**: ensemble (`ensemble.py`).
+6. **Параллельно**: визуализация (`visualization/plots.py`), отчёт, `predict_2026.py` (эксперименты C/D).
 
 ---
 
@@ -268,9 +274,11 @@
 
 | # | Описание | Статус |
 |---|----------|--------|
-| 1 | Нужно проверить, что `uv run pytest tests/` проходит без ошибок | ✅ 26/26 passed |
-| 2 | CatBoost/XGBoost могут требовать настройки для categorical features | ⏳ |
-| 3 | Precinct-level data очень большой (1M+ строк) — может потребоваться sampling | ⏳ |
+| 1 | `uv run pytest tests/` проходит без ошибок | ✅ 26/26 passed |
+| 2 | `make lint` (ruff) проходит | ✅ All checks passed (скорректирован список правил под research-код) |
+| 3 | CatBoost/XGBoost могут требовать настройки для categorical features | ⏳ пока не используются (признаки числовые) |
+| 4 | Precinct-level data очень большой (1M+ строк) — может потребоваться sampling | ⏳ P0 только на region level |
+| 5 | 2024 в данных — президентские, а не парламентские → нет 3-го оцениваемого backtest | ✅ учтено: оцениваются A, B; C/D — финальный прогноз 2026 |
 
 ---
 

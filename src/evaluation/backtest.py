@@ -1,19 +1,23 @@
 """Rolling temporal backtest runner."""
+
 from __future__ import annotations
 
 from typing import Any
 
 import numpy as np
 import pandas as pd
-from sklearn.base import BaseEstimator, RegressorMixin
 
-from ..data.loader import get_party_list, load_region
-from ..data.splits import create_temporal_splits, get_experiment_splits, get_internal_validation_years
-from ..data.features import get_target_columns_from_df, get_feature_columns
-from ..data.preprocessing import fit_transform_train_test
-from ..evaluation.metrics import compute_all_metrics, party_metrics, federal_aggregation, error_distribution
-from ..utils.io import save_predictions, save_results
+from ..data.features import get_feature_columns, get_target_columns_from_df
+from ..data.splits import (
+    create_temporal_splits,
+)
+from ..evaluation.metrics import (
+    error_distribution,
+    federal_aggregation,
+    party_metrics,
+)
 from ..models.registry import get_model
+from ..utils.io import save_predictions
 
 
 def prepare_data_for_experiment(
@@ -29,6 +33,7 @@ def prepare_data_for_experiment(
     """
     # Load raw data (with year/type columns for temporal models and baselines)
     from ..data.splits import load_raw_region
+
     df = load_raw_region()
 
     # Create temporal splits
@@ -37,9 +42,18 @@ def prepare_data_for_experiment(
     # Get feature and target columns from processed data
     # Apply feature selection to get feature columns
     from ..data.features import select_features
+
     train_processed = select_features(train_df, feature_group)
     target_columns = get_target_columns_from_df(train_processed, level)
     feature_columns = get_feature_columns(train_processed, feature_group)
+
+    # Drop constant (zero-variance) features: they break StandardScaler
+    # (0/0 -> NaN) and HistGradientBoosting binning (needs >=2 distinct values).
+    non_constant = [c for c in feature_columns if train_df[c].nunique(dropna=True) > 1]
+    dropped = sorted(set(feature_columns) - set(non_constant))
+    if dropped:
+        print(f"[preprocess] Dropping {len(dropped)} constant feature(s): {dropped}")
+    feature_columns = non_constant
 
     return train_df, val_df, test_df, feature_columns, target_columns
 
@@ -68,8 +82,24 @@ def run_single_model_backtest(
     # Handle empty val set
     has_val = len(val_df) > 0
 
+    # Handle experiments without a test set (e.g. final 2026 prediction):
+    # there is nothing to evaluate, so skip prediction/metrics.
+    if len(test_df) == 0:
+        return {
+            "model": model_name,
+            "experiment": experiment_name,
+            "feature_group": feature_group,
+            "level": level,
+            "note": "no_test_data",
+            "n_train": len(train_df),
+            "n_test": 0,
+            "feature_columns": feature_columns,
+            "target_columns": target_columns,
+        }
+
     # Preprocessing: fit on train, transform all
     from ..data.preprocessing import StandardScalerWrapper
+
     scaler = StandardScalerWrapper(scaler_type="standard", columns=feature_columns)
     train_scaled = scaler.fit_transform(train_df)
     val_scaled = scaler.transform(val_df) if has_val else val_df
@@ -81,29 +111,35 @@ def run_single_model_backtest(
     # Prepare targets
     y_train = train_scaled[target_columns]
     y_val = val_scaled[target_columns] if has_val else None
-    y_test = test_scaled[target_columns]
 
     # Fit model - baselines need year/region_id and target columns (per party), other models use feature_columns
-    is_baseline = model_name in ["NaivePreviousElection", "HistoricalMean", "WeightedHistoricalMean"]
-    
+    is_baseline = model_name in [
+        "NaivePreviousElection",
+        "HistoricalMean",
+        "WeightedHistoricalMean",
+    ]
+
     if is_baseline:
         # Baselines are single-party - run for each target column separately
         all_train_preds = []
         all_test_preds = []
-        
+
         for i, target_col in enumerate(target_columns):
             # Create single-party model
             single_model = get_model(model_name, party_column=target_col, **model_kwargs)
-            
+
             # Prepare single-party targets
             y_train_single = train_df[target_col]
             y_val_single = val_df[target_col] if has_val else None
-            
+
             train_cols = ["region_id", "year"] + feature_columns + [target_col]
             val_cols = ["region_id", "year"] + feature_columns + [target_col]
-            
+
             if has_val:
-                if hasattr(single_model, "fit") and "eval_set" in single_model.fit.__code__.co_varnames:
+                if (
+                    hasattr(single_model, "fit")
+                    and "eval_set" in single_model.fit.__code__.co_varnames
+                ):
                     single_model.fit(
                         train_df[train_cols],
                         y_train_single,
@@ -114,14 +150,14 @@ def run_single_model_backtest(
                     single_model.fit(train_df[train_cols], y_train_single)
             else:
                 single_model.fit(train_df[train_cols], y_train_single)
-            
+
             # Predict
             train_pred_single = single_model.predict(train_df[train_cols])
             test_pred_single = single_model.predict(test_df[train_cols])
-            
+
             all_train_preds.append(train_pred_single)
             all_test_preds.append(test_pred_single)
-        
+
         # Combine predictions
         train_pred = np.column_stack(all_train_preds)
         test_pred = np.column_stack(all_test_preds)
@@ -139,13 +175,17 @@ def run_single_model_backtest(
                 model.fit(train_scaled[feature_columns], y_train)
         else:
             model.fit(train_scaled[feature_columns], y_train)
-        
+
         train_pred = model.predict(train_scaled[feature_columns])
         test_pred = model.predict(test_scaled[feature_columns])
 
     # Create prediction DataFrames
-    train_pred_df = pd.DataFrame(train_pred, columns=[f"{c}_pred" for c in target_columns], index=train_df.index)
-    test_pred_df = pd.DataFrame(test_pred, columns=[f"{c}_pred" for c in target_columns], index=test_df.index)
+    train_pred_df = pd.DataFrame(
+        train_pred, columns=[f"{c}_pred" for c in target_columns], index=train_df.index
+    )
+    test_pred_df = pd.DataFrame(
+        test_pred, columns=[f"{c}_pred" for c in target_columns], index=test_df.index
+    )
 
     # Normalize predictions if needed (compositional constraint)
     if normalize_predictions:
@@ -157,19 +197,33 @@ def run_single_model_backtest(
     test_results = pd.concat([test_df[target_columns], test_pred_df], axis=1)
 
     # Compute metrics
-    train_metrics = party_metrics(train_results, target_columns, pred_suffix="_pred", actual_suffix="")
-    test_metrics = party_metrics(test_results, target_columns, pred_suffix="_pred", actual_suffix="")
+    train_metrics = party_metrics(
+        train_results, target_columns, pred_suffix="_pred", actual_suffix=""
+    )
+    test_metrics = party_metrics(
+        test_results, target_columns, pred_suffix="_pred", actual_suffix=""
+    )
 
     # Federal aggregation
     weight_col = "electorate" if "electorate" in train_df.columns else None
     if weight_col is None and "population" in train_df.columns:
         weight_col = "population"
 
-    train_federal = federal_aggregation(train_results, target_columns, weight_column=weight_col or "electorate") if weight_col else {}
-    test_federal = federal_aggregation(test_results, target_columns, weight_column=weight_col or "electorate") if weight_col else {}
+    train_federal = (
+        federal_aggregation(train_results, target_columns, weight_column=weight_col or "electorate")
+        if weight_col
+        else {}
+    )
+    test_federal = (
+        federal_aggregation(test_results, target_columns, weight_column=weight_col or "electorate")
+        if weight_col
+        else {}
+    )
 
     # Error distributions
-    test_error_dist = error_distribution(test_results, target_columns, pred_suffix="_pred", actual_suffix="")
+    test_error_dist = error_distribution(
+        test_results, target_columns, pred_suffix="_pred", actual_suffix=""
+    )
 
     # Save predictions
     save_predictions(
@@ -283,11 +337,13 @@ def run_experiment(
                 results.append(result)
             except Exception as e:
                 print(f"Error running {model_name}: {e}")
-                results.append({
-                    "model": model_name,
-                    "experiment": experiment_name,
-                    "feature_group": feature_group,
-                    "error": str(e),
-                })
+                results.append(
+                    {
+                        "model": model_name,
+                        "experiment": experiment_name,
+                        "feature_group": feature_group,
+                        "error": str(e),
+                    }
+                )
 
     return results

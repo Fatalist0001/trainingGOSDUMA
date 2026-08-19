@@ -1,11 +1,11 @@
 """Data loading utilities for region and precinct level datasets."""
+
 from __future__ import annotations
 
 from pathlib import Path
 from typing import Literal
 
 import pandas as pd
-import yaml
 
 from ..utils.io import load_yaml_config
 
@@ -13,6 +13,7 @@ from ..utils.io import load_yaml_config
 def _get_dataset_root() -> Path:
     """Get dataset root from config or environment."""
     import os
+
     root = os.environ.get("DATASET_ROOT")
     if root:
         return Path(root)
@@ -120,4 +121,5 @@ def select_features(df: pd.DataFrame, feature_group: str) -> pd.DataFrame:
         DataFrame with selected features
     """
     from .features import select_features as _select_features
+
     return _select_features(df, feature_group)

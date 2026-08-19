@@ -1,0 +1,20 @@
+[
+  {
+    "model": "NaivePreviousElection",
+    "experiment": "C",
+    "feature_group": "ALL_FEATURES",
+    "error": "Found array with 0 sample(s) (shape=(0, 20)) while a minimum of 1 is required by StandardScaler."
+  },
+  {
+    "model": "HistoricalMean",
+    "experiment": "C",
+    "feature_group": "ALL_FEATURES",
+    "error": "Found array with 0 sample(s) (shape=(0, 20)) while a minimum of 1 is required by StandardScaler."
+  },
+  {
+    "model": "WeightedHistoricalMean",
+    "experiment": "C",
+    "feature_group": "ALL_FEATURES",
+    "error": "Found array with 0 sample(s) (shape=(0, 20)) while a minimum of 1 is required by StandardScaler."
+  }
+]

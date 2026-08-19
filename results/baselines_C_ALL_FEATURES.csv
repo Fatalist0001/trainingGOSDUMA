@@ -1,0 +1,4 @@
+model,experiment,feature_group,error
+NaivePreviousElection,C,ALL_FEATURES,"Found array with 0 sample(s) (shape=(0, 20)) while a minimum of 1 is required by StandardScaler."
+HistoricalMean,C,ALL_FEATURES,"Found array with 0 sample(s) (shape=(0, 20)) while a minimum of 1 is required by StandardScaler."
+WeightedHistoricalMean,C,ALL_FEATURES,"Found array with 0 sample(s) (shape=(0, 20)) while a minimum of 1 is required by StandardScaler."

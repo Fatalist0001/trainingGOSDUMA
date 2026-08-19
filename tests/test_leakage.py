@@ -1,12 +1,17 @@
 """Specific leakage detection tests."""
+
 from __future__ import annotations
 
-import pytest
 import pandas as pd
-import numpy as np
+import pytest
 
-from src.data.loader import load_region, load_precinct
-from src.data.splits import get_experiment_splits, create_temporal_splits, load_raw_region, load_raw_precinct
+from src.data.loader import load_region
+from src.data.splits import (
+    create_temporal_splits,
+    get_experiment_splits,
+    load_raw_precinct,
+    load_raw_region,
+)
 
 
 class TestSpatialLeakage:
@@ -91,11 +96,20 @@ class TestFeatureLeakage:
         """Socioeconomic features should be lagged."""
         df = load_region("ALL_FEATURES")
         socio_cols = [
-            "population", "GRP_per_capita", "average_salary",
-            "unemployment_rate", "poverty_rate", "urban_population_share",
-            "real_disposable_income", "age_working_share",
-            "birth_rate", "death_rate", "natural_population_growth",
-            "migration_rate", "doctors_per_1000", "hospital_beds_per_1000",
+            "population",
+            "GRP_per_capita",
+            "average_salary",
+            "unemployment_rate",
+            "poverty_rate",
+            "urban_population_share",
+            "real_disposable_income",
+            "age_working_share",
+            "birth_rate",
+            "death_rate",
+            "natural_population_growth",
+            "migration_rate",
+            "doctors_per_1000",
+            "hospital_beds_per_1000",
             "housing_area_per_capita",
         ]
 
@@ -147,7 +161,9 @@ class TestCompositionalConstraint:
         party_cols = ["UR_share", "KPRF_share", "LDPR_share"]
         row_sums = parl_df[party_cols].sum(axis=1, skipna=True)
         # With only 3 main parties, sum should be > 40% and < 100% (some regions have low support)
-        assert (row_sums.between(40, 100)).all(), f"Party shares sum out of range: {row_sums.min():.1f}-{row_sums.max():.1f}"
+        assert (row_sums.between(40, 100)).all(), (
+            f"Party shares sum out of range: {row_sums.min():.1f}-{row_sums.max():.1f}"
+        )
 
     def test_party_shares_sum_reasonable_precinct(self):
         """Precinct-level party shares sum should be reasonable for parliamentary elections."""

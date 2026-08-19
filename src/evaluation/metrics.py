@@ -1,7 +1,6 @@
 """Evaluation metrics for election forecasting."""
-from __future__ import annotations
 
-from typing import Literal
+from __future__ import annotations
 
 import numpy as np
 import pandas as pd
@@ -193,18 +192,20 @@ def error_distribution(
         if len(errors) == 0:
             continue
 
-        results.append({
-            "party": party,
-            "mean_error": errors.mean(),
-            "std_error": errors.std(),
-            "median_error": errors.median(),
-            "q25": errors.quantile(0.25),
-            "q75": errors.quantile(0.75),
-            "min_error": errors.min(),
-            "max_error": errors.max(),
-            "mae": errors.abs().mean(),
-            "rmse": np.sqrt((errors ** 2).mean()),
-        })
+        results.append(
+            {
+                "party": party,
+                "mean_error": errors.mean(),
+                "std_error": errors.std(),
+                "median_error": errors.median(),
+                "q25": errors.quantile(0.25),
+                "q75": errors.quantile(0.75),
+                "min_error": errors.min(),
+                "max_error": errors.max(),
+                "mae": errors.abs().mean(),
+                "rmse": np.sqrt((errors**2).mean()),
+            }
+        )
 
     return pd.DataFrame(results)
 

@@ -1,0 +1,419 @@
+[
+  {
+    "model": "NaivePreviousElection",
+    "experiment": "B",
+    "feature_group": "ALL_FEATURES",
+    "level": "region",
+    "train_metrics": [
+      {
+        "mae": 13.887920138681354,
+        "rmse": 16.614811530748923,
+        "r2": -0.02332895604768459,
+        "bias": 11.492519583833802,
+        "pearson_r": 0.6863142653457132,
+        "spearman_r": 0.5433333712117934,
+        "party": "UR_share",
+        "n_samples": 332
+      },
+      {
+        "mae": 5.107076855777809,
+        "rmse": 6.402460598824177,
+        "r2": -0.2084843062159265,
+        "bias": 3.408814466846069,
+        "pearson_r": 0.576925225454021,
+        "spearman_r": 0.4718020943955541,
+        "party": "KPRF_share",
+        "n_samples": 332
+      },
+      {
+        "mae": 6.8402651517176585,
+        "rmse": 8.341973381016398,
+        "r2": -1.2841708632468283,
+        "bias": 6.6193157628833506,
+        "pearson_r": 0.8014909570988784,
+        "spearman_r": 0.7295508110482085,
+        "party": "LDPR_share",
+        "n_samples": 332
+      }
+    ],
+    "test_metrics": [
+      {
+        "mae": 16.23562546670106,
+        "rmse": 17.91001844023875,
+        "r2": -0.2617281086002312,
+        "bias": 16.075660983120763,
+        "pearson_r": 0.8740913870366189,
+        "spearman_r": 0.8116997607153351,
+        "party": "UR_share",
+        "n_samples": 83
+      },
+      {
+        "mae": 4.243309018445093,
+        "rmse": 5.4627858899661765,
+        "r2": 0.43798672773061353,
+        "bias": -3.238411489545875,
+        "pearson_r": 0.7974294688477198,
+        "spearman_r": 0.7125435540069686,
+        "party": "KPRF_share",
+        "n_samples": 83
+      },
+      {
+        "mae": 10.337621052507302,
+        "rmse": 11.695059001558397,
+        "r2": -10.68548364015767,
+        "bias": 10.187848536866401,
+        "pearson_r": 0.834753017771807,
+        "spearman_r": 0.7916334326854455,
+        "party": "LDPR_share",
+        "n_samples": 83
+      }
+    ],
+    "train_federal": {},
+    "test_federal": {},
+    "test_error_distribution": [
+      {
+        "party": "UR_share",
+        "mean_error": 16.075660983120763,
+        "std_error": 7.943686258244971,
+        "median_error": 17.071288350153466,
+        "q25": 11.692467229260977,
+        "q75": 21.463310796825887,
+        "min_error": -4.707899419537171,
+        "max_error": 40.68161323793251,
+        "mae": 16.23562546670106,
+        "rmse": 17.91001844023875
+      },
+      {
+        "party": "KPRF_share",
+        "mean_error": -3.238411489545875,
+        "std_error": 4.426144358615948,
+        "median_error": -3.0895602177983044,
+        "q25": -5.58998571816425,
+        "q75": -0.6523419118973548,
+        "min_error": -15.805983404187376,
+        "max_error": 12.749357310288925,
+        "mae": 4.243309018445093,
+        "rmse": 5.4627858899661765
+      },
+      {
+        "party": "LDPR_share",
+        "mean_error": 10.187848536866401,
+        "std_error": 5.777920780661817,
+        "median_error": 11.548686189377682,
+        "q25": 5.750402764426804,
+        "q75": 14.846025756982534,
+        "min_error": -2.3844441491090995,
+        "max_error": 20.047657176810183,
+        "mae": 10.337621052507302,
+        "rmse": 11.695059001558397
+      }
+    ],
+    "n_train": 332,
+    "n_test": 83,
+    "feature_columns": [
+      "GRP_per_capita_lag1",
+      "KPRF_share_lag1",
+      "LDPR_share_lag1",
+      "UR_share_lag1",
+      "age_working_share_lag1",
+      "average_salary_lag1",
+      "birth_rate_lag1",
+      "death_rate_lag1",
+      "doctors_per_1000_lag1",
+      "hospital_beds_per_1000_lag1",
+      "housing_area_per_capita_lag1",
+      "migration_rate_lag1",
+      "natural_population_growth_lag1",
+      "population_lag1",
+      "poverty_rate_lag1",
+      "real_disposable_income_lag1",
+      "turnout_rate",
+      "turnout_rate_lag1",
+      "unemployment_rate_lag1",
+      "urban_population_share_lag1"
+    ],
+    "target_columns": [
+      "UR_share",
+      "KPRF_share",
+      "LDPR_share"
+    ]
+  },
+  {
+    "model": "HistoricalMean",
+    "experiment": "B",
+    "feature_group": "ALL_FEATURES",
+    "level": "region",
+    "train_metrics": [
+      {
+        "mae": 15.081419629993738,
+        "rmse": 18.31533753726687,
+        "r2": -0.24352430514794277,
+        "bias": 14.319857373012745,
+        "pearson_r": 0.725940560442955,
+        "spearman_r": 0.5686546299021266,
+        "party": "UR_share",
+        "n_samples": 332
+      },
+      {
+        "mae": 5.45748452128407,
+        "rmse": 6.54585591097064,
+        "r2": -0.26322312814407045,
+        "bias": 4.563857053866961,
+        "pearson_r": 0.6787136235559448,
+        "spearman_r": 0.605728111387191,
+        "party": "KPRF_share",
+        "n_samples": 332
+      },
+      {
+        "mae": 3.3308453754747136,
+        "rmse": 4.232761180738183,
+        "r2": 0.41191714364112975,
+        "bias": 2.6369353866835175,
+        "pearson_r": 0.827441781902481,
+        "spearman_r": 0.7675635258763946,
+        "party": "LDPR_share",
+        "n_samples": 332
+      }
+    ],
+    "test_metrics": [
+      {
+        "mae": 19.0485655585025,
+        "rmse": 21.448012081979545,
+        "r2": -0.8094550691850917,
+        "bias": 18.902998772299703,
+        "pearson_r": 0.785011839566716,
+        "spearman_r": 0.551928970236346,
+        "party": "UR_share",
+        "n_samples": 83
+      },
+      {
+        "mae": 4.747846966213976,
+        "rmse": 6.220333357071704,
+        "r2": 0.2713054297427666,
+        "bias": -2.0833689025249824,
+        "pearson_r": 0.6223157354962223,
+        "spearman_r": 0.45579530666218876,
+        "party": "KPRF_share",
+        "n_samples": 83
+      },
+      {
+        "mae": 6.540507259686791,
+        "rmse": 7.241609928256183,
+        "r2": -3.4803517626225036,
+        "bias": 6.205468160666569,
+        "pearson_r": 0.7808231720478814,
+        "spearman_r": 0.7525082910037363,
+        "party": "LDPR_share",
+        "n_samples": 83
+      }
+    ],
+    "train_federal": {},
+    "test_federal": {},
+    "test_error_distribution": [
+      {
+        "party": "UR_share",
+        "mean_error": 18.902998772299703,
+        "std_error": 10.195402092397051,
+        "median_error": 19.917563671114223,
+        "q25": 10.543571682366984,
+        "q75": 26.19597467991943,
+        "min_error": -3.1079508733885888,
+        "max_error": 38.61888522383464,
+        "mae": 19.0485655585025,
+        "rmse": 21.448012081979545
+      },
+      {
+        "party": "KPRF_share",
+        "mean_error": -2.0833689025249824,
+        "std_error": 5.896698177374802,
+        "median_error": -0.9508318563063725,
+        "q25": -6.01451924169093,
+        "q75": 1.7792010740567132,
+        "min_error": -19.229400565510844,
+        "max_error": 11.756213467024384,
+        "mae": 4.747846966213976,
+        "rmse": 6.220333357071704
+      },
+      {
+        "party": "LDPR_share",
+        "mean_error": 6.205468160666569,
+        "std_error": 3.7553954333336668,
+        "median_error": 6.608146194594784,
+        "q25": 4.4617627053552695,
+        "q75": 8.742899609486251,
+        "min_error": -5.49917546107328,
+        "max_error": 15.718133681399923,
+        "mae": 6.540507259686791,
+        "rmse": 7.241609928256183
+      }
+    ],
+    "n_train": 332,
+    "n_test": 83,
+    "feature_columns": [
+      "GRP_per_capita_lag1",
+      "KPRF_share_lag1",
+      "LDPR_share_lag1",
+      "UR_share_lag1",
+      "age_working_share_lag1",
+      "average_salary_lag1",
+      "birth_rate_lag1",
+      "death_rate_lag1",
+      "doctors_per_1000_lag1",
+      "hospital_beds_per_1000_lag1",
+      "housing_area_per_capita_lag1",
+      "migration_rate_lag1",
+      "natural_population_growth_lag1",
+      "population_lag1",
+      "poverty_rate_lag1",
+      "real_disposable_income_lag1",
+      "turnout_rate",
+      "turnout_rate_lag1",
+      "unemployment_rate_lag1",
+      "urban_population_share_lag1"
+    ],
+    "target_columns": [
+      "UR_share",
+      "KPRF_share",
+      "LDPR_share"
+    ]
+  },
+  {
+    "model": "WeightedHistoricalMean",
+    "experiment": "B",
+    "feature_group": "ALL_FEATURES",
+    "level": "region",
+    "train_metrics": [
+      {
+        "mae": 14.944011246168298,
+        "rmse": 18.081918230332413,
+        "r2": -0.21203015886734478,
+        "bias": 13.771695673168006,
+        "pearson_r": 0.7095966114994834,
+        "spearman_r": 0.52135583569411,
+        "party": "UR_share",
+        "n_samples": 332
+      },
+      {
+        "mae": 5.143122153964005,
+        "rmse": 6.0110987403042175,
+        "r2": -0.06525825835455334,
+        "bias": 3.895596152883916,
+        "pearson_r": 0.6756247020996972,
+        "spearman_r": 0.619274847049786,
+        "party": "KPRF_share",
+        "n_samples": 332
+      },
+      {
+        "mae": 4.191520101625906,
+        "rmse": 5.1038316120968,
+        "r2": 0.1449654517671316,
+        "bias": 3.8533579875113007,
+        "pearson_r": 0.8298924307610047,
+        "spearman_r": 0.7704756739514368,
+        "party": "LDPR_share",
+        "n_samples": 332
+      }
+    ],
+    "test_metrics": [
+      {
+        "mae": 18.572537410859717,
+        "rmse": 21.27808812726067,
+        "r2": -0.7808974778728592,
+        "bias": 18.35483707245497,
+        "pearson_r": 0.7498217072608515,
+        "spearman_r": 0.44381008353973384,
+        "party": "UR_share",
+        "n_samples": 83
+      },
+      {
+        "mae": 5.13272869576546,
+        "rmse": 6.688673056995558,
+        "r2": 0.15744521363464448,
+        "bias": -2.7516298035080275,
+        "pearson_r": 0.5768902234403712,
+        "spearman_r": 0.40814827253263924,
+        "party": "KPRF_share",
+        "n_samples": 83
+      },
+      {
+        "mae": 7.661249382121554,
+        "rmse": 8.373186357220852,
+        "r2": -4.989952406868377,
+        "bias": 7.4218907614943515,
+        "pearson_r": 0.7785866616722735,
+        "spearman_r": 0.7440493682045254,
+        "party": "LDPR_share",
+        "n_samples": 83
+      }
+    ],
+    "train_federal": {},
+    "test_federal": {},
+    "test_error_distribution": [
+      {
+        "party": "UR_share",
+        "mean_error": 18.35483707245497,
+        "std_error": 10.829121872149823,
+        "median_error": 20.26052581193047,
+        "q25": 10.316845845039726,
+        "q75": 27.633488544061827,
+        "min_error": -4.251543601148633,
+        "max_error": 38.64971937391555,
+        "mae": 18.572537410859717,
+        "rmse": 21.27808812726067
+      },
+      {
+        "party": "KPRF_share",
+        "mean_error": -2.7516298035080275,
+        "std_error": 6.133525522108727,
+        "median_error": -2.130934804146179,
+        "q25": -6.9497970577038295,
+        "q75": 1.0888100572955945,
+        "min_error": -19.913646797704523,
+        "max_error": 11.700795211982708,
+        "mae": 5.13272869576546,
+        "rmse": 6.688673056995558
+      },
+      {
+        "party": "LDPR_share",
+        "mean_error": 7.4218907614943515,
+        "std_error": 3.899875460280309,
+        "median_error": 7.84698601122364,
+        "q25": 5.544662174509739,
+        "q75": 10.124952728588784,
+        "min_error": -4.5603947468464066,
+        "max_error": 17.471363045409646,
+        "mae": 7.661249382121554,
+        "rmse": 8.373186357220852
+      }
+    ],
+    "n_train": 332,
+    "n_test": 83,
+    "feature_columns": [
+      "GRP_per_capita_lag1",
+      "KPRF_share_lag1",
+      "LDPR_share_lag1",
+      "UR_share_lag1",
+      "age_working_share_lag1",
+      "average_salary_lag1",
+      "birth_rate_lag1",
+      "death_rate_lag1",
+      "doctors_per_1000_lag1",
+      "hospital_beds_per_1000_lag1",
+      "housing_area_per_capita_lag1",
+      "migration_rate_lag1",
+      "natural_population_growth_lag1",
+      "population_lag1",
+      "poverty_rate_lag1",
+      "real_disposable_income_lag1",
+      "turnout_rate",
+      "turnout_rate_lag1",
+      "unemployment_rate_lag1",
+      "urban_population_share_lag1"
+    ],
+    "target_columns": [
+      "UR_share",
+      "KPRF_share",
+      "LDPR_share"
+    ]
+  }
+]

@@ -21,16 +21,16 @@ experiments:
 
   C:
     name: "Experiment C"
-    description: "Train: 2003-2021, Test: 2024"
+    description: "Train: 2003-2021, Test: 2026 (final prediction, no ground truth)"
     train_years: [2003, 2007, 2011, 2016, 2021]
-    val_years: [2024]
-    test_years: [2024]
+    val_years: []
+    test_years: [2026]
     election_type: "parl"
 
   D:
     name: "Experiment D"
     description: "Train: all historical, Target: 2026 (final prediction)"
-    train_years: [2003, 2007, 2011, 2016, 2021, 2024]
+    train_years: [2003, 2007, 2011, 2016, 2021]
     val_years: []
     test_years: [2026]
     election_type: "parl"

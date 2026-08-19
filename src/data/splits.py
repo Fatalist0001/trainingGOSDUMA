@@ -1,13 +1,13 @@
 """Temporal splitting utilities for rolling backtest experiments."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Literal
 
 import pandas as pd
 
 from ..utils.io import load_yaml_config
-from .loader import load_region, load_precinct
+from .loader import load_precinct, load_region
 
 
 def load_raw_region() -> pd.DataFrame:
@@ -23,6 +23,7 @@ def load_raw_precinct() -> pd.DataFrame:
 @dataclass
 class TemporalSplit:
     """Represents a single temporal train/val/test split."""
+
     train_years: list[int]
     val_years: list[int]
     test_years: list[int]
@@ -51,8 +52,7 @@ def get_experiment_splits(experiment_name: str) -> TemporalSplit:
 
     if experiment_name not in experiments:
         raise ValueError(
-            f"Unknown experiment: {experiment_name}. "
-            f"Available: {list(experiments.keys())}"
+            f"Unknown experiment: {experiment_name}. Available: {list(experiments.keys())}"
         )
 
     exp = experiments[experiment_name]
@@ -130,9 +130,11 @@ def create_temporal_splits(
     train_df = filter_by_years(
         df, split.train_years, year_column, election_type_column, split.election_type
     )
-    val_df = filter_by_years(
-        df, split.val_years, year_column, election_type_column, split.election_type
-    ) if split.val_years else pd.DataFrame(columns=df.columns)
+    val_df = (
+        filter_by_years(df, split.val_years, year_column, election_type_column, split.election_type)
+        if split.val_years
+        else pd.DataFrame(columns=df.columns)
+    )
     test_df = filter_by_years(
         df, split.test_years, year_column, election_type_column, split.election_type
     )
@@ -164,15 +166,17 @@ class TemporalSplitter:
 
         # Get all available parliamentary election years
         elections = load_yaml_config("config/experiments.yaml")
-        self.all_years = sorted(set(
-            y for exp in elections["experiments"].values()
-            for y in exp["train_years"] + exp.get("val_years", []) + exp["test_years"]
-        ))
+        self.all_years = sorted(
+            set(
+                y
+                for exp in elections["experiments"].values()
+                for y in exp["train_years"] + exp.get("val_years", []) + exp["test_years"]
+            )
+        )
 
     def split(self):
         """Generate (train_idx, test_idx) pairs for each test year."""
-        parliamentary_years = [y for y in self.all_years
-                               if self._is_parliamentary_year(y)]
+        parliamentary_years = [y for y in self.all_years if self._is_parliamentary_year(y)]
 
         for i, test_year in enumerate(parliamentary_years):
             # Train on all previous parliamentary elections
@@ -198,7 +202,9 @@ class TemporalSplitter:
         """Check if year has parliamentary election."""
         meta = load_yaml_config("config/experiments.yaml")
         for exp in meta["experiments"].values():
-            if year in exp.get("train_years", []) + exp.get("val_years", []) + exp.get("test_years", []):
+            if year in exp.get("train_years", []) + exp.get("val_years", []) + exp.get(
+                "test_years", []
+            ):
                 if exp.get("election_type") == "parl":
                     return True
         return False

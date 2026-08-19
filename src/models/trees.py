@@ -1,23 +1,26 @@
 """Tree-based models: RandomForest, HistGradientBoosting, XGBoost, CatBoost."""
+
 from __future__ import annotations
 
-from typing import Literal, Optional
+from typing import Literal
 
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, RegressorMixin
-from sklearn.ensemble import RandomForestRegressor, HistGradientBoostingRegressor
+from sklearn.ensemble import HistGradientBoostingRegressor, RandomForestRegressor
 from sklearn.multioutput import MultiOutputRegressor
 from sklearn.utils.validation import check_is_fitted
 
 try:
     from xgboost import XGBRegressor
+
     XGBOOST_AVAILABLE = True
 except ImportError:
     XGBOOST_AVAILABLE = False
 
 try:
     from catboost import CatBoostRegressor
+
     CATBOOST_AVAILABLE = True
 except ImportError:
     CATBOOST_AVAILABLE = False
@@ -29,7 +32,7 @@ class RandomForestModel(BaseEstimator, RegressorMixin):
     def __init__(
         self,
         n_estimators: int = 500,
-        max_depth: Optional[int] = None,
+        max_depth: int | None = None,
         min_samples_split: int = 2,
         min_samples_leaf: int = 1,
         max_features: Literal["sqrt", "log2", None] = "sqrt",
@@ -83,14 +86,22 @@ class RandomForestModel(BaseEstimator, RegressorMixin):
 
         if hasattr(self.model_, "estimators_"):
             # MultiOutputRegressor
-            importances = np.mean([est.feature_importances_ for est in self.model_.estimators_], axis=0)
+            importances = np.mean(
+                [est.feature_importances_ for est in self.model_.estimators_], axis=0
+            )
         else:
             importances = self.model_.feature_importances_
 
-        return pd.DataFrame({
-            "feature": X.columns if hasattr(self, "feature_names_in_") else [f"f_{i}" for i in range(len(importances))],
-            "importance": importances,
-        }).sort_values("importance", ascending=False)
+        feature_names = getattr(self.model_, "feature_names_in_", None)
+        if feature_names is None:
+            feature_names = [f"f_{i}" for i in range(len(importances))]
+
+        return pd.DataFrame(
+            {
+                "feature": list(feature_names),
+                "importance": importances,
+            }
+        ).sort_values("importance", ascending=False)
 
 
 class HistGBModel(BaseEstimator, RegressorMixin):
@@ -100,7 +111,7 @@ class HistGBModel(BaseEstimator, RegressorMixin):
         self,
         learning_rate: float = 0.1,
         max_iter: int = 500,
-        max_depth: Optional[int] = None,
+        max_depth: int | None = None,
         min_samples_leaf: int = 20,
         l2_regularization: float = 0.0,
         max_bins: int = 255,
@@ -247,9 +258,7 @@ class XGBoostModel(BaseEstimator, RegressorMixin):
         check_is_fitted(self, "model_")
 
         if isinstance(self.model_, dict):
-            preds = np.column_stack([
-                self.model_[col].predict(X) for col in self.target_columns_
-            ])
+            preds = np.column_stack([self.model_[col].predict(X) for col in self.target_columns_])
         else:
             preds = self.model_.predict(X).reshape(-1, 1)
 
@@ -321,11 +330,13 @@ class CatBoostModel(BaseEstimator, RegressorMixin):
         y: pd.DataFrame | pd.Series,
         eval_set: list[tuple] | None = None,
         cat_features: list[str] | None = None,
+        verbose: bool = False,
     ):
         if isinstance(y, pd.Series):
             y = y.to_frame()
 
         self.target_columns_ = y.columns.tolist()
+        self.verbose = verbose
         cat_features = cat_features or self.cat_features or []
 
         if y.shape[1] > 1:
@@ -334,7 +345,13 @@ class CatBoostModel(BaseEstimator, RegressorMixin):
                 model = self._create_model()
                 if eval_set:
                     eval_set_col = [(X_val, y_val[col]) for X_val, y_val in eval_set]
-                    model.fit(X, y[col], eval_set=eval_set_col, cat_features=cat_features, verbose=self.verbose)
+                    model.fit(
+                        X,
+                        y[col],
+                        eval_set=eval_set_col,
+                        cat_features=cat_features,
+                        verbose=self.verbose,
+                    )
                 else:
                     model.fit(X, y[col], cat_features=cat_features, verbose=self.verbose)
                 self.model_[col] = model
@@ -342,7 +359,13 @@ class CatBoostModel(BaseEstimator, RegressorMixin):
             model = self._create_model()
             if eval_set:
                 eval_set_col = [(X_val, y_val.iloc[:, 0]) for X_val, y_val in eval_set]
-                model.fit(X, y.iloc[:, 0], eval_set=eval_set_col, cat_features=cat_features, verbose=self.verbose)
+                model.fit(
+                    X,
+                    y.iloc[:, 0],
+                    eval_set=eval_set_col,
+                    cat_features=cat_features,
+                    verbose=self.verbose,
+                )
             else:
                 model.fit(X, y.iloc[:, 0], cat_features=cat_features, verbose=self.verbose)
             self.model_ = model
@@ -353,9 +376,7 @@ class CatBoostModel(BaseEstimator, RegressorMixin):
         check_is_fitted(self, "model_")
 
         if isinstance(self.model_, dict):
-            preds = np.column_stack([
-                self.model_[col].predict(X) for col in self.target_columns_
-            ])
+            preds = np.column_stack([self.model_[col].predict(X) for col in self.target_columns_])
         else:
             preds = self.model_.predict(X).reshape(-1, 1)
 

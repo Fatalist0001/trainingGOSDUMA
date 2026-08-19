@@ -58,17 +58,14 @@ clean:
 baselines:
 	uv run python scripts/models/run_baselines.py --experiment A --feature-group ALL_FEATURES
 	uv run python scripts/models/run_baselines.py --experiment B --feature-group ALL_FEATURES
-	uv run python scripts/models/run_baselines.py --experiment C --feature-group ALL_FEATURES
 
 linear:
-	uv run python scripts/models/run_linear.py --experiment A --feature-group ALL_FEATURES
-	uv run python scripts/models/run_linear.py --experiment B --feature-group ALL_FEATURES
-	uv run python scripts/models/run_linear.py --experiment C --feature-group ALL_FEATURES
+	uv run python scripts/models/run_linear.py --experiment A --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
+	uv run python scripts/models/run_linear.py --experiment B --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
 
 trees:
 	uv run python scripts/models/run_trees.py --experiment A --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
 	uv run python scripts/models/run_trees.py --experiment B --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
-	uv run python scripts/models/run_trees.py --experiment C --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
 
 neural:
 	uv run python scripts/models/run_neural.py --experiment A --feature-group ALL_FEATURES

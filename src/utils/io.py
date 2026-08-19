@@ -1,13 +1,14 @@
 """I/O utilities for saving/loading predictions, results, and configs."""
+
 from __future__ import annotations
 
 import json
-import yaml
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 import pandas as pd
+import yaml
 
 
 def load_yaml_config(config_path: str | Path) -> dict[str, Any]:
@@ -72,7 +73,9 @@ def load_predictions(
         base_dir = dirs["predictions_dir"]
 
     base_path = Path(base_dir)
-    file_path = base_path / model_name / experiment_name / str(year_or_party) / "predictions.parquet"
+    file_path = (
+        base_path / model_name / experiment_name / str(year_or_party) / "predictions.parquet"
+    )
 
     if not file_path.exists():
         raise FileNotFoundError(f"Predictions not found: {file_path}")
@@ -206,12 +209,14 @@ def list_saved_predictions(
                     continue
                 pred_file = year_dir / "predictions.parquet"
                 if pred_file.exists():
-                    results.append({
-                        "model": model_dir.name,
-                        "experiment": exp_dir.name,
-                        "year": year_dir.name,
-                        "path": str(pred_file),
-                        "size_mb": pred_file.stat().st_size / (1024 * 1024),
-                    })
+                    results.append(
+                        {
+                            "model": model_dir.name,
+                            "experiment": exp_dir.name,
+                            "year": year_dir.name,
+                            "path": str(pred_file),
+                            "size_mb": pred_file.stat().st_size / (1024 * 1024),
+                        }
+                    )
 
     return results

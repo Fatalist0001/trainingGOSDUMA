@@ -33,6 +33,11 @@ Thumbs.db
 # Logs
 *.log
 
+# Model training artifacts (transient)
+catboost_info/
+*.tsv
+events.out.tfevents*
+
 # Data files (optional, uncomment if you want to ignore large data)
 # *.csv
 # *.parquet

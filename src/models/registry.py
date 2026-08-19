@@ -1,21 +1,22 @@
 """Model registry for dynamic model loading."""
+
 from __future__ import annotations
 
 from typing import Any
 
 # Import all model classes
 from .baselines import (
-    NaivePreviousElection,
     HistoricalMean,
+    NaivePreviousElection,
     WeightedHistoricalMean,
-    get_baseline_model,
 )
-from .linear import LinearModel, RidgeModel, ElasticNetModel, create_linear_pipeline
-from .trees import RandomForestModel, HistGBModel, XGBoostModel, CatBoostModel
+from .linear import ElasticNetModel, LinearModel, RidgeModel
+from .trees import CatBoostModel, HistGBModel, RandomForestModel, XGBoostModel
 
 # Optional imports
 try:
     from .neural import MLPSklearn, MLPTorch
+
     NEURAL_AVAILABLE = True
 except ImportError:
     NEURAL_AVAILABLE = False
@@ -24,6 +25,7 @@ except ImportError:
 
 try:
     from .temporal import GRUModel, LSTMModel, TransformerModel
+
     TEMPORAL_AVAILABLE = True
 except ImportError:
     TEMPORAL_AVAILABLE = False
@@ -32,7 +34,8 @@ except ImportError:
     TransformerModel = None
 
 try:
-    from .ensemble import WeightedEnsemble, StackingEnsemble
+    from .ensemble import StackingEnsemble, WeightedEnsemble
+
     ENSEMBLE_AVAILABLE = True
 except ImportError:
     ENSEMBLE_AVAILABLE = False
@@ -133,7 +136,9 @@ def list_models(category: str | None = None) -> list[str]:
         return list(MODEL_REGISTRY.keys())
 
     if category not in MODEL_CATEGORIES:
-        raise ValueError(f"Unknown category: {category}. Available: {list(MODEL_CATEGORIES.keys())}")
+        raise ValueError(
+            f"Unknown category: {category}. Available: {list(MODEL_CATEGORIES.keys())}"
+        )
 
     return [m for m in MODEL_CATEGORIES[category] if m in MODEL_REGISTRY]
 

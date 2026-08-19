@@ -1,4 +1,5 @@
 """Linear models: LinearRegression, Ridge, ElasticNet with CV."""
+
 from __future__ import annotations
 
 from typing import Literal
@@ -6,8 +7,7 @@ from typing import Literal
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, RegressorMixin
-from sklearn.linear_model import LinearRegression, Ridge, RidgeCV, ElasticNet, ElasticNetCV
-from sklearn.multioutput import MultiOutputRegressor
+from sklearn.linear_model import ElasticNetCV, LinearRegression, RidgeCV
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils.validation import check_is_fitted
@@ -43,9 +43,7 @@ class LinearModel(BaseEstimator, RegressorMixin):
             coef = self.model_.coef_
 
         return pd.DataFrame(
-            coef,
-            columns=self.target_columns_,
-            index=[f"feature_{i}" for i in range(coef.shape[1])]
+            coef, columns=self.target_columns_, index=[f"feature_{i}" for i in range(coef.shape[1])]
         ).T
 
 
@@ -107,9 +105,7 @@ class RidgeModel(BaseEstimator, RegressorMixin):
 
         if isinstance(self.model_, dict):
             # Multi-target
-            preds = np.column_stack([
-                self.model_[col].predict(X) for col in self.target_columns_
-            ])
+            preds = np.column_stack([self.model_[col].predict(X) for col in self.target_columns_])
         else:
             # Single target
             preds = self.model_.predict(X).reshape(-1, 1)
@@ -119,7 +115,11 @@ class RidgeModel(BaseEstimator, RegressorMixin):
     def get_best_alphas(self) -> dict[str, float]:
         """Get best alpha per target."""
         check_is_fitted(self, "model_")
-        return self.best_alpha_ if isinstance(self.best_alpha_, dict) else {self.target_columns_[0]: self.best_alpha_}
+        return (
+            self.best_alpha_
+            if isinstance(self.best_alpha_, dict)
+            else {self.target_columns_[0]: self.best_alpha_}
+        )
 
 
 class ElasticNetModel(BaseEstimator, RegressorMixin):
@@ -162,7 +162,6 @@ class ElasticNetModel(BaseEstimator, RegressorMixin):
                 fit_intercept=self.fit_intercept,
                 cv=self.cv,
                 max_iter=self.max_iter,
-                scoring=self.scoring,
                 selection=self.selection,
                 random_state=self.random_state,
                 n_jobs=-1,
@@ -180,7 +179,6 @@ class ElasticNetModel(BaseEstimator, RegressorMixin):
                     fit_intercept=self.fit_intercept,
                     cv=self.cv,
                     max_iter=self.max_iter,
-                    scoring=self.scoring,
                     selection=self.selection,
                     random_state=self.random_state,
                     n_jobs=-1,
@@ -197,9 +195,7 @@ class ElasticNetModel(BaseEstimator, RegressorMixin):
         check_is_fitted(self, "model_")
 
         if isinstance(self.model_, dict):
-            preds = np.column_stack([
-                self.model_[col].predict(X) for col in self.target_columns_
-            ])
+            preds = np.column_stack([self.model_[col].predict(X) for col in self.target_columns_])
         else:
             preds = self.model_.predict(X).reshape(-1, 1)
 
@@ -218,9 +214,7 @@ class ElasticNetModel(BaseEstimator, RegressorMixin):
         for col in self.target_columns_:
             model = self.model_[col] if isinstance(self.model_, dict) else self.model_
             coef = model.coef_
-            selected[col] = [
-                f"feature_{i}" for i, c in enumerate(coef) if abs(c) > 1e-10
-            ]
+            selected[col] = [f"feature_{i}" for i, c in enumerate(coef) if abs(c) > 1e-10]
         return selected
 
 
@@ -247,7 +241,9 @@ def create_linear_pipeline(
     if model_type not in models:
         raise ValueError(f"Unknown model type: {model_type}")
 
-    return Pipeline([
-        ("scaler", StandardScaler()),
-        ("model", models[model_type](**kwargs)),
-    ])
+    return Pipeline(
+        [
+            ("scaler", StandardScaler()),
+            ("model", models[model_type](**kwargs)),
+        ]
+    )

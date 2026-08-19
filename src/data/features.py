@@ -1,9 +1,8 @@
 """Feature selection utilities based on feature group configuration."""
+
 from __future__ import annotations
 
 import fnmatch
-import yaml
-from pathlib import Path
 from typing import Literal
 
 import pandas as pd
@@ -70,8 +69,7 @@ def select_features(
 
     if feature_group not in groups:
         raise ValueError(
-            f"Unknown feature group: {feature_group}. "
-            f"Available: {list(groups.keys())}"
+            f"Unknown feature group: {feature_group}. Available: {list(groups.keys())}"
         )
 
     group_config = groups[feature_group]

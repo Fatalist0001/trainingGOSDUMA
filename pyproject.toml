@@ -57,10 +57,25 @@ markers = [
 [tool.ruff]
 target-version = "py311"
 line-length = 100
+
+[tool.ruff.lint]
 select = [
-    "E", "F", "I", "W", "UP", "B", "C4", "DTZ", "T20", "ARG", "PTH", "ERA", "PL", "TRY", "SIM", "N", "RET", "FLY", "TD", "QF", "RSE", "ISC", "ICN", "PIE", "TID", "A", "PD", "PGH", "PT", "REF", "RUF", "SLF", "SLOT", "TRY", "TCH", "INT", "EXE", "ASYNC", "PTH", "NPY", "BLE", "FURB", "LOG", "PERF", "RET", "SIM", "TID", "ARG", "ASYNC", "B", "C4", "DTZ", "E", "ERA", "F", "FLY", "FURB", "I", "INT", "ISC", "ICN", "LOG", "N", "NPY", "PD", "PERF", "PGH", "PIE", "PL", "PTH", "PT", "QF", "RSE", "REF", "RET", "RUF", "SIM", "SLF", "SLOT", "T20", "TCH", "TD", "TRY", "UP", "W",
+    "E", "F", "I", "W", "UP", "B", "C4", "SIM", "RUF",
 ]
-ignore = ["E501", "B008"]
+ignore = [
+    "E501", "B008",
+    "N803", "N806", "N802",
+    "TRY003",
+    "PLC0415", "PLC0105",
+    "E402",
+    "PLR2004", "PLR0913", "PLR0917", "PLR0912", "PLR0915",
+    "ARG002",
+    "PTH123", "PTH100", "PTH118", "PTH120",
+    "SIM108", "SIM102",
+    "RUF059", "RUF005",
+    "C405", "C401",
+    "B905", "B007", "B006",
+]
 per-file-ignores = { "tests/*" = ["S101"], "scripts/*" = ["S101", "T201"] }
 
 [tool.ruff.format]

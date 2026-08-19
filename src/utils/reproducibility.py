@@ -1,4 +1,5 @@
 """Reproducibility utilities: seed setting, environment capture."""
+
 from __future__ import annotations
 
 import json
@@ -28,6 +29,7 @@ def set_seed(seed: int = 42) -> None:
     # PyTorch
     try:
         import torch
+
         torch.manual_seed(seed)
         torch.cuda.manual_seed_all(seed)
         torch.backends.cudnn.deterministic = True
@@ -38,6 +40,7 @@ def set_seed(seed: int = 42) -> None:
     # TensorFlow (if used)
     try:
         import tensorflow as tf
+
         tf.random.set_seed(seed)
     except ImportError:
         pass
@@ -64,16 +67,30 @@ def capture_env() -> dict[str, Any]:
         "hostname": platform.node(),
         "cwd": str(Path.cwd()),
         "env_vars": {
-            k: v for k, v in os.environ.items()
+            k: v
+            for k, v in os.environ.items()
             if k.startswith(("DATASET_", "MLFLOW_", "RANDOM_", "CUDA_", "PYTHON"))
         },
     }
 
     # Package versions
     packages = [
-        "numpy", "pandas", "scipy", "sklearn", "xgboost", "catboost",
-        "torch", "shap", "optuna", "matplotlib", "seaborn", "jupyter",
-        "pyarrow", "yaml", "tqdm", "joblib",
+        "numpy",
+        "pandas",
+        "scipy",
+        "sklearn",
+        "xgboost",
+        "catboost",
+        "torch",
+        "shap",
+        "optuna",
+        "matplotlib",
+        "seaborn",
+        "jupyter",
+        "pyarrow",
+        "yaml",
+        "tqdm",
+        "joblib",
     ]
 
     env["packages"] = {}
@@ -106,6 +123,7 @@ def capture_env() -> dict[str, Any]:
     # CUDA info
     try:
         import torch
+
         env["cuda"] = {
             "available": torch.cuda.is_available(),
             "device_count": torch.cuda.device_count(),

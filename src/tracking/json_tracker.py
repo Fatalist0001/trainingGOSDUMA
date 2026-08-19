@@ -1,15 +1,12 @@
 """Simple JSON/CSV experiment tracker."""
+
 from __future__ import annotations
 
 import json
-import os
 from datetime import datetime
 from pathlib import Path
-from typing import Any
 
 import pandas as pd
-
-from ..utils.io import load_yaml_config
 
 
 class ExperimentTracker:
@@ -111,8 +108,18 @@ class ExperimentTracker:
 
         # Add extra fields
         for k, v in record.items():
-            if k not in ["experiment_id", "experiment_name", "model", "feature_group", "split",
-                         "hyperparameters", "metrics", "seed", "tags", "timestamp"]:
+            if k not in [
+                "experiment_id",
+                "experiment_name",
+                "model",
+                "feature_group",
+                "split",
+                "hyperparameters",
+                "metrics",
+                "seed",
+                "tags",
+                "timestamp",
+            ]:
                 flat_record[k] = v
 
         # Append to CSV

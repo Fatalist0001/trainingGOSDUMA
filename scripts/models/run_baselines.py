@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """Run baseline models for all experiments."""
+
 from __future__ import annotations
 
 import argparse
@@ -12,9 +13,9 @@ sys.path.insert(0, str(project_root))
 
 # Import using src.* namespace
 import src.evaluation.backtest
-import src.utils.io
-import src.tracking.json_tracker
 import src.models.registry
+import src.tracking.json_tracker
+import src.utils.io
 
 run_experiment = src.evaluation.backtest.run_experiment
 save_results = src.utils.io.save_results
@@ -27,7 +28,9 @@ def main():
     parser = argparse.ArgumentParser(description="Run baseline models")
     parser.add_argument("--experiment", default="A", help="Experiment name (A, B, C, D)")
     parser.add_argument("--feature-group", default="ALL_FEATURES", help="Feature group")
-    parser.add_argument("--models", nargs="+", default=None, help="Models to run (default: all baselines)")
+    parser.add_argument(
+        "--models", nargs="+", default=None, help="Models to run (default: all baselines)"
+    )
     parser.add_argument("--level", default="region", help="Data level (region/precinct)")
     args = parser.parse_args()
 
@@ -61,7 +64,10 @@ def main():
                     feature_group=r["feature_group"],
                     split=args.experiment,
                     hyperparameters={},
-                    metrics={"mae": avg_mae, **{f"{m['party']}_mae": m["mae"] for m in test_metrics}},
+                    metrics={
+                        "mae": avg_mae,
+                        **{f"{m['party']}_mae": m["mae"] for m in test_metrics},
+                    },
                     tags={"level": args.level},
                 )
 
@@ -75,7 +81,9 @@ def main():
             print(f"{r['model']}: ERROR - {r['error']}")
         else:
             test_metrics = r.get("test_metrics", [])
-            avg_mae = sum(m["mae"] for m in test_metrics) / len(test_metrics) if test_metrics else "N/A"
+            avg_mae = (
+                sum(m["mae"] for m in test_metrics) / len(test_metrics) if test_metrics else "N/A"
+            )
             print(f"{r['model']}: MAE = {avg_mae:.4f}")
 
     return results
