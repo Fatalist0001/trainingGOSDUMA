@@ -1,27 +1,27 @@
 [
   {
     "Class": "baseline",
-    "A_MAE": 7.314,
-    "B_MAE": 10.28,
-    "Mean_MAE": 8.797
+    "A_MAE": 4.868,
+    "B_MAE": 6.608,
+    "Mean_MAE": 5.738
   },
   {
     "Class": "linear",
-    "A_MAE": 11.341,
-    "B_MAE": 9.788,
-    "Mean_MAE": 10.565
+    "A_MAE": 10.837,
+    "B_MAE": 6.965,
+    "Mean_MAE": 8.901
   },
   {
     "Class": "neural",
-    "A_MAE": 10.614,
-    "B_MAE": 12.285,
-    "Mean_MAE": 11.45
+    "A_MAE": 12.26,
+    "B_MAE": 9.38,
+    "Mean_MAE": 10.82
   },
   {
     "Class": "other",
-    "A_MAE": 8.242,
-    "B_MAE": 10.881,
-    "Mean_MAE": 9.562
+    "A_MAE": 6.685,
+    "B_MAE": 7.457,
+    "Mean_MAE": 7.071
   },
   {
     "Class": "temporal",
@@ -31,8 +31,8 @@
   },
   {
     "Class": "tree",
-    "A_MAE": 7.833,
-    "B_MAE": 10.641,
-    "Mean_MAE": 9.237
+    "A_MAE": 5.681,
+    "B_MAE": 7.204,
+    "Mean_MAE": 6.443
   }
 ]

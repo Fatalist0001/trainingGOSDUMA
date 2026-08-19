@@ -1,0 +1,9 @@
+experiment_id,experiment_name,model,feature_group,split,seed,timestamp,metric_mae,tag_level
+ensemble_B_WeightedEnsemble_ALL_FEATURES_B_20260819_191334,ensemble_B,WeightedEnsemble,ALL_FEATURES,B,,2026-08-19T19:13:34.558845,7.440993795822137,region
+ensemble_B_StackingEnsemble_ALL_FEATURES_B_20260819_191413,ensemble_B,StackingEnsemble,ALL_FEATURES,B,,2026-08-19T19:14:13.185863,7.472792206228963,region
+ensemble_B_WeightedEnsemble_ALL_FEATURES_B_20260819_193446,ensemble_B,WeightedEnsemble,ALL_FEATURES,B,,2026-08-19T19:34:46.576727,7.440993795822137,region
+ensemble_B_StackingEnsemble_ALL_FEATURES_B_20260819_193521,ensemble_B,StackingEnsemble,ALL_FEATURES,B,,2026-08-19T19:35:21.210930,7.4727922062289664,region
+ensemble_B_WeightedEnsemble_ELECTORAL_ONLY_B_20260819_193551,ensemble_B,WeightedEnsemble,ELECTORAL_ONLY,B,,2026-08-19T19:35:51.253816,7.319517508054129,region
+ensemble_B_StackingEnsemble_ELECTORAL_ONLY_B_20260819_193622,ensemble_B,StackingEnsemble,ELECTORAL_ONLY,B,,2026-08-19T19:36:22.724804,8.121505491074464,region
+ensemble_B_WeightedEnsemble_ROSSTAT_ONLY_B_20260819_193650,ensemble_B,WeightedEnsemble,ROSSTAT_ONLY,B,,2026-08-19T19:36:50.246356,8.368058974102142,region
+ensemble_B_StackingEnsemble_ROSSTAT_ONLY_B_20260819_193718,ensemble_B,StackingEnsemble,ROSSTAT_ONLY,B,,2026-08-19T19:37:18.189727,8.888950473239143,region

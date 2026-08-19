@@ -1,0 +1,7 @@
+experiment_id,experiment_name,model,feature_group,split,seed,timestamp,metric_mae,tag_level
+ensemble_A_WeightedEnsemble_ALL_FEATURES_A_20260819_191029,ensemble_A,WeightedEnsemble,ALL_FEATURES,A,,2026-08-19T19:10:29.243484,6.257714910152484,region
+ensemble_A_StackingEnsemble_ALL_FEATURES_A_20260819_191054,ensemble_A,StackingEnsemble,ALL_FEATURES,A,,2026-08-19T19:10:54.056765,7.111889098700254,region
+ensemble_A_WeightedEnsemble_ELECTORAL_ONLY_A_20260819_191117,ensemble_A,WeightedEnsemble,ELECTORAL_ONLY,A,,2026-08-19T19:11:17.860460,6.026153464606174,region
+ensemble_A_StackingEnsemble_ELECTORAL_ONLY_A_20260819_191142,ensemble_A,StackingEnsemble,ELECTORAL_ONLY,A,,2026-08-19T19:11:42.449113,5.916019203511813,region
+ensemble_A_WeightedEnsemble_ROSSTAT_ONLY_A_20260819_191208,ensemble_A,WeightedEnsemble,ROSSTAT_ONLY,A,,2026-08-19T19:12:08.635605,6.079239836175222,region
+ensemble_A_StackingEnsemble_ROSSTAT_ONLY_A_20260819_191231,ensemble_A,StackingEnsemble,ROSSTAT_ONLY,A,,2026-08-19T19:12:31.032057,7.101738411774253,region

@@ -67,11 +67,15 @@ def run_single_model_backtest(
     feature_group: str = "ALL_FEATURES",
     level: str = "region",
     model_kwargs: dict | None = None,
-    normalize_predictions: bool = True,
+    normalize_predictions: bool = False,
     train_years_override: list[int] | None = None,
 ) -> dict[str, Any]:
     """
     Run backtest for a single model on a single experiment.
+
+    Predictions are NOT post-hoc normalized to 100% by default: targets are real
+    party shares (summing to ~78%) and every party is forecast independently.
+    Set ``normalize_predictions=True`` to scale rows to 100% (Approach A).
 
     Returns:
         Dictionary with metrics, predictions, and metadata

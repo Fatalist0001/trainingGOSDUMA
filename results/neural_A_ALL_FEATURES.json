@@ -7,17 +7,17 @@
     "test_metrics": [
       {
         "party": "UR_share",
-        "mae": 11.289573313872328,
+        "mae": 18.59143047642185,
         "n_samples": null
       },
       {
         "party": "KPRF_share",
-        "mae": 9.953516896572033,
+        "mae": 13.718196391684092,
         "n_samples": null
       },
       {
         "party": "LDPR_share",
-        "mae": 4.0126085395106,
+        "mae": 5.818077578044255,
         "n_samples": null
       }
     ],
@@ -40,149 +40,17 @@
     "test_metrics": [
       {
         "party": "UR_share",
-        "mae": 10.454104582161937,
+        "mae": 16.272752072423955,
         "n_samples": null
       },
       {
         "party": "KPRF_share",
-        "mae": 22.851613766233836,
+        "mae": 16.29328758622388,
         "n_samples": null
       },
       {
         "party": "LDPR_share",
-        "mae": 5.120298174753846,
-        "n_samples": null
-      }
-    ],
-    "n_train": 249,
-    "n_test": 83,
-    "seeds": [
-      42,
-      123,
-      456,
-      789,
-      2026
-    ],
-    "n_seeds": 5
-  },
-  {
-    "model": "MLPSklearn",
-    "experiment": "A",
-    "feature_group": "ELECTORAL_ONLY",
-    "level": "region",
-    "test_metrics": [
-      {
-        "party": "UR_share",
-        "mae": 9.31502081850863,
-        "n_samples": null
-      },
-      {
-        "party": "KPRF_share",
-        "mae": 10.221701089707157,
-        "n_samples": null
-      },
-      {
-        "party": "LDPR_share",
-        "mae": 3.111697916792461,
-        "n_samples": null
-      }
-    ],
-    "n_train": 249,
-    "n_test": 83,
-    "seeds": [
-      42,
-      123,
-      456,
-      789,
-      2026
-    ],
-    "n_seeds": 5
-  },
-  {
-    "model": "MLPTorch",
-    "experiment": "A",
-    "feature_group": "ELECTORAL_ONLY",
-    "level": "region",
-    "test_metrics": [
-      {
-        "party": "UR_share",
-        "mae": 9.560179169503444,
-        "n_samples": null
-      },
-      {
-        "party": "KPRF_share",
-        "mae": 12.984749557695801,
-        "n_samples": null
-      },
-      {
-        "party": "LDPR_share",
-        "mae": 3.448792797601963,
-        "n_samples": null
-      }
-    ],
-    "n_train": 249,
-    "n_test": 83,
-    "seeds": [
-      42,
-      123,
-      456,
-      789,
-      2026
-    ],
-    "n_seeds": 5
-  },
-  {
-    "model": "MLPSklearn",
-    "experiment": "A",
-    "feature_group": "ROSSTAT_ONLY",
-    "level": "region",
-    "test_metrics": [
-      {
-        "party": "UR_share",
-        "mae": 10.768932011381578,
-        "n_samples": null
-      },
-      {
-        "party": "KPRF_share",
-        "mae": 13.65519991662839,
-        "n_samples": null
-      },
-      {
-        "party": "LDPR_share",
-        "mae": 4.885841196919825,
-        "n_samples": null
-      }
-    ],
-    "n_train": 249,
-    "n_test": 83,
-    "seeds": [
-      42,
-      123,
-      456,
-      789,
-      2026
-    ],
-    "n_seeds": 5
-  },
-  {
-    "model": "MLPTorch",
-    "experiment": "A",
-    "feature_group": "ROSSTAT_ONLY",
-    "level": "region",
-    "test_metrics": [
-      {
-        "party": "UR_share",
-        "mae": 9.628239577443747,
-        "n_samples": null
-      },
-      {
-        "party": "KPRF_share",
-        "mae": 19.6329975358864,
-        "n_samples": null
-      },
-      {
-        "party": "LDPR_share",
-        "mae": 6.726989345599044,
+        "mae": 2.8645544364251228,
         "n_samples": null
       }
     ],

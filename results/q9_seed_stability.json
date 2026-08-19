@@ -3,23 +3,23 @@
     "Model": "MLPSklearn",
     "Experiment": "A",
     "seeds_used": 5,
-    "seed_mae_list": "[7.775, 8.077, 7.796, 8.761, 9.684]",
-    "mean_mae": 8.419,
-    "std_mae": 0.726,
-    "min_mae": 7.775,
-    "max_mae": 9.684,
-    "range_pp": 1.909
+    "seed_mae_list": "[12.365, 13.167, 12.047, 12.267, 13.7]",
+    "mean_mae": 12.709,
+    "std_mae": 0.623,
+    "min_mae": 12.047,
+    "max_mae": 13.7,
+    "range_pp": 1.653
   },
   {
     "Model": "MLPTorch",
     "Experiment": "A",
     "seeds_used": 5,
-    "seed_mae_list": "[12.255, 11.858, 11.596, 15.45, 12.884]",
-    "mean_mae": 12.809,
-    "std_mae": 1.39,
-    "min_mae": 11.596,
-    "max_mae": 15.45,
-    "range_pp": 3.854
+    "seed_mae_list": "[11.279, 11.16, 10.878, 14.098, 11.637]",
+    "mean_mae": 11.81,
+    "std_mae": 1.169,
+    "min_mae": 10.878,
+    "max_mae": 14.098,
+    "range_pp": 3.22
   },
   {
     "Model": "GRU",
@@ -58,23 +58,23 @@
     "Model": "MLPSklearn",
     "Experiment": "B",
     "seeds_used": 5,
-    "seed_mae_list": "[11.91, 11.735, 14.672, 12.453, 9.983]",
-    "mean_mae": 12.151,
-    "std_mae": 1.508,
-    "min_mae": 9.983,
-    "max_mae": 14.672,
-    "range_pp": 4.689
+    "seed_mae_list": "[10.049, 9.477, 12.031, 10.013, 10.014]",
+    "mean_mae": 10.317,
+    "std_mae": 0.883,
+    "min_mae": 9.477,
+    "max_mae": 12.031,
+    "range_pp": 2.554
   },
   {
     "Model": "MLPTorch",
     "Experiment": "B",
     "seeds_used": 5,
-    "seed_mae_list": "[12.491, 11.594, 11.471, 12.919, 13.627]",
-    "mean_mae": 12.42,
-    "std_mae": 0.812,
-    "min_mae": 11.471,
-    "max_mae": 13.627,
-    "range_pp": 2.156
+    "seed_mae_list": "[8.354, 7.829, 8.072, 8.598, 9.358]",
+    "mean_mae": 8.442,
+    "std_mae": 0.526,
+    "min_mae": 7.829,
+    "max_mae": 9.358,
+    "range_pp": 1.529
   },
   {
     "Model": "GRU",
