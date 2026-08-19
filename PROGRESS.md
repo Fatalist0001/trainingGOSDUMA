@@ -37,7 +37,7 @@
 | 0.17 | Создать benchmark скрипт | ✅ | `benchmark.py` для агрегации результатов |
 | 0.18 | Создать Makefile | ✅ | `make install/test/lint/benchmark/baselines/linear/trees/neural` |
 | 0.19 | Написать тесты | ✅ | `test_splits.py`, `test_leakage.py` |
-| 0.20 | Запустить smoke tests | ✅ | `make test` — 26/26 passed |
+| 0.20 | Запустить smoke tests | ✅ | `make test` — 30/30 passed |
 
 ---
 
@@ -248,11 +248,13 @@ HistGradientBoosting, MLPSklearn, LinearRegression (бейзлайны искл�
 |---|--------|--------|
 | 16.1 | Actual vs Predicted | ⏳ `visualization/plots.py` |
 | 16.2 | Error distribution | ⏳ |
-| 16.3 | Model comparison (bar) | ⏳ |
+| 16.3 | Model comparison (bar) | ✅ `reports/figures/model_comparison.png` |
 | 16.4 | Error by year | ⏳ |
 | 16.5 | Feature importance | ⏳ |
 | 16.6 | SHAP summary | ⏳ |
 | 16.7 | Regional map | ⏳ (nice-to-have) |
+
+Дополнительно уже сгенерированы (из §9): `reports/figures/feature_ablation.png`, `reports/figures/history_depth.png` (`scripts/visualization/generate_report.py`, `make report`).
 
 ---
 
@@ -276,7 +278,7 @@ HistGradientBoosting, MLPSklearn, LinearRegression (бейзлайны искл�
 
 | № | Раздел | Статус |
 |---|--------|--------|
-| 18.1 | FINAL_MODEL_REPORT.md | ⏳ |
+| 18.1 | FINAL_MODEL_REPORT.md | ✅ | Закоммичен; отвечает на Q1–Q10, содержит прогноз 2026 |
 
 ---
 
@@ -287,12 +289,12 @@ HistGradientBoosting, MLPSklearn, LinearRegression (бейзлайны искл�
 | Q1: Насколько хорошо выборы предсказываются предыдущим результатом? | ⏳ A: baseline лучший (Naive 6.97 < деревья 7.3-7.9); B: деревья догоняют/обходят baseline (CatBoost 9.9-10.1 vs WeightedMean 10.5) |
 | Q2: Добавляет ли Росстат predictive power? | ✅ Да, но преимущественно при короткой истории (A). Деревья на A: ROSSTAT_ONLY ≪ ELECTORAL_ONLY (XGBoost 7.80 vs 8.96, CatBoost 7.76 vs 8.58, RF 7.98 vs 9.08). На B (длинная история) ROSSTAT нейтрален/мешает деревьям (CatBoost ELECTORAL 9.92 < ALL 10.12 < ROSSTAT 10.54; XGBoost ≈ паритет ~10.46). Временные: ALL лучший, ROSSTAT помогает на A (Transformer ROSSTAT 7.03 < ELECTORAL 10.86). |
 | Q3: Помогает ли длинная электоральная история? | ✅ Да — для временных архитектур. Transformer (A): depth2 7.03 → depth3 6.20; (B) depth4 6.70 — лучший. GRU аналогично. Плоские модели — шумная/убывающая отдача (CatBoost A depth2 7.53 < depth3 7.76; Linear нестабилен: A depth2 20.5 > depth1 14.2). Naive — константа (только последний год). |
-| Q4: Есть ли преимущество у nonlinear models? | ⏳ На A — нет (baseline лучше); на B — деревья ≈ baseline. Требует усреднения по экспериментам. |
-| Q5: Есть ли преимущество у нейросетей? | ⏳ P1 запущен: MLPSklearn конкурентоспособен на A (ELECTORAL 7.55 < деревьев 8.70), но на B проигрывает (ALL 12.15 > baseline 10.27). MLPTorch заметно слабее (переобучение на малом табличном датасете). Явного преимущества нейросетей не выявлено — требует tuning. |
+| Q4: Есть ли утечка данных / преимущество у nonlinear models? | ✅ Утечки нет (fit только на train, `test_leakage.py`). В среднем нелинейные модели точнее линейных (MAE 9.24 vs 10.57), но на B выигрывают линейные (9.79 vs 10.64). `results/q4_model_class_mae.csv` |
+| Q5: Есть ли преимущество у нейросетей? | ✅ Нет. MLPSklearn конкурентен только на A ELECTORAL; MLPTorch переобучается. См. отчёт §4 |
 | Q6: Помогает ли temporal architecture? | ✅ Да: Transformer (ALL) — лучшая модель (A 6.20, B 6.70), обходит бейзлайны и деревья. GRU также сильна (A 6.88, B 7.60). LSTM нестабильна. |
-| Q7: Какие партии предсказываются лучше? | ⏳ |
-| Q8: Где модели систематически ошибаются? | ⏳ |
-| Q9: Насколько стабилен результат разных seeds? | ⏳ |
+| Q7: Какие партии предсказываются лучше? | ✅ ЕР — самая сложная (MAE 8–16 п.п.), ЛДПР — самая простая (~5–6 п.п.), КПРФ — промежуточно. У лучших моделей разрыв мал (Transformer: 7.95/5.70/5.70). `results/q7_party_mae.csv` |
+| Q8: Где модели систематически ошибаются? | ✅ Хуже всего — Москва/СПб и северные регионы (Якутия, Коми, Ненецкий АО) с bias>0 (завышение); лучше всего — Северный Кавказ и стабильные республики. `results/q8_regional_errors.csv` |
+| Q9: Насколько стабилен результат разных seeds? | ✅ Усреднение по 5 seeds [42,123,456,789,2026]; Transformer/GRU стабильны (std 0.3–0.75), LSTM/MLPTorch нет (разброс до 4.7 п.п.). `results/q9_seed_stability.csv` |
 | Q10: Насколько ensemble лучше лучшей модели? | ✅ Не лучше. WeightedEnsemble (A 7.91, B 10.83) и StackingEnsemble (A 8.57, B 10.94) уступают как лучшей одиночной модели — Transformer (ALL 6.20/6.70), так и лучшему «плоскому» дереву (XGBoost 7.30/10.46). Базовые модели слабы на KPRF (LinearRegression 23.7, MLPSklearn 13.5 на A), и их усреднение не компенсирует провал по этой партии. Вывод: ансамбль плоских моделей не даёт преимущества над temporal-архитектурами. |
 
 ---
@@ -303,7 +305,7 @@ HistGradientBoosting, MLPSklearn, LinearRegression (бейзлайны искл�
 2. ✅ **Ablation выполнен**: `make ablation` → `results/ablation_feature.csv` (Q2) и `results/ablation_history.csv` (Q3). ROSSTAT помогает при короткой истории (A); длинная история помогает временным моделям.
 3. ✅ **Ensemble выполнен** (Q10): `WeightedEnsemble`/`StackingEnsemble` в `ensemble.py`. Не превосходят лучшую одиночную модель (Transformer) и даже XGBoost.
 4. ✅ **Финальный прогноз 2026** (эксп. C/D): `scripts/predict_2026.py` (Transformer, ALL) → per-region и federal прогнозы в `predictions/` и `results/`.
-5. **Параллельно**: визуализация (`visualization/plots.py`), отчёт (`reports/FINAL_MODEL_REPORT.md`).
+5. ✅ **Визуализация и отчёт**: `reports/FINAL_MODEL_REPORT.md` (Q1–Q10, прогноз 2026) + `reports/figures/{model_comparison,feature_ablation,history_depth}.png` (`make report`).
 
 ---
 
@@ -311,7 +313,7 @@ HistGradientBoosting, MLPSklearn, LinearRegression (бейзлайны искл�
 
 | # | Описание | Статус |
 |---|----------|--------|
-| 1 | `uv run pytest tests/` проходит без ошибок | ✅ 26/26 passed |
+| 1 | `uv run pytest tests/` проходит без ошибок | ✅ 30/30 passed |
 | 2 | `make lint` (ruff) проходит | ✅ All checks passed (скорректирован список правил под research-код) |
 | 3 | CatBoost/XGBoost могут требовать настройки для categorical features | ⏳ пока не используются (признаки числовые) |
 | 4 | Precinct-level data очень большой (1M+ строк) — может потребоваться sampling | ⏳ P0 только на region level |

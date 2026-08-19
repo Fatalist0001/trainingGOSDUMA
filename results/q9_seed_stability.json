@@ -1,0 +1,112 @@
+[
+  {
+    "Model": "MLPSklearn",
+    "Experiment": "A",
+    "seeds_used": 5,
+    "seed_mae_list": "[7.775, 8.077, 7.796, 8.761, 9.684]",
+    "mean_mae": 8.419,
+    "std_mae": 0.726,
+    "min_mae": 7.775,
+    "max_mae": 9.684,
+    "range_pp": 1.909
+  },
+  {
+    "Model": "MLPTorch",
+    "Experiment": "A",
+    "seeds_used": 5,
+    "seed_mae_list": "[12.255, 11.858, 11.596, 15.45, 12.884]",
+    "mean_mae": 12.809,
+    "std_mae": 1.39,
+    "min_mae": 11.596,
+    "max_mae": 15.45,
+    "range_pp": 3.854
+  },
+  {
+    "Model": "GRU",
+    "Experiment": "A",
+    "seeds_used": 5,
+    "seed_mae_list": "[7.658, 7.845, 6.341, 6.608, 5.923]",
+    "mean_mae": 6.875,
+    "std_mae": 0.75,
+    "min_mae": 5.923,
+    "max_mae": 7.845,
+    "range_pp": 1.921
+  },
+  {
+    "Model": "LSTM",
+    "Experiment": "A",
+    "seeds_used": 5,
+    "seed_mae_list": "[13.046, 12.153, 10.231, 10.805, 10.041]",
+    "mean_mae": 11.255,
+    "std_mae": 1.161,
+    "min_mae": 10.041,
+    "max_mae": 13.046,
+    "range_pp": 3.005
+  },
+  {
+    "Model": "Transformer",
+    "Experiment": "A",
+    "seeds_used": 5,
+    "seed_mae_list": "[6.833, 6.551, 5.93, 6.062, 5.628]",
+    "mean_mae": 6.201,
+    "std_mae": 0.434,
+    "min_mae": 5.628,
+    "max_mae": 6.833,
+    "range_pp": 1.205
+  },
+  {
+    "Model": "MLPSklearn",
+    "Experiment": "B",
+    "seeds_used": 5,
+    "seed_mae_list": "[11.91, 11.735, 14.672, 12.453, 9.983]",
+    "mean_mae": 12.151,
+    "std_mae": 1.508,
+    "min_mae": 9.983,
+    "max_mae": 14.672,
+    "range_pp": 4.689
+  },
+  {
+    "Model": "MLPTorch",
+    "Experiment": "B",
+    "seeds_used": 5,
+    "seed_mae_list": "[12.491, 11.594, 11.471, 12.919, 13.627]",
+    "mean_mae": 12.42,
+    "std_mae": 0.812,
+    "min_mae": 11.471,
+    "max_mae": 13.627,
+    "range_pp": 2.156
+  },
+  {
+    "Model": "GRU",
+    "Experiment": "B",
+    "seeds_used": 5,
+    "seed_mae_list": "[7.954, 7.743, 7.693, 7.38, 7.23]",
+    "mean_mae": 7.6,
+    "std_mae": 0.261,
+    "min_mae": 7.23,
+    "max_mae": 7.954,
+    "range_pp": 0.724
+  },
+  {
+    "Model": "LSTM",
+    "Experiment": "B",
+    "seeds_used": 5,
+    "seed_mae_list": "[8.196, 8.059, 7.568, 7.541, 9.113]",
+    "mean_mae": 8.095,
+    "std_mae": 0.571,
+    "min_mae": 7.541,
+    "max_mae": 9.113,
+    "range_pp": 1.572
+  },
+  {
+    "Model": "Transformer",
+    "Experiment": "B",
+    "seeds_used": 5,
+    "seed_mae_list": "[7.676, 6.191, 6.592, 6.218, 6.843]",
+    "mean_mae": 6.704,
+    "std_mae": 0.543,
+    "min_mae": 6.191,
+    "max_mae": 7.676,
+    "range_pp": 1.486
+  }
+]

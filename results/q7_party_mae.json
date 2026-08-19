@@ -1,0 +1,128 @@
+[
+  {
+    "Model": "Transformer",
+    "UR": 7.949,
+    "KPRF": 5.704,
+    "LDPR": 5.704,
+    "Mean_MAE": 6.452
+  },
+  {
+    "Model": "GRU",
+    "UR": 9.115,
+    "KPRF": 7.147,
+    "LDPR": 5.451,
+    "Mean_MAE": 7.237
+  },
+  {
+    "Model": "NaivePreviousElection",
+    "UR": 12.191,
+    "KPRF": 7.212,
+    "LDPR": 6.453,
+    "Mean_MAE": 8.619
+  },
+  {
+    "Model": "WeightedHistoricalMean",
+    "UR": 16.261,
+    "KPRF": 5.01,
+    "LDPR": 4.976,
+    "Mean_MAE": 8.749
+  },
+  {
+    "Model": "XGBoost",
+    "UR": 16.039,
+    "KPRF": 5.105,
+    "LDPR": 5.491,
+    "Mean_MAE": 8.878
+  },
+  {
+    "Model": "CatBoost",
+    "UR": 16.482,
+    "KPRF": 5.04,
+    "LDPR": 5.303,
+    "Mean_MAE": 8.941
+  },
+  {
+    "Model": "HistoricalMean",
+    "UR": 18.291,
+    "KPRF": 4.324,
+    "LDPR": 4.455,
+    "Mean_MAE": 9.023
+  },
+  {
+    "Model": "RandomForest",
+    "UR": 14.259,
+    "KPRF": 6.657,
+    "LDPR": 6.512,
+    "Mean_MAE": 9.143
+  },
+  {
+    "Model": "KNN",
+    "UR": 12.083,
+    "KPRF": 8.561,
+    "LDPR": 7.231,
+    "Mean_MAE": 9.292
+  },
+  {
+    "Model": "WeightedEnsemble",
+    "UR": 12.984,
+    "KPRF": 8.669,
+    "LDPR": 6.459,
+    "Mean_MAE": 9.371
+  },
+  {
+    "Model": "LSTM",
+    "UR": 14.238,
+    "KPRF": 9.515,
+    "LDPR": 5.273,
+    "Mean_MAE": 9.675
+  },
+  {
+    "Model": "StackingEnsemble",
+    "UR": 12.791,
+    "KPRF": 10.257,
+    "LDPR": 6.212,
+    "Mean_MAE": 9.753
+  },
+  {
+    "Model": "HistGradientBoosting",
+    "UR": 14.32,
+    "KPRF": 7.777,
+    "LDPR": 7.697,
+    "Mean_MAE": 9.931
+  },
+  {
+    "Model": "ElasticNet",
+    "UR": 10.364,
+    "KPRF": 12.86,
+    "LDPR": 7.307,
+    "Mean_MAE": 10.177
+  },
+  {
+    "Model": "MLPSklearn",
+    "UR": 16.167,
+    "KPRF": 8.481,
+    "LDPR": 6.206,
+    "Mean_MAE": 10.285
+  },
+  {
+    "Model": "Ridge",
+    "UR": 11.082,
+    "KPRF": 13.475,
+    "LDPR": 7.232,
+    "Mean_MAE": 10.596
+  },
+  {
+    "Model": "LinearRegression",
+    "UR": 11.47,
+    "KPRF": 13.986,
+    "LDPR": 7.305,
+    "Mean_MAE": 10.921
+  },
+  {
+    "Model": "MLPTorch",
+    "UR": 14.813,
+    "KPRF": 15.107,
+    "LDPR": 7.923,
+    "Mean_MAE": 12.615
+  }
+]

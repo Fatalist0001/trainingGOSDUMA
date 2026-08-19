@@ -38,6 +38,26 @@ catboost_info/
 *.tsv
 events.out.tfevents*
 
+# Model weights / checkpoints (never commit)
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.pb
+*.h5
+*.pkl
+*.joblib
+*.cbm
+*.bin
+*.model
+models/
+checkpoints/
+weights/
+
+# Secrets
+.env
+.env.*
+
 # Data files (optional, uncomment if you want to ignore large data)
 # *.csv
 # *.parquet

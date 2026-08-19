@@ -1,0 +1,38 @@
+[
+  {
+    "Class": "baseline",
+    "A_MAE": 7.314,
+    "B_MAE": 10.28,
+    "Mean_MAE": 8.797
+  },
+  {
+    "Class": "linear",
+    "A_MAE": 11.341,
+    "B_MAE": 9.788,
+    "Mean_MAE": 10.565
+  },
+  {
+    "Class": "neural",
+    "A_MAE": 10.614,
+    "B_MAE": 12.285,
+    "Mean_MAE": 11.45
+  },
+  {
+    "Class": "other",
+    "A_MAE": 8.242,
+    "B_MAE": 10.881,
+    "Mean_MAE": 9.562
+  },
+  {
+    "Class": "temporal",
+    "A_MAE": 8.11,
+    "B_MAE": 7.466,
+    "Mean_MAE": 7.788
+  },
+  {
+    "Class": "tree",
+    "A_MAE": 7.833,
+    "B_MAE": 10.641,
+    "Mean_MAE": 9.237
+  }
+]

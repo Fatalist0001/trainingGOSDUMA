@@ -1,0 +1,128 @@
+[
+  {
+    "Model": "CatBoost",
+    "Class": "tree",
+    "A_MAE": 7.761317492207394,
+    "B_MAE": 10.12157165627809,
+    "Mean_MAE": 8.941444574242743
+  },
+  {
+    "Model": "ElasticNet",
+    "Class": "linear",
+    "A_MAE": 10.858069183534424,
+    "B_MAE": 9.495135578264978,
+    "Mean_MAE": 10.176602380899702
+  },
+  {
+    "Model": "GRU",
+    "Class": "temporal",
+    "A_MAE": 6.875077946980794,
+    "B_MAE": 7.599879995981852,
+    "Mean_MAE": 7.237478971481323
+  },
+  {
+    "Model": "HistGradientBoosting",
+    "Class": "tree",
+    "A_MAE": 8.43769285554679,
+    "B_MAE": 11.425179690800444,
+    "Mean_MAE": 9.931436273173617
+  },
+  {
+    "Model": "HistoricalMean",
+    "Class": "baseline",
+    "A_MAE": 7.933738442516159,
+    "B_MAE": 10.112306594801089,
+    "Mean_MAE": 9.023022518658625
+  },
+  {
+    "Model": "KNN",
+    "Class": "tree",
+    "A_MAE": 7.760087646326469,
+    "B_MAE": 10.823241972421116,
+    "Mean_MAE": 9.291664809373792
+  },
+  {
+    "Model": "LSTM",
+    "Class": "temporal",
+    "A_MAE": 11.25514849026998,
+    "B_MAE": 8.095379543304444,
+    "Mean_MAE": 9.675264016787212
+  },
+  {
+    "Model": "LinearRegression",
+    "Class": "linear",
+    "A_MAE": 11.907203038808966,
+    "B_MAE": 9.934002261494328,
+    "Mean_MAE": 10.920602650151647
+  },
+  {
+    "Model": "MLPSklearn",
+    "Class": "neural",
+    "A_MAE": 8.418566249984986,
+    "B_MAE": 12.15056345251748,
+    "Mean_MAE": 10.284564851251233
+  },
+  {
+    "Model": "MLPTorch",
+    "Class": "neural",
+    "A_MAE": 12.808672174383206,
+    "B_MAE": 12.420375906675869,
+    "Mean_MAE": 12.614524040529538
+  },
+  {
+    "Model": "NaivePreviousElection",
+    "Class": "baseline",
+    "A_MAE": 6.965396165347695,
+    "B_MAE": 10.272185179217818,
+    "Mean_MAE": 8.618790672282756
+  },
+  {
+    "Model": "RandomForest",
+    "Class": "tree",
+    "A_MAE": 7.909849736663557,
+    "B_MAE": 10.376293154732505,
+    "Mean_MAE": 9.14307144569803
+  },
+  {
+    "Model": "Ridge",
+    "Class": "linear",
+    "A_MAE": 11.259179694791197,
+    "B_MAE": 9.933577418007912,
+    "Mean_MAE": 10.596378556399554
+  },
+  {
+    "Model": "StackingEnsemble",
+    "Class": "other",
+    "A_MAE": 8.570475360129905,
+    "B_MAE": 10.93610382427319,
+    "Mean_MAE": 9.753289592201547
+  },
+  {
+    "Model": "Transformer",
+    "Class": "temporal",
+    "A_MAE": 6.2006628195444735,
+    "B_MAE": 6.703892580668132,
+    "Mean_MAE": 6.452277700106302
+  },
+  {
+    "Model": "WeightedEnsemble",
+    "Class": "other",
+    "A_MAE": 7.9144994084906495,
+    "B_MAE": 10.82673201577515,
+    "Mean_MAE": 9.3706157121329
+  },
+  {
+    "Model": "WeightedHistoricalMean",
+    "Class": "baseline",
+    "A_MAE": 7.0423236137857534,
+    "B_MAE": 10.455505162915577,
+    "Mean_MAE": 8.748914388350665
+  },
+  {
+    "Model": "XGBoost",
+    "Class": "tree",
+    "A_MAE": 7.298415438706839,
+    "B_MAE": 10.457714588792914,
+    "Mean_MAE": 8.878065013749877
+  }
+]
