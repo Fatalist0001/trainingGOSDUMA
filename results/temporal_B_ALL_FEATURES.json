@@ -1,0 +1,299 @@
+[
+  {
+    "model": "GRU",
+    "experiment": "B",
+    "feature_group": "ALL_FEATURES",
+    "level": "region",
+    "test_metrics": [
+      {
+        "party": "UR_share",
+        "mae": 7.229204559326172,
+        "n_samples": null
+      },
+      {
+        "party": "KPRF_share",
+        "mae": 7.605961513519287,
+        "n_samples": null
+      },
+      {
+        "party": "LDPR_share",
+        "mae": 7.964473915100098,
+        "n_samples": null
+      }
+    ],
+    "n_train": 249,
+    "n_test": 83,
+    "seeds": [
+      42,
+      123,
+      456,
+      789,
+      2026
+    ],
+    "n_seeds": 5
+  },
+  {
+    "model": "LSTM",
+    "experiment": "B",
+    "feature_group": "ALL_FEATURES",
+    "level": "region",
+    "test_metrics": [
+      {
+        "party": "UR_share",
+        "mae": 8.52006721496582,
+        "n_samples": null
+      },
+      {
+        "party": "KPRF_share",
+        "mae": 8.466550922393798,
+        "n_samples": null
+      },
+      {
+        "party": "LDPR_share",
+        "mae": 7.299520492553711,
+        "n_samples": null
+      }
+    ],
+    "n_train": 249,
+    "n_test": 83,
+    "seeds": [
+      42,
+      123,
+      456,
+      789,
+      2026
+    ],
+    "n_seeds": 5
+  },
+  {
+    "model": "Transformer",
+    "experiment": "B",
+    "feature_group": "ALL_FEATURES",
+    "level": "region",
+    "test_metrics": [
+      {
+        "party": "UR_share",
+        "mae": 7.1128997802734375,
+        "n_samples": null
+      },
+      {
+        "party": "KPRF_share",
+        "mae": 5.576491451263427,
+        "n_samples": null
+      },
+      {
+        "party": "LDPR_share",
+        "mae": 7.422286510467529,
+        "n_samples": null
+      }
+    ],
+    "n_train": 249,
+    "n_test": 83,
+    "seeds": [
+      42,
+      123,
+      456,
+      789,
+      2026
+    ],
+    "n_seeds": 5
+  },
+  {
+    "model": "GRU",
+    "experiment": "B",
+    "feature_group": "ELECTORAL_ONLY",
+    "level": "region",
+    "test_metrics": [
+      {
+        "party": "UR_share",
+        "mae": 6.52287483215332,
+        "n_samples": null
+      },
+      {
+        "party": "KPRF_share",
+        "mae": 5.025890159606933,
+        "n_samples": null
+      },
+      {
+        "party": "LDPR_share",
+        "mae": 8.01738452911377,
+        "n_samples": null
+      }
+    ],
+    "n_train": 249,
+    "n_test": 83,
+    "seeds": [
+      42,
+      123,
+      456,
+      789,
+      2026
+    ],
+    "n_seeds": 5
+  },
+  {
+    "model": "LSTM",
+    "experiment": "B",
+    "feature_group": "ELECTORAL_ONLY",
+    "level": "region",
+    "test_metrics": [
+      {
+        "party": "UR_share",
+        "mae": 6.810857772827148,
+        "n_samples": null
+      },
+      {
+        "party": "KPRF_share",
+        "mae": 6.515101528167724,
+        "n_samples": null
+      },
+      {
+        "party": "LDPR_share",
+        "mae": 7.778339576721192,
+        "n_samples": null
+      }
+    ],
+    "n_train": 249,
+    "n_test": 83,
+    "seeds": [
+      42,
+      123,
+      456,
+      789,
+      2026
+    ],
+    "n_seeds": 5
+  },
+  {
+    "model": "Transformer",
+    "experiment": "B",
+    "feature_group": "ELECTORAL_ONLY",
+    "level": "region",
+    "test_metrics": [
+      {
+        "party": "UR_share",
+        "mae": 12.948908615112305,
+        "n_samples": null
+      },
+      {
+        "party": "KPRF_share",
+        "mae": 6.6184111595153805,
+        "n_samples": null
+      },
+      {
+        "party": "LDPR_share",
+        "mae": 4.209115505218506,
+        "n_samples": null
+      }
+    ],
+    "n_train": 249,
+    "n_test": 83,
+    "seeds": [
+      42,
+      123,
+      456,
+      789,
+      2026
+    ],
+    "n_seeds": 5
+  },
+  {
+    "model": "GRU",
+    "experiment": "B",
+    "feature_group": "ROSSTAT_ONLY",
+    "level": "region",
+    "test_metrics": [
+      {
+        "party": "UR_share",
+        "mae": 12.71314811706543,
+        "n_samples": null
+      },
+      {
+        "party": "KPRF_share",
+        "mae": 10.881082725524902,
+        "n_samples": null
+      },
+      {
+        "party": "LDPR_share",
+        "mae": 6.657262706756592,
+        "n_samples": null
+      }
+    ],
+    "n_train": 249,
+    "n_test": 83,
+    "seeds": [
+      42,
+      123,
+      456,
+      789,
+      2026
+    ],
+    "n_seeds": 5
+  },
+  {
+    "model": "LSTM",
+    "experiment": "B",
+    "feature_group": "ROSSTAT_ONLY",
+    "level": "region",
+    "test_metrics": [
+      {
+        "party": "UR_share",
+        "mae": 12.022467613220215,
+        "n_samples": null
+      },
+      {
+        "party": "KPRF_share",
+        "mae": 10.326713371276856,
+        "n_samples": null
+      },
+      {
+        "party": "LDPR_share",
+        "mae": 6.692574691772461,
+        "n_samples": null
+      }
+    ],
+    "n_train": 249,
+    "n_test": 83,
+    "seeds": [
+      42,
+      123,
+      456,
+      789,
+      2026
+    ],
+    "n_seeds": 5
+  },
+  {
+    "model": "Transformer",
+    "experiment": "B",
+    "feature_group": "ROSSTAT_ONLY",
+    "level": "region",
+    "test_metrics": [
+      {
+        "party": "UR_share",
+        "mae": 9.703010749816894,
+        "n_samples": null
+      },
+      {
+        "party": "KPRF_share",
+        "mae": 9.208090591430665,
+        "n_samples": null
+      },
+      {
+        "party": "LDPR_share",
+        "mae": 8.05983362197876,
+        "n_samples": null
+      }
+    ],
+    "n_train": 249,
+    "n_test": 83,
+    "seeds": [
+      42,
+      123,
+      456,
+      789,
+      2026
+    ],
+    "n_seeds": 5
+  }
+]

@@ -1,7 +1,7 @@
 # PROGRESS.md — Отслеживание выполнения PLAN.md
 
-**Статус**: ✅ P0 выполнен (baselines + Linear + Trees + KNN на экспериментах A, B)
-**Последнее обновление**: 2026-08-18
+**Статус**: ✅ P0, P1, P2, P3 выполнены (baselines + Linear + Trees + KNN + Neural + Temporal на экспериментах A, B)
+**Последнее обновление**: 2026-08-19
 
 ---
 
@@ -133,11 +133,27 @@ MAE (усреднён по 5 seeds, средний по партиям, п.п.):
 
 ## 8. Temporal Models P2/P3 (PLAN §21-23, 67)
 
-| № | Модель | Статус | Примечания |
-|---|--------|--------|------------|
-| 8.1 | GRU | ⏳ Скелет в `temporal.py` | P2 |
-| 8.2 | LSTM | ⏳ Скелет в `temporal.py` | P2 |
-| 8.3 | Transformer | ⏳ Скелет в `temporal.py` | P3 |
+Реализованы sequence-based временные модели в `src/models/temporal.py` (GRU/LSTM/Transformer
+на PyTorch). Каждая выборочная единица — последовательность истории региона
+(контекстные годы → таргет-год); импутация (median) и скейлинг fit только на train
+(без leakage); ранние годы с NaN-lag отбрасываются как контекст, но НЕ как выборка.
+Backtest: `run_temporal_backtest` в `backtest.py`; запуск: `make temporal`, `scripts/models/run_temporal.py`.
+Усреднение по 5 seeds [42,123,456,789,2026]. MAE — средний по партиям (п.п.).
+
+| № | Модель | Статус | Эксп. | Фич-группы | Seeds |
+|---|--------|--------|-------|------------|-------|
+| 8.1 | GRU | ✅ Работает | A, B | ALL, ELECTORAL, ROSSTAT | [42,123,456,789,2026] |
+| 8.2 | LSTM | ✅ Работает | A, B | ALL, ELECTORAL, ROSSTAT | [42,123,456,789,2026] |
+| 8.3 | Transformer | ✅ Работает | A, B | ALL, ELECTORAL, ROSSTAT | [42,123,456,789,2026] |
+
+MAE (усреднён по 5 seeds, средний по партиям, п.п.):
+- GRU: A ALL **6.88**, ELECTORAL 11.66, ROSSTAT 10.61; B ALL 7.60, ELECTORAL 6.52, ROSSTAT 10.08
+- LSTM: A ALL 11.26, ELECTORAL 10.68, ROSSTAT 14.21; B ALL 8.10, ELECTORAL 7.03, ROSSTAT 9.68
+- Transformer: A ALL **6.20**, ELECTORAL 10.86, ROSSTAT 7.03; B ALL **6.70**, ELECTORAL 7.93, ROSSTAT 8.99
+- Поведение: Transformer (ALL) — лучшая модель во всём бенчмарке (A 6.20, B 6.70), заметно
+  обходит бейзлайны (Naive 6.97/10.27) и деревья (XGBoost 7.30/10.46). GRU стабильно хорош на ALL.
+  LSTM нестабилен (на A ROSSTAT 14.21). На B электоральные признаки важнее (GRU ELECTORAL 6.52 —
+  лучший single-строка результат). ROSSTAT полезен для Transformer на A (7.03 vs ELECTORAL 10.86).
 
 ---
 
@@ -261,7 +277,7 @@ MAE (усреднён по 5 seeds, средний по партиям, п.п.):
 | Q3: Помогает ли длинная электоральная история? | ⏳ |
 | Q4: Есть ли преимущество у nonlinear models? | ⏳ На A — нет (baseline лучше); на B — деревья ≈ baseline. Требует усреднения по экспериментам. |
 | Q5: Есть ли преимущество у нейросетей? | ⏳ P1 запущен: MLPSklearn конкурентоспособен на A (ELECTORAL 7.55 < деревьев 8.70), но на B проигрывает (ALL 12.15 > baseline 10.27). MLPTorch заметно слабее (переобучение на малом табличном датасете). Явного преимущества нейросетей не выявлено — требует tuning. |
-| Q6: Помогает ли temporal architecture? | ⏳ не тестировалось (P2/P3) |
+| Q6: Помогает ли temporal architecture? | ✅ Да: Transformer (ALL) — лучшая модель (A 6.20, B 6.70), обходит бейзлайны и деревья. GRU также сильна (A 6.88, B 7.60). LSTM нестабильна. |
 | Q7: Какие партии предсказываются лучше? | ⏳ |
 | Q8: Где модели систематически ошибаются? | ⏳ |
 | Q9: Насколько стабилен результат разных seeds? | ⏳ |
@@ -271,12 +287,10 @@ MAE (усреднён по 5 seeds, средний по партиям, п.п.):
 
 ## Следующие шаги (Priority)
 
-1. **Сейчас (P0 и P1 завершены)**: результаты в `results/benchmark_all_*.csv`, предсказания в `predictions/`.
+1. ✅ **P0/P1/P2/P3 завершены**: P0 (baselines+Linear+Trees+KNN), P1 (MLPSklearn+MLPTorch), P2/P3 (GRU+LSTM+Transformer) запущены на A/B × 3 группы; результаты в `results/benchmark_all_*.csv`.
 2. **Потом**: `make ablation` — feature-group и history-depth ablation (уточнить Q2, Q3).
-3. ✅ **P1 выполнен**: нейросети (MLPSklearn + MLPTorch) запущены на A/B × 3 группы; результаты в бенчмарке.
-4. **Потом**: P2/P3 temporal models (`temporal.py`).
-5. **Потом**: ensemble (`ensemble.py`).
-6. **Параллельно**: визуализация (`visualization/plots.py`), отчёт, `predict_2026.py` (эксперименты C/D).
+3. **Потом**: ensemble (`ensemble.py`) — WeightedEnsemble/StackingEnsemble (Q10).
+4. **Параллельно**: визуализация (`visualization/plots.py`), отчёт (`reports/FINAL_MODEL_REPORT.md`), `predict_2026.py` (эксперименты C/D).
 
 ---
 

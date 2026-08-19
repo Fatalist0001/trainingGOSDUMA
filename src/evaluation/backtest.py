@@ -310,6 +310,158 @@ def run_multioutput_backtest(
     )
 
 
+def _build_region_sequences(
+    df: pd.DataFrame,
+    feature_columns: list[str],
+    target_columns: list[str],
+    context_years: list[int],
+    target_year: int,
+    region_col: str = "region_id",
+    year_col: str = "year",
+) -> tuple[list[np.ndarray], list[np.ndarray]]:
+    """Build (X_seq, y) samples for one target year from per-region context years.
+
+    Returns lists aligned by sample; skips regions missing any context/target row.
+    """
+    X_list: list[np.ndarray] = []
+    y_list: list[np.ndarray] = []
+    for region, grp in df.groupby(region_col):
+        grp = grp.set_index(year_col)
+        if target_year not in grp.index:
+            continue
+        ctx = [y for y in context_years if y < target_year and y in grp.index]
+        if not ctx:
+            continue
+        ctx = sorted(ctx)
+        seq = grp.loc[ctx, feature_columns].values.astype(np.float32)  # (k, F)
+        if seq.shape[0] == 0:
+            continue
+        target = grp.loc[target_year, target_columns].values.astype(np.float32)  # (T,)
+        X_list.append(seq)
+        y_list.append(target)
+    return X_list, y_list
+
+
+def run_temporal_backtest(
+    model_name: str,
+    experiment_name: str,
+    feature_group: str = "ALL_FEATURES",
+    level: str = "region",
+    model_kwargs: dict | None = None,
+    normalize_predictions: bool = False,
+) -> dict[str, Any]:
+    """Run a temporal (sequence) backtest for GRU/LSTM/Transformer models.
+
+    Builds per-region election sequences (past years -> next election) and
+    evaluates on the experiment's test year(s). Returns the same dict shape as
+    run_single_model_backtest so it integrates with the benchmark aggregator.
+    """
+    from ..data.features import (
+        get_feature_columns,
+        get_target_columns_from_df,
+        select_features,
+    )
+    from ..data.splits import get_experiment_splits, load_raw_region
+    from ..models.registry import get_model
+
+    model_kwargs = model_kwargs or {}
+
+    split = get_experiment_splits(experiment_name)
+    train_years = sorted(split.train_years)
+    test_years = split.test_years
+    if not test_years:
+        return {
+            "model": model_name,
+            "experiment": experiment_name,
+            "feature_group": feature_group,
+            "level": level,
+            "note": "no_test_data",
+            "n_train": 0,
+            "n_test": 0,
+        }
+
+    # Raw df keeps identifiers (region_id, year) needed for sequence building;
+    # feature/target columns are taken from the processed (feature-selected) view.
+    df = load_raw_region()
+    processed = select_features(df, feature_group)
+    target_columns = get_target_columns_from_df(processed, level)
+    feature_columns = get_feature_columns(processed, feature_group)
+    non_constant = [c for c in feature_columns if df[c].nunique(dropna=True) > 1]
+    dropped = sorted(set(feature_columns) - set(non_constant))
+    if dropped:
+        print(f"[preprocess] Dropping {len(dropped)} constant feature(s): {dropped}")
+    feature_columns = non_constant
+
+    # Training samples: each train year (with prior context) is a target.
+    X_train: list[np.ndarray] = []
+    y_train: list[np.ndarray] = []
+    for target_year in train_years:
+        if target_year == min(train_years):
+            continue
+        Xs, ys = _build_region_sequences(
+            df, feature_columns, target_columns, train_years, target_year
+        )
+        X_train.extend(Xs)
+        y_train.extend(ys)
+
+    if not X_train:
+        return {
+            "model": model_name,
+            "experiment": experiment_name,
+            "feature_group": feature_group,
+            "level": level,
+            "note": "no_train_data",
+            "n_train": 0,
+            "n_test": 0,
+        }
+
+    # Test samples: predict the test year from all train years as context.
+    test_year = test_years[0]
+    X_test, y_test = _build_region_sequences(
+        df, feature_columns, target_columns, train_years, test_year
+    )
+    if not X_test:
+        return {
+            "model": model_name,
+            "experiment": experiment_name,
+            "feature_group": feature_group,
+            "level": level,
+            "note": "no_test_data",
+            "n_train": len(X_train),
+            "n_test": 0,
+        }
+
+    y_train_arr = np.stack(y_train).astype(np.float32)  # (n_train, T)
+    y_test_arr = np.stack(y_test).astype(np.float32)  # (n_test, T)
+
+    model = get_model(model_name, **model_kwargs)
+    model.fit(X_train, y_train_arr)
+    pred = model.predict(X_test)  # (n_test, T)
+
+    # Per-party MAE (ignore NaN).
+    test_metrics = []
+    for j, party in enumerate(target_columns):
+        yt = y_test_arr[:, j]
+        pt = pred[:, j]
+        mask = ~(np.isnan(yt) | np.isnan(pt))
+        if mask.sum() == 0:
+            continue
+        mae_val = float(np.mean(np.abs(yt[mask] - pt[mask])))
+        test_metrics.append({"party": party, "mae": mae_val, "n_samples": int(mask.sum())})
+
+    return {
+        "model": model_name,
+        "experiment": experiment_name,
+        "feature_group": feature_group,
+        "level": level,
+        "test_metrics": test_metrics,
+        "n_train": len(X_train),
+        "n_test": len(X_test),
+        "feature_columns": feature_columns,
+        "target_columns": target_columns,
+    }
+
+
 def run_experiment(
     experiment_name: str,
     models: list[str],

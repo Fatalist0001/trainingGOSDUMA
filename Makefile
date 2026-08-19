@@ -77,8 +77,8 @@ neural:
 	uv run python scripts/models/run_neural.py --experiment B --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
 
 temporal:
-	@echo "Temporal models not yet implemented"
-	# uv run python scripts/models/run_temporal.py --experiment A
+	uv run python scripts/models/run_temporal.py --experiment A --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
+	uv run python scripts/models/run_temporal.py --experiment B --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
 
 # Evaluation targets
 benchmark:
