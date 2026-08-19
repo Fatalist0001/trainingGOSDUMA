@@ -590,6 +590,66 @@ def forecast_temporal(
     }
 
 
+BASELINE_NAMES = (
+    "NaivePreviousElection",
+    "HistoricalMean",
+    "WeightedHistoricalMean",
+)
+
+
+def forecast_baseline(
+    model_name: str,
+    experiment_name: str,
+    feature_group: str = "ALL_FEATURES",
+    level: str = "region",
+    model_kwargs: dict | None = None,
+) -> dict[str, Any]:
+    """Train a flat baseline on all history and forecast a future election year.
+
+    Used for experiments C/D (target 2026) with models from ``BASELINE_NAMES``.
+    Baselines are single-party: each party is predicted independently from the
+    region's own history (features are not used). Deterministic, so no seeds.
+    Returns a predictions DataFrame (no metrics, since there is no ground truth).
+    """
+    from ..data.features import get_target_columns_from_df
+    from ..data.splits import get_experiment_splits, load_raw_region
+    from ..models.registry import get_model
+
+    model_kwargs = model_kwargs or {}
+    split = get_experiment_splits(experiment_name)
+    train_years = sorted(split.train_years)
+    test_year = split.test_years[0] if split.test_years else None
+
+    df = load_raw_region()
+    train_df = df[df["year"].isin(train_years)]
+    target_columns = get_target_columns_from_df(train_df, level)
+
+    region_ids = sorted(df["region_id"].unique())
+    X_pred = pd.DataFrame({"region_id": region_ids, "year": test_year})
+    pred = np.empty((len(region_ids), len(target_columns)))
+
+    for i, target_col in enumerate(target_columns):
+        model = get_model(model_name, party_column=target_col, **model_kwargs)
+        model.fit(train_df, train_df[target_col])
+        pred[:, i] = model.predict(X_pred)
+
+    pred_df = pd.DataFrame(pred, columns=[f"{c}_pred" for c in target_columns])
+    pred_df.insert(0, "region_id", region_ids)
+    pred_df.insert(1, "year", test_year)
+
+    return {
+        "model": model_name,
+        "experiment": experiment_name,
+        "feature_group": feature_group,
+        "level": level,
+        "forecast_year": test_year,
+        "predictions": pred_df,
+        "target_columns": target_columns,
+        "n_train": len(train_df),
+        "n_test": len(region_ids),
+        "note": "forecast",
+    }
+
 
 def run_experiment(
     experiment_name: str,

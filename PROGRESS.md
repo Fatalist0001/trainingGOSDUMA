@@ -263,16 +263,18 @@ HistGradientBoosting, MLPSklearn, LinearRegression (бейзлайны искл�
 
 ## 17. Final Prediction 2026 (PLAN §57-60)
 
-Реализован `scripts/predict_2026.py` + `forecast_temporal` в `backtest.py`.
-Лучшая *временная* модель (Transformer, ALL) дообучается на всей истории (2003–2021) и
-прогнозирует 2026 для всех 83 регионов; усреднение по 5 seeds. Федеральный
-прогноз (взвешен по elector`ate):
+Реализован `scripts/predict_2026.py` + `forecast_baseline`/`forecast_temporal` в `backtest.py`.
+Основной прогноз — по лучшей модели бенчмарка **WeightedHistoricalMean** (детерминированная,
+усреднение по seeds не требуется): взвешенное среднее прошлых результатов каждого региона
+(экспоненциальный спад). Transformer (лучшая временная) сохранён как альтернатива
+(`--model Transformer`, усреднение по 5 seeds). Федеральный прогноз — среднее по 83 регионам:
 
 | № | Задача | Статус | Результат |
 |---|--------|--------|-----------|
-| 17.1 | Final training on all history | ✅ | Transformer на 2003–2021 |
-| 17.2 | 2026 prediction script | ✅ | `scripts/predict_2026.py` → `predictions/Transformer/C,D/2026_forecast.csv` |
-| 17.3 | Federal aggregation | ✅ | `results/forecast_{C,D}_Transformer_federal.csv` (UR 64.8 / KPRF 22.9 / LDPR 12.3) |
+| 17.1 | Final training on all history | ✅ | WeightedHistoricalMean на 2003–2021 |
+| 17.2 | 2026 prediction script | ✅ | `scripts/predict_2026.py` → `predictions/WeightedHistoricalMean/C,D/2026_forecast.csv` |
+| 17.3 | Federal aggregation | ✅ | `results/forecast_{C,D}_WeightedHistoricalMean_federal.csv` (UR 49.8 / KPRF 13.0 / LDPR 10.9, реальные доли) |
+| 17.4 | Temporal alternative (Transformer) | ✅ | `results/forecast_{C,D}_Transformer_federal.csv` (UR 64.8 / KPRF 22.9 / LDPR 12.3, нормировано к 100%) |
 | 17.4 | Seat allocation pipeline | ⏳ (отдельно, после отчёта) | |
 
 ---
@@ -307,7 +309,7 @@ HistGradientBoosting, MLPSklearn, LinearRegression (бейзлайны искл�
 1. ✅ **P0/P1/P2/P3 завершены**: P0 (baselines+Linear+Trees+KNN), P1 (MLPSklearn+MLPTorch), P2/P3 (GRU+LSTM+Transformer) запущены на A/B × 3 группы; результаты в `results/benchmark_all_*.csv`.
 2. ✅ **Ablation выполнен**: `make ablation` → `results/ablation_feature.csv` (Q2) и `results/ablation_history.csv` (Q3). ROSSTAT помогает при короткой истории (A); длинная история помогает временным моделям.
 3. ✅ **Ensemble выполнен** (Q10): `WeightedEnsemble`/`StackingEnsemble` в `ensemble.py`. Не превосходят лучшую одиночную модель (Transformer) и даже XGBoost.
-4. ✅ **Финальный прогноз 2026** (эксп. C/D): `scripts/predict_2026.py` (Transformer, ALL) → per-region и federal прогнозы в `predictions/` и `results/`.
+4. ✅ **Финальный прогноз 2026** (эксп. C/D): `scripts/predict_2026.py` (WeightedHistoricalMean — лучшая модель; Transformer — временная альтернатива) → per-region и federal прогнозы в `predictions/` и `results/`.
 5. ✅ **Визуализация и отчёт**: `reports/FINAL_MODEL_REPORT.md` (Q1–Q10, прогноз 2026) + `reports/figures/{model_comparison,feature_ablation,history_depth}.png` (`make report`).
 
 ---

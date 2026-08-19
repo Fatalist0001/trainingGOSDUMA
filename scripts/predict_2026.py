@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 """Final 2026 forecast for experiments C and D.
 
-Trains the best temporal model (Transformer) on all available history and
-forecasts the 2026 State Duma election shares per region/party. There is no
-ground truth for 2026, so this produces forecasts only (no MAE).
+Trains the best model (by default WeightedHistoricalMean) on all available
+history and forecasts the 2026 State Duma election shares per region/party.
+There is no ground truth for 2026, so this produces forecasts only (no MAE).
+Pass ``--model Transformer`` to forecast with the best temporal model instead.
 
 Quick start:
     uv run python scripts/predict_2026.py
@@ -20,7 +21,7 @@ import pandas as pd
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from src.evaluation.backtest import forecast_temporal
+from src.evaluation.backtest import BASELINE_NAMES, forecast_baseline, forecast_temporal
 from src.utils.io import get_output_dirs
 
 
@@ -40,7 +41,7 @@ def federal_forecast(pred_df: pd.DataFrame, target_columns: list[str], weight_co
 def main():
     parser = argparse.ArgumentParser(description="Forecast 2026 election")
     parser.add_argument("--experiments", nargs="+", default=["C", "D"])
-    parser.add_argument("--model", default="Transformer")
+    parser.add_argument("--model", default="WeightedHistoricalMean")
     parser.add_argument("--feature-group", default="ALL_FEATURES")
     parser.add_argument("--seeds", nargs="+", type=int, default=[42, 123, 456, 789, 2026])
     args = parser.parse_args()
@@ -51,30 +52,40 @@ def main():
 
     for exp in args.experiments:
         print(f"\n=== Experiment {exp}: 2026 forecast ({args.model}) ===")
-        seed_preds = []
-        for seed in args.seeds:
-            res = forecast_temporal(
-                args.model,
-                exp,
-                args.feature_group,
-                model_kwargs={"random_state": seed},
-            )
+
+        if args.model in BASELINE_NAMES:
+            res = forecast_baseline(args.model, exp, args.feature_group)
             if res.get("note") != "forecast" or "predictions" not in res:
-                print(f"  seed {seed}: note={res.get('note')}")
+                print(f"  note={res.get('note')}")
                 continue
-            seed_preds.append(res["predictions"])
+            target_columns = res["target_columns"]
+            avg = res["predictions"]
+            seed_preds = None
+        else:
+            seed_preds = []
+            for seed in args.seeds:
+                res = forecast_temporal(
+                    args.model,
+                    exp,
+                    args.feature_group,
+                    model_kwargs={"random_state": seed},
+                )
+                if res.get("note") != "forecast" or "predictions" not in res:
+                    print(f"  seed {seed}: note={res.get('note')}")
+                    continue
+                seed_preds.append(res["predictions"])
 
-        if not seed_preds:
-            print("  No forecasts produced.")
-            continue
+            if not seed_preds:
+                print("  No forecasts produced.")
+                continue
 
-        # Average over seeds.
-        target_columns = res["target_columns"]
-        pred_cols = [f"{c}_pred" for c in target_columns]
-        avg = seed_preds[0][["region_id", "year"]].copy()
-        for p in pred_cols:
-            stacked = pd.concat([sp[p] for sp in seed_preds], axis=1)
-            avg[p] = stacked.mean(axis=1)
+            # Average over seeds.
+            target_columns = res["target_columns"]
+            pred_cols = [f"{c}_pred" for c in target_columns]
+            avg = seed_preds[0][["region_id", "year"]].copy()
+            for p in pred_cols:
+                stacked = pd.concat([sp[p] for sp in seed_preds], axis=1)
+                avg[p] = stacked.mean(axis=1)
 
         # Save per-region forecast.
         out_path = pred_dir / args.model / exp / "2026_forecast.csv"
