@@ -112,6 +112,7 @@ def create_temporal_splits(
     experiment_name: str,
     year_column: str = "year",
     election_type_column: str = "type",
+    train_years_override: list[int] | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
     Create train/val/test DataFrames for a given experiment.
@@ -121,14 +122,17 @@ def create_temporal_splits(
         experiment_name: Experiment name ("A", "B", "C", "D")
         year_column: Name of year column
         election_type_column: Name of election type column
+        train_years_override: Optional explicit list of train years (for
+            history-depth ablation). Overrides the experiment's config.
 
     Returns:
         Tuple of (train_df, val_df, test_df)
     """
     split = get_experiment_splits(experiment_name)
+    train_years = train_years_override or split.train_years
 
     train_df = filter_by_years(
-        df, split.train_years, year_column, election_type_column, split.election_type
+        df, train_years, year_column, election_type_column, split.election_type
     )
     val_df = (
         filter_by_years(df, split.val_years, year_column, election_type_column, split.election_type)

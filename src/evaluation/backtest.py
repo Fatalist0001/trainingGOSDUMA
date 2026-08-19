@@ -24,6 +24,7 @@ def prepare_data_for_experiment(
     experiment_name: str,
     feature_group: str = "ALL_FEATURES",
     level: str = "region",
+    train_years_override: list[int] | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, list[str], list[str]]:
     """
     Prepare train/val/test DataFrames for an experiment.
@@ -37,7 +38,9 @@ def prepare_data_for_experiment(
     df = load_raw_region()
 
     # Create temporal splits
-    train_df, val_df, test_df = create_temporal_splits(df, experiment_name)
+    train_df, val_df, test_df = create_temporal_splits(
+        df, experiment_name, train_years_override=train_years_override
+    )
 
     # Get feature and target columns from processed data
     # Apply feature selection to get feature columns
@@ -65,6 +68,7 @@ def run_single_model_backtest(
     level: str = "region",
     model_kwargs: dict | None = None,
     normalize_predictions: bool = True,
+    train_years_override: list[int] | None = None,
 ) -> dict[str, Any]:
     """
     Run backtest for a single model on a single experiment.
@@ -76,7 +80,7 @@ def run_single_model_backtest(
 
     # Prepare data
     train_df, val_df, test_df, feature_columns, target_columns = prepare_data_for_experiment(
-        experiment_name, feature_group, level
+        experiment_name, feature_group, level, train_years_override
     )
 
     # Handle empty val set
@@ -349,6 +353,7 @@ def run_temporal_backtest(
     level: str = "region",
     model_kwargs: dict | None = None,
     normalize_predictions: bool = False,
+    train_years_override: list[int] | None = None,
 ) -> dict[str, Any]:
     """Run a temporal (sequence) backtest for GRU/LSTM/Transformer models.
 
@@ -367,6 +372,8 @@ def run_temporal_backtest(
     model_kwargs = model_kwargs or {}
 
     split = get_experiment_splits(experiment_name)
+    if train_years_override is not None:
+        split.train_years = list(train_years_override)
     train_years = sorted(split.train_years)
     test_years = split.test_years
     if not test_years:

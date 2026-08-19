@@ -164,8 +164,8 @@ MAE (усреднён по 5 seeds, средний по партиям, п.п.):
 | 9.1 | ELECTORAL_ONLY | ✅ В `features.yaml` | Только электоральные |
 | 9.2 | ROSSTAT_ONLY | ✅ В `features.yaml` | Только Росстат |
 | 9.3 | ALL_FEATURES | ✅ В `features.yaml` | Все вместе |
-| 9.4 | Feature ablation script | ⏳ | `scripts/evaluation/ablation.py` |
-| 9.5 | History depth ablation | ⏳ | `ablation.py` |
+| 9.4 | Feature ablation script | ✅ | `scripts/evaluation/ablation.py` → `results/ablation_feature.csv` |
+| 9.5 | History depth ablation | ✅ | `ablation.py` → `results/ablation_history.csv` |
 
 ---
 
@@ -273,8 +273,8 @@ MAE (усреднён по 5 seeds, средний по партиям, п.п.):
 | Вопрос | Статус ответа |
 |--------|---------------|
 | Q1: Насколько хорошо выборы предсказываются предыдущим результатом? | ⏳ A: baseline лучший (Naive 6.97 < деревья 7.3-7.9); B: деревья догоняют/обходят baseline (CatBoost 9.9-10.1 vs WeightedMean 10.5) |
-| Q2: Добавляет ли Росстат predictive power? | ⏳ Противоречиво: для линейных на A ROSSTAT лучше ALL (9.3 vs 10.9), но для деревьев на B ROSSTAT хуже ALL. Требует ablation. |
-| Q3: Помогает ли длинная электоральная история? | ⏳ |
+| Q2: Добавляет ли Росстат predictive power? | ✅ Да, но преимущественно при короткой истории (A). Деревья на A: ROSSTAT_ONLY ≪ ELECTORAL_ONLY (XGBoost 7.80 vs 8.96, CatBoost 7.76 vs 8.58, RF 7.98 vs 9.08). На B (длинная история) ROSSTAT нейтрален/мешает деревьям (CatBoost ELECTORAL 9.92 < ALL 10.12 < ROSSTAT 10.54; XGBoost ≈ паритет ~10.46). Временные: ALL лучший, ROSSTAT помогает на A (Transformer ROSSTAT 7.03 < ELECTORAL 10.86). |
+| Q3: Помогает ли длинная электоральная история? | ✅ Да — для временных архитектур. Transformer (A): depth2 7.03 → depth3 6.20; (B) depth4 6.70 — лучший. GRU аналогично. Плоские модели — шумная/убывающая отдача (CatBoost A depth2 7.53 < depth3 7.76; Linear нестабилен: A depth2 20.5 > depth1 14.2). Naive — константа (только последний год). |
 | Q4: Есть ли преимущество у nonlinear models? | ⏳ На A — нет (baseline лучше); на B — деревья ≈ baseline. Требует усреднения по экспериментам. |
 | Q5: Есть ли преимущество у нейросетей? | ⏳ P1 запущен: MLPSklearn конкурентоспособен на A (ELECTORAL 7.55 < деревьев 8.70), но на B проигрывает (ALL 12.15 > baseline 10.27). MLPTorch заметно слабее (переобучение на малом табличном датасете). Явного преимущества нейросетей не выявлено — требует tuning. |
 | Q6: Помогает ли temporal architecture? | ✅ Да: Transformer (ALL) — лучшая модель (A 6.20, B 6.70), обходит бейзлайны и деревья. GRU также сильна (A 6.88, B 7.60). LSTM нестабильна. |
@@ -288,7 +288,7 @@ MAE (усреднён по 5 seeds, средний по партиям, п.п.):
 ## Следующие шаги (Priority)
 
 1. ✅ **P0/P1/P2/P3 завершены**: P0 (baselines+Linear+Trees+KNN), P1 (MLPSklearn+MLPTorch), P2/P3 (GRU+LSTM+Transformer) запущены на A/B × 3 группы; результаты в `results/benchmark_all_*.csv`.
-2. **Потом**: `make ablation` — feature-group и history-depth ablation (уточнить Q2, Q3).
+2. ✅ **Ablation выполнен**: `make ablation` → `results/ablation_feature.csv` (Q2) и `results/ablation_history.csv` (Q3). ROSSTAT помогает при короткой истории (A); длинная история помогает временным моделям.
 3. **Потом**: ensemble (`ensemble.py`) — WeightedEnsemble/StackingEnsemble (Q10).
 4. **Параллельно**: визуализация (`visualization/plots.py`), отчёт (`reports/FINAL_MODEL_REPORT.md`), `predict_2026.py` (эксперименты C/D).
 
