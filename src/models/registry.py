@@ -10,6 +10,7 @@ from .baselines import (
     NaivePreviousElection,
     WeightedHistoricalMean,
 )
+from .knn import KNNModel
 from .linear import ElasticNetModel, LinearModel, RidgeModel
 from .trees import CatBoostModel, HistGBModel, RandomForestModel, XGBoostModel
 
@@ -58,6 +59,8 @@ MODEL_REGISTRY = {
     "HistGradientBoosting": HistGBModel,
     "XGBoost": XGBoostModel,
     "CatBoost": CatBoostModel,
+    # KNN
+    "KNN": KNNModel,
 }
 
 # Add optional models if available

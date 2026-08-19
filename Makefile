@@ -1,7 +1,7 @@
 # Makefile for trainingGOSDUMA
 # Usage: make <target>
 
-.PHONY: help install test lint clean benchmark baselines linear trees neural temporal ablation report
+.PHONY: help install test lint clean benchmark baselines linear trees knn neural temporal ablation report
 
 # Default target
 help:
@@ -17,6 +17,7 @@ help:
 	@echo "  baselines   - Run baseline models (Naive, HistoricalMean, WeightedMean)"
 	@echo "  linear      - Run linear models (Linear, Ridge, ElasticNet)"
 	@echo "  trees       - Run tree models (RF, HistGB, XGBoost, CatBoost)"
+	@echo "  knn         - Run KNN model"
 	@echo "  neural      - Run neural models (MLP)"
 	@echo "  temporal    - Run temporal models (GRU, LSTM, Transformer)"
 	@echo ""
@@ -66,6 +67,10 @@ linear:
 trees:
 	uv run python scripts/models/run_trees.py --experiment A --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
 	uv run python scripts/models/run_trees.py --experiment B --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
+
+knn:
+	uv run python scripts/models/run_knn.py --experiment A --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
+	uv run python scripts/models/run_knn.py --experiment B --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
 
 neural:
 	uv run python scripts/models/run_neural.py --experiment A --feature-group ALL_FEATURES
