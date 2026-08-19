@@ -1,0 +1,128 @@
+[
+  {
+    "model": "StackingEnsemble",
+    "experiment": "A",
+    "feature_group": "ELECTORAL_ONLY",
+    "level": "region",
+    "train_metrics": [
+      {
+        "mae": 14.171417536749022,
+        "rmse": 15.895057515292544,
+        "r2": 0.14410843711683852,
+        "bias": 14.108334132278886,
+        "pearson_r": 0.9170420632533095,
+        "spearman_r": 0.8610649047804121,
+        "party": "UR_share",
+        "n_samples": 249
+      },
+      {
+        "mae": 5.184875331786179,
+        "rmse": 6.33679409530794,
+        "r2": -0.06551652974188649,
+        "bias": 4.629695372279628,
+        "pearson_r": 0.7990308311264914,
+        "spearman_r": 0.7774916439953362,
+        "party": "KPRF_share",
+        "n_samples": 249
+      },
+      {
+        "mae": 4.022930241439984,
+        "rmse": 5.026440351083011,
+        "r2": -0.1024369244342418,
+        "bias": 3.922253323404431,
+        "pearson_r": 0.9247001033302095,
+        "spearman_r": 0.9099063616316914,
+        "party": "LDPR_share",
+        "n_samples": 249
+      }
+    ],
+    "test_metrics": [
+      {
+        "mae": 12.62942731908058,
+        "rmse": 14.333663603730285,
+        "r2": -0.06414208017325684,
+        "bias": 11.025536204207736,
+        "pearson_r": 0.7520452387819094,
+        "spearman_r": 0.4835019520591075,
+        "party": "UR_share",
+        "n_samples": 83
+      },
+      {
+        "mae": 9.7171944383459,
+        "rmse": 10.71492575633597,
+        "r2": -4.075336655123179,
+        "bias": 9.050431697350929,
+        "pearson_r": 0.48128060631067887,
+        "spearman_r": 0.19973972545233196,
+        "party": "KPRF_share",
+        "n_samples": 83
+      },
+      {
+        "mae": 3.8630010651700397,
+        "rmse": 4.868125227060402,
+        "r2": 0.4350480515500207,
+        "bias": -1.97421713119461,
+        "pearson_r": 0.7267693518535645,
+        "spearman_r": 0.4622634584813655,
+        "party": "LDPR_share",
+        "n_samples": 83
+      }
+    ],
+    "train_federal": {},
+    "test_federal": {},
+    "test_error_distribution": [
+      {
+        "party": "UR_share",
+        "mean_error": 11.025536204207736,
+        "std_error": 9.214908048660751,
+        "median_error": 13.41589266131367,
+        "q25": 4.2349909886383195,
+        "q75": 17.116851433456176,
+        "min_error": -10.320717658425806,
+        "max_error": 24.725376675290455,
+        "mae": 12.62942731908058,
+        "rmse": 14.333663603730285
+      },
+      {
+        "party": "KPRF_share",
+        "mean_error": 9.050431697350929,
+        "std_error": 5.770661251153552,
+        "median_error": 9.869141148458564,
+        "q25": 6.365245971797943,
+        "q75": 12.104422924754532,
+        "min_error": -10.446034502515985,
+        "max_error": 21.001484835713644,
+        "mae": 9.7171944383459,
+        "rmse": 10.71492575633597
+      },
+      {
+        "party": "LDPR_share",
+        "mean_error": -1.97421713119461,
+        "std_error": 4.476894782747447,
+        "median_error": -1.877435028059411,
+        "q25": -4.960262462705168,
+        "q75": 0.604656374866666,
+        "min_error": -13.823947743287404,
+        "max_error": 7.8906996844364174,
+        "mae": 3.8630010651700397,
+        "rmse": 4.868125227060402
+      }
+    ],
+    "n_train": 249,
+    "n_test": 83,
+    "feature_columns": [
+      "KPRF_share_lag1",
+      "LDPR_share_lag1",
+      "UR_share_lag1",
+      "age_working_share_lag1",
+      "turnout_rate",
+      "turnout_rate_lag1",
+      "urban_population_share_lag1"
+    ],
+    "target_columns": [
+      "UR_share",
+      "KPRF_share",
+      "LDPR_share"
+    ]
+  }
+]

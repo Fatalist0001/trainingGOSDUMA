@@ -264,8 +264,8 @@ trainingGOSDUMA/
 - ✅ **P0 выполнен**: baselines + Linear + Trees + KNN на A/B, по 3 фич-группы. Сводная таблица — `results/benchmark_all_*.csv`. Тесты (26) и `ruff`-lint проходят.
 - ✅ **P1 выполнен**: нейросети (`neural.py`, `run_neural.py`) — проверка Q5.
 - ✅ **P2/P3 выполнены**: временные модели (GRU/LSTM/Transformer, `temporal.py`, `run_temporal.py`) — проверка Q6; **Transformer (ALL) — лучшая модель** (A 6.20, B 6.70).
-- ⏳ **Ablation**: влияние фич-групп и глубины истории (уточнить Q2/Q3) — `make ablation`.
-- ⏳ **Ансамбли (P-ensemble)**: WeightedEnsemble/StackingEnsemble (`ensemble.py`) — проверка Q10.
+- ✅ **Ablation выполнен**: `make ablation` → `results/ablation_feature.csv` (Q2) и `results/ablation_history.csv` (Q3). ROSSTAT помогает при короткой истории; длинная история помогает временным моделям.
+- ✅ **Ансамбли выполнены** (Q10): `WeightedEnsemble`/`StackingEnsemble` (`ensemble.py`). Не превосходят лучшую одиночную модель (Transformer) и даже XGBoost (усреднение слабых баз по KPRF тянет результат вниз).
 - ⏳ **Финальный прогноз 2026**: эксперименты C/D через `predict_2026.py`.
 - ⏳ **Отчёт и визуализация**: `reports/FINAL_MODEL_REPORT.md`, графики.
 

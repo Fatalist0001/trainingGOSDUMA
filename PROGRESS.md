@@ -188,10 +188,17 @@ MAE (усреднён по 5 seeds, средний по партиям, п.п.):
 
 ## 11. Ensemble (PLAN §42-43)
 
-| № | Задача | Статус |
-|---|--------|--------|
-| 11.1 | WeightedEnsemble | ⏳ Скелет в `ensemble.py` |
-| 11.2 | StackingEnsemble | ⏳ Скелет в `ensemble.py` |
+Реализованы в `src/models/ensemble.py` (регистрируются в `registry.py`):
+`WeightedEnsemble` (взвешенное среднее базовых предсказаний, веса = 1/OOF-MAE
+**по каждой партии отдельно**) и `StackingEnsemble` (мета-модель LinearRegression
+на out-of-fold предсказаниях баз). Базы: XGBoost, CatBoost, RandomForest,
+HistGradientBoosting, MLPSklearn, LinearRegression (бейзлайны исключены — не
+используют признаки). Запуск через `run_single_model_backtest`.
+
+| № | Задача | Статус | Результат (MAE, A / B, ALL) |
+|---|--------|--------|------------|
+| 11.1 | WeightedEnsemble | ✅ Работает | 7.91 / 10.83 |
+| 11.2 | StackingEnsemble | ✅ Работает | 8.57 / 10.94 |
 
 ---
 
@@ -281,7 +288,7 @@ MAE (усреднён по 5 seeds, средний по партиям, п.п.):
 | Q7: Какие партии предсказываются лучше? | ⏳ |
 | Q8: Где модели систематически ошибаются? | ⏳ |
 | Q9: Насколько стабилен результат разных seeds? | ⏳ |
-| Q10: Насколько ensemble лучше лучшей модели? | ⏳ |
+| Q10: Насколько ensemble лучше лучшей модели? | ✅ Не лучше. WeightedEnsemble (A 7.91, B 10.83) и StackingEnsemble (A 8.57, B 10.94) уступают как лучшей одиночной модели — Transformer (ALL 6.20/6.70), так и лучшему «плоскому» дереву (XGBoost 7.30/10.46). Базовые модели слабы на KPRF (LinearRegression 23.7, MLPSklearn 13.5 на A), и их усреднение не компенсирует провал по этой партии. Вывод: ансамбль плоских моделей не даёт преимущества над temporal-архитектурами. |
 
 ---
 
@@ -289,7 +296,7 @@ MAE (усреднён по 5 seeds, средний по партиям, п.п.):
 
 1. ✅ **P0/P1/P2/P3 завершены**: P0 (baselines+Linear+Trees+KNN), P1 (MLPSklearn+MLPTorch), P2/P3 (GRU+LSTM+Transformer) запущены на A/B × 3 группы; результаты в `results/benchmark_all_*.csv`.
 2. ✅ **Ablation выполнен**: `make ablation` → `results/ablation_feature.csv` (Q2) и `results/ablation_history.csv` (Q3). ROSSTAT помогает при короткой истории (A); длинная история помогает временным моделям.
-3. **Потом**: ensemble (`ensemble.py`) — WeightedEnsemble/StackingEnsemble (Q10).
+3. ✅ **Ensemble выполнен** (Q10): `WeightedEnsemble`/`StackingEnsemble` в `ensemble.py`. Не превосходят лучшую одиночную модель (Transformer) и даже XGBoost.
 4. **Параллельно**: визуализация (`visualization/plots.py`), отчёт (`reports/FINAL_MODEL_REPORT.md`), `predict_2026.py` (эксперименты C/D).
 
 ---

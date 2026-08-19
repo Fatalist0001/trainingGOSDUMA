@@ -202,7 +202,7 @@ class XGBoostModel(BaseEstimator, RegressorMixin):
         self.model_ = None
         self.target_columns_ = None
 
-    def _create_model(self) -> XGBRegressor:
+    def _create_model(self, early_stopping_rounds: int | None = None) -> XGBRegressor:
         return XGBRegressor(
             n_estimators=self.n_estimators,
             max_depth=self.max_depth,
@@ -214,7 +214,7 @@ class XGBoostModel(BaseEstimator, RegressorMixin):
             reg_lambda=self.reg_lambda,
             objective=self.objective,
             tree_method=self.tree_method,
-            early_stopping_rounds=self.early_stopping_rounds,
+            early_stopping_rounds=early_stopping_rounds,
             n_jobs=self.n_jobs,
             random_state=self.random_state,
             **self.kwargs,
@@ -236,7 +236,9 @@ class XGBoostModel(BaseEstimator, RegressorMixin):
             # Multi-target: fit separate models
             self.model_ = {}
             for col in self.target_columns_:
-                model = self._create_model()
+                model = self._create_model(
+                    early_stopping_rounds=self.early_stopping_rounds if eval_set else None
+                )
                 if eval_set:
                     eval_set_col = [(X_val, y_val[col]) for X_val, y_val in eval_set]
                     model.fit(X, y[col], eval_set=eval_set_col, verbose=verbose)
@@ -244,7 +246,9 @@ class XGBoostModel(BaseEstimator, RegressorMixin):
                     model.fit(X, y[col], verbose=verbose)
                 self.model_[col] = model
         else:
-            model = self._create_model()
+            model = self._create_model(
+                early_stopping_rounds=self.early_stopping_rounds if eval_set else None
+            )
             if eval_set:
                 eval_set_col = [(X_val, y_val.iloc[:, 0]) for X_val, y_val in eval_set]
                 model.fit(X, y.iloc[:, 0], eval_set=eval_set_col, verbose=verbose)
@@ -311,14 +315,14 @@ class CatBoostModel(BaseEstimator, RegressorMixin):
         self.model_ = None
         self.target_columns_ = None
 
-    def _create_model(self) -> CatBoostRegressor:
+    def _create_model(self, early_stopping_rounds: int | None = None) -> CatBoostRegressor:
         return CatBoostRegressor(
             iterations=self.iterations,
             depth=self.depth,
             learning_rate=self.learning_rate,
             l2_leaf_reg=self.l2_leaf_reg,
             loss_function=self.loss_function,
-            early_stopping_rounds=self.early_stopping_rounds,
+            early_stopping_rounds=early_stopping_rounds,
             verbose=self.verbose,
             random_seed=self.random_seed,
             **self.kwargs,
@@ -342,7 +346,9 @@ class CatBoostModel(BaseEstimator, RegressorMixin):
         if y.shape[1] > 1:
             self.model_ = {}
             for col in self.target_columns_:
-                model = self._create_model()
+                model = self._create_model(
+                    early_stopping_rounds=self.early_stopping_rounds if eval_set else None
+                )
                 if eval_set:
                     eval_set_col = [(X_val, y_val[col]) for X_val, y_val in eval_set]
                     model.fit(
@@ -356,7 +362,9 @@ class CatBoostModel(BaseEstimator, RegressorMixin):
                     model.fit(X, y[col], cat_features=cat_features, verbose=self.verbose)
                 self.model_[col] = model
         else:
-            model = self._create_model()
+            model = self._create_model(
+                early_stopping_rounds=self.early_stopping_rounds if eval_set else None
+            )
             if eval_set:
                 eval_set_col = [(X_val, y_val.iloc[:, 0]) for X_val, y_val in eval_set]
                 model.fit(

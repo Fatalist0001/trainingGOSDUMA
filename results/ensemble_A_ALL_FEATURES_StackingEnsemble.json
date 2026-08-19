@@ -1,0 +1,141 @@
+[
+  {
+    "model": "StackingEnsemble",
+    "experiment": "A",
+    "feature_group": "ALL_FEATURES",
+    "level": "region",
+    "train_metrics": [
+      {
+        "mae": 14.65944973616474,
+        "rmse": 16.239458651286675,
+        "r2": 0.1066171044229356,
+        "bias": 14.639478049980017,
+        "pearson_r": 0.9155681198701032,
+        "spearman_r": 0.8815264052713739,
+        "party": "UR_share",
+        "n_samples": 249
+      },
+      {
+        "mae": 4.436538260261363,
+        "rmse": 5.44745344143768,
+        "r2": 0.21257707542675341,
+        "bias": 3.9904671051221654,
+        "pearson_r": 0.8957511705357385,
+        "spearman_r": 0.8812170387130052,
+        "party": "KPRF_share",
+        "n_samples": 249
+      },
+      {
+        "mae": 4.241418705362117,
+        "rmse": 5.408530792391729,
+        "r2": -0.27641323236029836,
+        "bias": 4.030337672860763,
+        "pearson_r": 0.9444985220685278,
+        "spearman_r": 0.9393908748048359,
+        "party": "LDPR_share",
+        "n_samples": 249
+      }
+    ],
+    "test_metrics": [
+      {
+        "mae": 7.6329249316992245,
+        "rmse": 8.825986150853405,
+        "r2": 0.5965295944518325,
+        "bias": 4.008563986493714,
+        "pearson_r": 0.8257307384735486,
+        "spearman_r": 0.5352630032324419,
+        "party": "UR_share",
+        "n_samples": 83
+      },
+      {
+        "mae": 15.063496788914673,
+        "rmse": 15.86503505022853,
+        "r2": -10.12675676925336,
+        "bias": 15.041136313534212,
+        "pearson_r": 0.6434033480954545,
+        "spearman_r": 0.38564711808908103,
+        "party": "KPRF_share",
+        "n_samples": 83
+      },
+      {
+        "mae": 3.0150043597758165,
+        "rmse": 3.874628831439115,
+        "r2": 0.6421110912697738,
+        "bias": -0.9479495296638665,
+        "pearson_r": 0.8145778415310378,
+        "spearman_r": 0.6148913505570919,
+        "party": "LDPR_share",
+        "n_samples": 83
+      }
+    ],
+    "train_federal": {},
+    "test_federal": {},
+    "test_error_distribution": [
+      {
+        "party": "UR_share",
+        "mean_error": 4.008563986493714,
+        "std_error": 7.9109711122631285,
+        "median_error": 4.435730015386355,
+        "q25": 0.057616623790160304,
+        "q75": 10.421108665029625,
+        "min_error": -15.559571385958819,
+        "max_error": 16.085980255088728,
+        "mae": 7.6329249316992245,
+        "rmse": 8.825986150853405
+      },
+      {
+        "party": "KPRF_share",
+        "mean_error": 15.041136313534212,
+        "std_error": 5.076818561640422,
+        "median_error": 16.169968958816053,
+        "q25": 13.116148659979277,
+        "q75": 18.457373251736556,
+        "min_error": -0.9279597282891103,
+        "max_error": 24.403709290760418,
+        "mae": 15.063496788914673,
+        "rmse": 15.86503505022853
+      },
+      {
+        "party": "LDPR_share",
+        "mean_error": -0.9479495296638665,
+        "std_error": 3.7797174408236183,
+        "median_error": -0.8478923261428033,
+        "q25": -3.272909878102288,
+        "q75": 0.9719893786359926,
+        "min_error": -11.466075650633009,
+        "max_error": 7.901390191299549,
+        "mae": 3.0150043597758165,
+        "rmse": 3.874628831439115
+      }
+    ],
+    "n_train": 249,
+    "n_test": 83,
+    "feature_columns": [
+      "GRP_per_capita_lag1",
+      "KPRF_share_lag1",
+      "LDPR_share_lag1",
+      "UR_share_lag1",
+      "age_working_share_lag1",
+      "average_salary_lag1",
+      "birth_rate_lag1",
+      "death_rate_lag1",
+      "doctors_per_1000_lag1",
+      "hospital_beds_per_1000_lag1",
+      "housing_area_per_capita_lag1",
+      "migration_rate_lag1",
+      "natural_population_growth_lag1",
+      "population_lag1",
+      "poverty_rate_lag1",
+      "real_disposable_income_lag1",
+      "turnout_rate",
+      "turnout_rate_lag1",
+      "unemployment_rate_lag1",
+      "urban_population_share_lag1"
+    ],
+    "target_columns": [
+      "UR_share",
+      "KPRF_share",
+      "LDPR_share"
+    ]
+  }
+]
