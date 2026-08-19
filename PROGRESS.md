@@ -28,7 +28,7 @@
 | 0.8 | Реализовать evaluation метрики | ✅ | `metrics.py` с MAE, RMSE, R², bias, correlation, federal aggregation |
 | 0.9 | Реализовать baseline модели | ✅ | `NaivePreviousElection`, `HistoricalMean`, `WeightedHistoricalMean` |
 | 0.10 | Реализовать линейные модели | ✅ | `LinearModel`, `RidgeModel`, `ElasticNetModel` с CV |
-| 0.11 | Реализовать деревянные модели | ✅ | `RandomForest`, `HistGB`, `XGBoost`, `CatBoost` |
+| 0.11 | Реализовать модели на основе деревьев | ✅ | `RandomForest`, `HistGB`, `XGBoost`, `CatBoost` |
 | 0.12 | Создать model registry | ✅ | `registry.py` с P0/P1/P2/P3 категориями |
 | 0.13 | Реализовать backtest runner | ✅ | `backtest.py` с rolling temporal splits |
 | 0.14 | Реализовать JSON tracker | ✅ | `json_tracker.py` для логирования экспериментов |
