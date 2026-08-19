@@ -73,9 +73,8 @@ knn:
 	uv run python scripts/models/run_knn.py --experiment B --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
 
 neural:
-	uv run python scripts/models/run_neural.py --experiment A --feature-group ALL_FEATURES
-	uv run python scripts/models/run_neural.py --experiment B --feature-group ALL_FEATURES
-	uv run python scripts/models/run_neural.py --experiment C --feature-group ALL_FEATURES
+	uv run python scripts/models/run_neural.py --experiment A --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
+	uv run python scripts/models/run_neural.py --experiment B --feature-groups ALL_FEATURES ELECTORAL_ONLY ROSSTAT_ONLY
 
 temporal:
 	@echo "Temporal models not yet implemented"
