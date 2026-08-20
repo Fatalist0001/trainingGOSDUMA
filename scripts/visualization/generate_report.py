@@ -30,6 +30,7 @@ def plot_model_comparison(bench: pd.DataFrame) -> None:
     """Bar chart of MAE by model (ALL_FEATURES), experiments A and B."""
     df = bench[bench["Model"].str.endswith("(ALL_FEATURES)")].copy()
     df["model"] = df["Model"].str.replace(" (ALL_FEATURES)", "", regex=False)
+    df["model"] = df["model"].str.replace(r"^(Baseline|Tabular|Sequential) \| ", "", regex=True)
     df = df.dropna(subset=["A_year_2016", "B_year_2021"])
     df = df.sort_values("A_year_2016")
 
