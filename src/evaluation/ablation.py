@@ -54,9 +54,7 @@ def feature_ablation(
         mae_vals: list[float] = []
         if is_temporal and seeds:
             for s in seeds:
-                r = run_temporal_backtest(
-                    model_name, experiment, fg, level, {"random_state": s}
-                )
+                r = run_temporal_backtest(model_name, experiment, fg, level, {"random_state": s})
                 a = _avg_mae(r)
                 if a is not None:
                     mae_vals.append(a)
@@ -66,9 +64,7 @@ def feature_ablation(
             if a is not None:
                 mae_vals.append(a)
         else:
-            r = run_single_model_backtest(
-                model_name, experiment, fg, level, model_kwargs
-            )
+            r = run_single_model_backtest(model_name, experiment, fg, level, model_kwargs)
             a = _avg_mae(r)
             if a is not None:
                 mae_vals.append(a)

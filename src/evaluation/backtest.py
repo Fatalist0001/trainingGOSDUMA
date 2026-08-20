@@ -16,6 +16,13 @@ from ..evaluation.metrics import (
     federal_aggregation,
     party_metrics,
 )
+from ..evaluation.tuning import (
+    _fit_with_val,
+    refit_kwargs,
+    tune_flat_model,
+    tune_temporal_model,
+    tune_weighted_historical_mean,
+)
 from ..models.registry import get_model
 from ..utils.io import save_predictions
 
@@ -113,79 +120,81 @@ def run_single_model_backtest(
     val_scaled = scaler.transform(val_df) if has_val else val_df
     test_scaled = scaler.transform(test_df)
 
-    # Get model
-    model = get_model(model_name, **model_kwargs)
-
     # Prepare targets
     y_train = train_scaled[target_columns]
     y_val = val_scaled[target_columns] if has_val else None
 
-    # Fit model - baselines need year/region_id and target columns (per party), other models use feature_columns
+    # Baselines need year/region_id and target columns (per party), other models use feature_columns.
     is_baseline = model_name in [
         "NaivePreviousElection",
         "HistoricalMean",
         "WeightedHistoricalMean",
     ]
 
+    # Two-stage protocol (see AGENTS.md):
+    #   1) hyperparameters are selected ONLY on the validation year (past -> future);
+    #   2) the final model is refit on train+val (all data strictly before test)
+    #      and only then scored on the test year.
+    tuned_params: dict[str, Any] = {}
+    tuning_mae: float | None = None
+
     if is_baseline:
-        # Baselines are single-party - run for each target column separately
+        if model_name == "WeightedHistoricalMean" and has_val:
+            tune_res = tune_weighted_historical_mean(train_df, val_df, target_columns)
+            tuned_params = tune_res["params"] or {}
+            tuning_mae = tune_res["score"]
+
+        # Refit on train+val with the chosen decay.
+        fit_df = pd.concat([train_df, val_df], axis=0) if has_val else train_df
         all_train_preds = []
         all_test_preds = []
 
-        for i, target_col in enumerate(target_columns):
-            # Create single-party model
-            single_model = get_model(model_name, party_column=target_col, **model_kwargs)
-
-            # Prepare single-party targets
-            y_train_single = train_df[target_col]
-            y_val_single = val_df[target_col] if has_val else None
+        for target_col in target_columns:
+            kwargs = dict(model_kwargs)
+            kwargs.update(tuned_params)
+            single_model = get_model(model_name, party_column=target_col, **kwargs)
 
             train_cols = ["region_id", "year"] + feature_columns + [target_col]
-            val_cols = ["region_id", "year"] + feature_columns + [target_col]
+            single_model.fit(fit_df[train_cols], fit_df[target_col])
 
-            if has_val:
-                if (
-                    hasattr(single_model, "fit")
-                    and "eval_set" in single_model.fit.__code__.co_varnames
-                ):
-                    single_model.fit(
-                        train_df[train_cols],
-                        y_train_single,
-                        eval_set=[(val_df[val_cols], y_val_single)],
-                        verbose=False,
-                    )
-                else:
-                    single_model.fit(train_df[train_cols], y_train_single)
-            else:
-                single_model.fit(train_df[train_cols], y_train_single)
+            all_train_preds.append(single_model.predict(train_df[train_cols]))
+            all_test_preds.append(single_model.predict(test_df[train_cols]))
 
-            # Predict
-            train_pred_single = single_model.predict(train_df[train_cols])
-            test_pred_single = single_model.predict(test_df[train_cols])
-
-            all_train_preds.append(train_pred_single)
-            all_test_preds.append(test_pred_single)
-
-        # Combine predictions
         train_pred = np.column_stack(all_train_preds)
         test_pred = np.column_stack(all_test_preds)
     else:
-        # Regular models use feature_columns (support multi-output)
+        # Temporal-validated tuning: candidates are fit on train and scored on val.
+        best_candidate = None
         if has_val:
-            if hasattr(model, "fit") and "eval_set" in model.fit.__code__.co_varnames:
-                model.fit(
-                    train_scaled[feature_columns],
-                    y_train,
-                    eval_set=[(val_scaled[feature_columns], y_val)],
-                    verbose=False,
-                )
-            else:
-                model.fit(train_scaled[feature_columns], y_train)
-        else:
-            model.fit(train_scaled[feature_columns], y_train)
+            tune_res = tune_flat_model(
+                model_name,
+                train_scaled[feature_columns],
+                y_train,
+                val_scaled[feature_columns],
+                y_val,
+            )
+            tuned_params = tune_res["params"] or {}
+            tuning_mae = tune_res["score"]
+            best_candidate = tune_res["model"]
 
-        train_pred = model.predict(train_scaled[feature_columns])
-        test_pred = model.predict(test_scaled[feature_columns])
+        # Refit the best config on train+val, then predict train/test.
+        combined_scaled = pd.concat([train_scaled, val_scaled], axis=0) if has_val else train_scaled
+        combined_y = pd.concat([y_train, y_val], axis=0) if has_val else y_train
+
+        final_kwargs = refit_kwargs(model_name, tuned_params, best_candidate)
+        final_kwargs.update(model_kwargs)
+        final_model = get_model(model_name, **final_kwargs)
+        _fit_with_val(
+            final_model,
+            combined_scaled[feature_columns],
+            combined_y,
+            None,
+            None,
+            years=combined_scaled["year"],
+        )
+
+        train_pred = final_model.predict(train_scaled[feature_columns])
+        test_pred = final_model.predict(test_scaled[feature_columns])
 
     # Create prediction DataFrames
     train_pred_df = pd.DataFrame(
@@ -201,8 +210,12 @@ def run_single_model_backtest(
         test_pred_df = normalize_compositional(test_pred_df, target_columns)
 
     # Combine actuals and predictions
-    train_results = pd.concat([train_df[target_columns], train_pred_df], axis=1)
-    test_results = pd.concat([test_df[target_columns], test_pred_df], axis=1)
+    train_results = pd.concat(
+        [train_df[["region_id", "year", "type"] + target_columns], train_pred_df], axis=1
+    )
+    test_results = pd.concat(
+        [test_df[["region_id", "year", "type"] + target_columns], test_pred_df], axis=1
+    )
 
     # Compute metrics
     train_metrics = party_metrics(
@@ -212,21 +225,22 @@ def run_single_model_backtest(
         test_results, target_columns, pred_suffix="_pred", actual_suffix=""
     )
 
-    # Federal aggregation
-    weight_col = "electorate" if "electorate" in train_df.columns else None
-    if weight_col is None and "population" in train_df.columns:
-        weight_col = "population"
+    # Federal aggregation: weight regional predictions by the actual electorate /
+    # turnout / valid-vote totals aggregated from RED (no uniform fallback).
+    from ..data.loader import load_electoral_weights
 
-    train_federal = (
-        federal_aggregation(train_results, target_columns, weight_column=weight_col or "electorate")
-        if weight_col
-        else {}
-    )
-    test_federal = (
-        federal_aggregation(test_results, target_columns, weight_column=weight_col or "electorate")
-        if weight_col
-        else {}
-    )
+    weight_meta = ["electorate", "turnout", "valid", "invalid"]
+    weights = load_electoral_weights()[["region_id", "year", "type"] + weight_meta]
+
+    def _federal(results: pd.DataFrame) -> dict[str, dict[str, float]]:
+        merged = results.merge(weights, on=["region_id", "year", "type"], how="left")
+        return federal_aggregation(merged, target_columns)
+
+    # Train may pool several years; report federal aggregation per year.
+    train_federal: dict[str, dict[str, dict[str, float]]] = {}
+    for year in sorted(train_df["year"].unique()):
+        train_federal[int(year)] = _federal(train_results[train_results["year"] == year])
+    test_federal = _federal(test_results)
 
     # Error distributions
     test_error_dist = error_distribution(
@@ -251,6 +265,8 @@ def run_single_model_backtest(
         "train_federal": train_federal,
         "test_federal": test_federal,
         "test_error_distribution": test_error_dist.to_dict("records"),
+        "tuned_params": tuned_params,
+        "tuning_mae": tuning_mae,
         "n_train": len(train_df),
         "n_test": len(test_df),
         "feature_columns": feature_columns,
@@ -299,23 +315,141 @@ def run_multioutput_backtest(
     feature_group: str = "ALL_FEATURES",
     level: str = "region",
     model_kwargs: dict | None = None,
+    train_years_override: list[int] | None = None,
 ) -> dict[str, Any]:
-    """
-    Run backtest using multi-output model (Approach B).
+    """Run an *independent per-party* backtest (compositional approach).
 
-    Returns:
-        Dictionary with metrics and metadata
+    Unlike ``run_single_model_backtest`` (one shared model trained on all
+    targets jointly), this fits one regression per party with its own
+    temporal-validated hyperparameters. Predictions are NOT post-hoc normalized:
+    targets are real shares summing to ~78%.
+
+    Returns the same dict shape as ``run_single_model_backtest`` so it
+    integrates with the benchmark aggregator.
     """
-    # For now, use the same logic but with multi-output model
-    # The model should handle multiple targets internally
-    return run_single_model_backtest(
-        model_name,
-        experiment_name,
-        feature_group,
-        level,
-        model_kwargs,
-        normalize_predictions=False,  # Multi-output handles this internally
+    from ..data.preprocessing import StandardScalerWrapper
+
+    model_kwargs = model_kwargs or {}
+
+    train_df, val_df, test_df, feature_columns, target_columns = prepare_data_for_experiment(
+        experiment_name, feature_group, level, train_years_override
     )
+    has_val = len(val_df) > 0
+    if len(test_df) == 0:
+        return {
+            "model": model_name,
+            "experiment": experiment_name,
+            "feature_group": feature_group,
+            "level": level,
+            "n_train": len(train_df),
+            "n_test": 0,
+        }
+
+    scaler = StandardScalerWrapper(scaler_type="standard", columns=feature_columns)
+    train_scaled = scaler.fit_transform(train_df)
+    val_scaled = scaler.transform(val_df) if has_val else val_df
+    test_scaled = scaler.transform(test_df)
+
+    y_train = train_scaled[target_columns]
+    y_val = val_scaled[target_columns] if has_val else None
+
+    # Two-stage protocol per party: tune on val -> refit on train+val -> predict.
+    tuned_params: dict[str, dict[str, Any]] = {}
+    tuning_mae: float | None = None
+
+    all_train_preds: list[np.ndarray] = []
+    all_test_preds: list[np.ndarray] = []
+
+    for party in target_columns:
+        best_candidate = None
+        params: dict[str, Any] = {}
+        if has_val:
+            tune_res = tune_flat_model(
+                model_name,
+                train_scaled[feature_columns],
+                y_train[[party]],
+                val_scaled[feature_columns],
+                y_val[[party]],
+            )
+            params = tune_res["params"] or {}
+            tuning_mae = tune_res["score"]
+            best_candidate = tune_res["model"]
+        tuned_params[party] = params
+
+        combined_scaled = pd.concat([train_scaled, val_scaled], axis=0) if has_val else train_scaled
+        combined_y = (
+            pd.concat([y_train[[party]], y_val[[party]]], axis=0) if has_val else y_train[[party]]
+        )
+
+        final_kwargs = refit_kwargs(model_name, params, best_candidate)
+        final_kwargs.update(model_kwargs)
+        final_model = get_model(model_name, **final_kwargs)
+        _fit_with_val(
+            final_model,
+            combined_scaled[feature_columns],
+            combined_y,
+            None,
+            None,
+            years=combined_scaled["year"],
+        )
+        all_train_preds.append(final_model.predict(train_scaled[feature_columns]).reshape(-1))
+        all_test_preds.append(final_model.predict(test_scaled[feature_columns]).reshape(-1))
+
+    train_pred = np.column_stack(all_train_preds)
+    test_pred = np.column_stack(all_test_preds)
+
+    train_pred_df = pd.DataFrame(
+        train_pred, columns=[f"{c}_pred" for c in target_columns], index=train_df.index
+    )
+    test_pred_df = pd.DataFrame(
+        test_pred, columns=[f"{c}_pred" for c in target_columns], index=test_df.index
+    )
+
+    train_results = pd.concat(
+        [train_df[["region_id", "year", "type"] + target_columns], train_pred_df], axis=1
+    )
+    test_results = pd.concat(
+        [test_df[["region_id", "year", "type"] + target_columns], test_pred_df], axis=1
+    )
+
+    train_metrics = party_metrics(
+        train_results, target_columns, pred_suffix="_pred", actual_suffix=""
+    )
+    test_metrics = party_metrics(
+        test_results, target_columns, pred_suffix="_pred", actual_suffix=""
+    )
+
+    from ..data.loader import load_electoral_weights
+
+    weight_meta = ["electorate", "turnout", "valid", "invalid"]
+    weights = load_electoral_weights()[["region_id", "year", "type"] + weight_meta]
+
+    def _federal(results: pd.DataFrame) -> dict[str, dict[str, float]]:
+        merged = results.merge(weights, on=["region_id", "year", "type"], how="left")
+        return federal_aggregation(merged, target_columns)
+
+    train_federal: dict[str, dict[str, dict[str, float]]] = {}
+    for year in sorted(train_df["year"].unique()):
+        train_federal[int(year)] = _federal(train_results[train_results["year"] == year])
+    test_federal = _federal(test_results)
+
+    return {
+        "model": model_name,
+        "experiment": experiment_name,
+        "feature_group": feature_group,
+        "level": level,
+        "approach": "independent_per_party",
+        "train_metrics": train_metrics.to_dict("records"),
+        "test_metrics": test_metrics.to_dict("records"),
+        "train_federal": train_federal,
+        "test_federal": test_federal,
+        "tuned_params": tuned_params,
+        "tuning_mae": tuning_mae,
+        "n_train": len(train_df),
+        "n_test": len(test_df),
+        "feature_columns": feature_columns,
+        "target_columns": target_columns,
+    }
 
 
 def _build_region_sequences(
@@ -350,6 +484,29 @@ def _build_region_sequences(
     return X_list, y_list
 
 
+def _parl_feature_columns(df: pd.DataFrame, feature_group: str, level: str) -> list[str]:
+    """Feature columns for temporal models, dropping columns constant in parl rows.
+
+    The full raw df also contains presidential rows, so some columns populated
+    only there (e.g. ``leading_candidate_share``) would otherwise survive a
+    full-frame constant check and inject all-NaN features into the training
+    sequences. Constantness is therefore evaluated on parliamentary rows only.
+    """
+    from ..data.features import (
+        get_feature_columns,
+        select_features,
+    )
+
+    processed = select_features(df, feature_group)
+    feature_columns = get_feature_columns(processed, feature_group)
+    parl_mask = df["type"] == "parl"
+    non_constant = [c for c in feature_columns if df.loc[parl_mask, c].nunique(dropna=True) > 1]
+    dropped = sorted(set(feature_columns) - set(non_constant))
+    if dropped:
+        print(f"[preprocess] Dropping {len(dropped)} constant feature(s): {dropped}")
+    return non_constant
+
+
 def run_temporal_backtest(
     model_name: str,
     experiment_name: str,
@@ -366,7 +523,6 @@ def run_temporal_backtest(
     run_single_model_backtest so it integrates with the benchmark aggregator.
     """
     from ..data.features import (
-        get_feature_columns,
         get_target_columns_from_df,
         select_features,
     )
@@ -379,6 +535,7 @@ def run_temporal_backtest(
     if train_years_override is not None:
         split.train_years = list(train_years_override)
     train_years = sorted(split.train_years)
+    val_years = list(split.val_years) if split.val_years else []
     test_years = split.test_years
     if not test_years:
         return {
@@ -394,26 +551,24 @@ def run_temporal_backtest(
     # Raw df keeps identifiers (region_id, year) needed for sequence building;
     # feature/target columns are taken from the processed (feature-selected) view.
     df = load_raw_region()
-    processed = select_features(df, feature_group)
-    target_columns = get_target_columns_from_df(processed, level)
-    feature_columns = get_feature_columns(processed, feature_group)
-    non_constant = [c for c in feature_columns if df[c].nunique(dropna=True) > 1]
-    dropped = sorted(set(feature_columns) - set(non_constant))
-    if dropped:
-        print(f"[preprocess] Dropping {len(dropped)} constant feature(s): {dropped}")
-    feature_columns = non_constant
+    target_columns = get_target_columns_from_df(select_features(df, feature_group), level)
+    feature_columns = _parl_feature_columns(df, feature_group, level)
+
+    def _samples(target_years: list[int], context_years: list[int]):
+        Xs: list[np.ndarray] = []
+        ys: list[np.ndarray] = []
+        for target_year in target_years:
+            if target_year == min(train_years):
+                continue
+            x, y = _build_region_sequences(
+                df, feature_columns, target_columns, context_years, target_year
+            )
+            Xs.extend(x)
+            ys.extend(y)
+        return Xs, ys
 
     # Training samples: each train year (with prior context) is a target.
-    X_train: list[np.ndarray] = []
-    y_train: list[np.ndarray] = []
-    for target_year in train_years:
-        if target_year == min(train_years):
-            continue
-        Xs, ys = _build_region_sequences(
-            df, feature_columns, target_columns, train_years, target_year
-        )
-        X_train.extend(Xs)
-        y_train.extend(ys)
+    X_train, y_train = _samples(train_years, train_years)
 
     if not X_train:
         return {
@@ -425,6 +580,12 @@ def run_temporal_backtest(
             "n_train": 0,
             "n_test": 0,
         }
+
+    # Validation samples: the val year predicted from train context (past -> future).
+    has_val = bool(val_years)
+    X_val, y_val = [], []
+    if has_val:
+        X_val, y_val = _samples([val_years[0]], train_years)
 
     # Test samples: predict the test year from all train years as context.
     test_year = test_years[0]
@@ -445,8 +606,26 @@ def run_temporal_backtest(
     y_train_arr = np.stack(y_train).astype(np.float32)  # (n_train, T)
     y_test_arr = np.stack(y_test).astype(np.float32)  # (n_test, T)
 
-    model = get_model(model_name, **model_kwargs)
-    model.fit(X_train, y_train_arr)
+    # Two-stage protocol: tune on val -> refit on train+val -> predict test.
+    tuned_params: dict[str, Any] = {}
+    tuning_mae: float | None = None
+    if has_val:
+        tune_res = tune_temporal_model(model_name, X_train, y_train_arr, X_val, y_val)
+        tuned_params = tune_res["params"] or {}
+        tuning_mae = tune_res["score"]
+
+    final_kwargs = refit_kwargs(model_name, tuned_params, None)
+    final_kwargs.update(model_kwargs)
+    model = get_model(model_name, **final_kwargs)
+
+    if has_val and X_val:
+        # Refit on train+val samples (all data strictly before test).
+        X_refit = list(X_train) + list(X_val)
+        y_refit = np.concatenate([y_train_arr, np.stack(y_val).astype(np.float32)], axis=0)
+        model.fit(X_refit, y_refit)
+    else:
+        model.fit(X_train, y_train_arr)
+
     pred = model.predict(X_test)  # (n_test, T)
 
     # Per-party MAE (ignore NaN).
@@ -466,6 +645,8 @@ def run_temporal_backtest(
         "feature_group": feature_group,
         "level": level,
         "test_metrics": test_metrics,
+        "tuned_params": tuned_params,
+        "tuning_mae": tuning_mae,
         "n_train": len(X_train),
         "n_test": len(X_test),
         "feature_columns": feature_columns,
@@ -479,7 +660,7 @@ def forecast_temporal(
     feature_group: str = "ALL_FEATURES",
     level: str = "region",
     model_kwargs: dict | None = None,
-    normalize_predictions: bool = True,
+    normalize_predictions: bool = False,
 ) -> dict[str, Any]:
     """Train on all history and forecast a future election year (no ground truth).
 
@@ -489,7 +670,6 @@ def forecast_temporal(
     no ground truth).
     """
     from ..data.features import (
-        get_feature_columns,
         get_target_columns_from_df,
         select_features,
     )
@@ -502,14 +682,8 @@ def forecast_temporal(
     test_year = split.test_years[0] if split.test_years else None
 
     df = load_raw_region()
-    processed = select_features(df, feature_group)
-    target_columns = get_target_columns_from_df(processed, level)
-    feature_columns = get_feature_columns(processed, feature_group)
-    non_constant = [c for c in feature_columns if df[c].nunique(dropna=True) > 1]
-    dropped = sorted(set(feature_columns) - set(non_constant))
-    if dropped:
-        print(f"[preprocess] Dropping {len(dropped)} constant feature(s): {dropped}")
-    feature_columns = non_constant
+    target_columns = get_target_columns_from_df(select_features(df, feature_group), level)
+    feature_columns = _parl_feature_columns(df, feature_group, level)
 
     # Training sequences (context -> next historical election).
     X_train: list[np.ndarray] = []
@@ -534,6 +708,16 @@ def forecast_temporal(
         }
 
     # Forecast sequences: each region's full history context -> future year.
+    # The most recent presidential election (e.g. 2024 for 2026) is appended as
+    # a synthetic final context element so fresh presidential results inform the
+    # forecast. Its signal is folded into the lag columns (``pres_turnout_lag``,
+    # ``pres_leading_candidate_share_lag``) to stay consistent with the parl-row
+    # feature distribution the model was trained on.
+    from ..data.presidential_features import _most_recent_pres_year
+
+    pres_years = sorted(df.loc[df["type"] == "pres", "year"].unique())
+    recent_pres = _most_recent_pres_year(pres_years, int(test_year)) if test_year else None
+
     region_col, year_col = "region_id", "year"
     X_test: list[np.ndarray] = []
     region_ids: list = []
@@ -542,7 +726,14 @@ def forecast_temporal(
         ctx = [y for y in train_years if y in grp.index]
         if not ctx:
             continue
-        seq = grp.loc[sorted(ctx), feature_columns].values.astype(np.float32)
+        rows = grp.loc[sorted(ctx), feature_columns].copy()
+        if recent_pres is not None and recent_pres in grp.index:
+            pres_row = grp.loc[recent_pres].copy()
+            pres_row["pres_turnout_lag"] = pres_row["turnout_rate"]
+            pres_row["pres_leading_candidate_share_lag"] = pres_row["leading_candidate_share"]
+            pres_row["leading_candidate_share"] = np.nan
+            rows = pd.concat([rows, pres_row.to_frame().T[feature_columns]])
+        seq = rows.values.astype(np.float32)
         if seq.shape[0] == 0:
             continue
         X_test.append(seq)

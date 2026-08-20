@@ -37,11 +37,15 @@ class MLPSklearn(BaseEstimator, RegressorMixin):
         alpha: float = 0.0001,
         learning_rate_init: float = 0.001,
         max_iter: int = 500,
-        early_stopping: bool = True,
+        early_stopping: bool = False,
         validation_fraction: float = 0.15,
         random_state: int = 42,
         **kwargs: Any,
     ):
+        # NOTE: sklearn MLP cannot consume an external validation set, so
+        # ``early_stopping`` is disabled by default: its internal split shuffles
+        # region-year rows randomly, which violates the temporal-split principle.
+        # Early stopping is delegated to external temporal-validated tuning.
         # Coerce hidden_layer_sizes: yaml grids may pass a list of lists.
         if (
             isinstance(hidden_layer_sizes, list)
@@ -143,7 +147,13 @@ class MLPTorch(BaseEstimator, RegressorMixin):
         self.y_scaler_ = None
         self.device_ = None
 
-    def fit(self, X: pd.DataFrame, y: pd.DataFrame | pd.Series):
+    def fit(
+        self,
+        X: pd.DataFrame,
+        y: pd.DataFrame | pd.Series,
+        X_val: pd.DataFrame | None = None,
+        y_val: pd.DataFrame | None = None,
+    ):
         if isinstance(y, pd.Series):
             y = y.to_frame()
 
@@ -166,21 +176,19 @@ class MLPTorch(BaseEstimator, RegressorMixin):
         X_t = torch.from_numpy(X_np).to(device)
         y_t = torch.from_numpy(y_scaled).to(device)
 
-        # Train/validation split for early stopping.
-        n = X_t.shape[0]
-        if self.patience and n >= 10:
-            n_val = max(1, int(0.15 * n))
-            perm = torch.randperm(n)
-            val_idx = perm[:n_val]
-            train_idx = perm[n_val:]
-        else:
-            train_idx = torch.arange(n)
-            val_idx = train_idx
+        # Early stopping set: caller-provided validation year (temporal split,
+        # no random shuffle). Without one (final forecast) track train loss only.
+        use_val = False
+        if X_val is not None and y_val is not None and self.patience:
+            X_val_np = X_val.values.astype(np.float32)
+            y_val_np = self.y_scaler_.transform(
+                y_val.values.astype(np.float32)
+            )
+            X_val_t = torch.from_numpy(X_val_np).to(device)
+            y_val_t = torch.from_numpy(y_val_np.astype(np.float32)).to(device)
+            use_val = True
 
-        X_train, y_train = X_t[train_idx], y_t[train_idx]
-        X_val, y_val = X_t[val_idx], y_t[val_idx]
-
-        train_ds = torch.utils.data.TensorDataset(X_train, y_train)
+        train_ds = torch.utils.data.TensorDataset(X_t, y_t)
         train_loader = torch.utils.data.DataLoader(
             train_ds, batch_size=min(self.batch_size, len(train_ds)), shuffle=True
         )
@@ -205,8 +213,10 @@ class MLPTorch(BaseEstimator, RegressorMixin):
 
             net.eval()
             with torch.no_grad():
-                val_pred = net(X_val)
-                val_loss = loss_fn(val_pred, y_val).item()
+                if use_val:
+                    val_loss = loss_fn(net(X_val_t), y_val_t).item()
+                else:
+                    val_loss = loss_fn(net(X_t), y_t).item()
 
             if val_loss < best_val:
                 best_val = val_loss
@@ -214,7 +224,7 @@ class MLPTorch(BaseEstimator, RegressorMixin):
                 epochs_no_improve = 0
             else:
                 epochs_no_improve += 1
-                if self.patience and epochs_no_improve >= self.patience:
+                if self.patience and use_val and epochs_no_improve >= self.patience:
                     break
 
         if best_state is not None:

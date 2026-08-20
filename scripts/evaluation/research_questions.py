@@ -33,6 +33,7 @@ MODEL_CLASSES = {
     "tree": ["RandomForest", "HistGradientBoosting", "XGBoost", "CatBoost", "KNN"],
     "neural": ["MLPSklearn", "MLPTorch"],
     "temporal": ["GRU", "LSTM", "Transformer"],
+    "ensemble": ["WeightedEnsemble", "StackingEnsemble"],
 }
 
 PARTIES = ["UR_share", "KPRF_share", "LDPR_share"]
@@ -53,7 +54,7 @@ def q4_linear_vs_nonlinear() -> None:
     bm = pd.read_csv(bm_path[-1])
     rows = []
     for _, r in bm.iterrows():
-        model_name = str(r["Model"]).split(" (")[0]
+        model_name = str(r["Model"]).split(" | ")[-1].split(" (")[0]
         group = str(r["Model"]).split("(")[1].rstrip(")") if "(" in str(r["Model"]) else ""
         if group != "ALL_FEATURES":
             continue
@@ -71,12 +72,7 @@ def q4_linear_vs_nonlinear() -> None:
     if df.empty:
         print("[Q4] no ALL_FEATURES rows, skipping")
         return
-    summary = (
-        df.groupby("Class")[["A_MAE", "B_MAE", "Mean_MAE"]]
-        .mean()
-        .round(3)
-        .reset_index()
-    )
+    summary = df.groupby("Class")[["A_MAE", "B_MAE", "Mean_MAE"]].mean().round(3).reset_index()
     save_results(summary.to_dict("records"), "q4_model_class_mae")
     save_results(df.to_dict("records"), "q4_model_class_mae_detail")
     print("[Q4] done:\n", summary.to_string(index=False))
@@ -108,9 +104,11 @@ def _collect_json_metrics() -> list[dict]:
             for party in PARTIES:
                 val = next((m["mae"] for m in tm if m.get("party") == party), np.nan)
                 row[party] = val
-            row["Mean_MAE"] = np.nanmean(
-                [row[p] for p in PARTIES if not np.isnan(row[p])]
-            ) if not all(np.isnan(row[p]) for p in PARTIES) else np.nan
+            row["Mean_MAE"] = (
+                np.nanmean([row[p] for p in PARTIES if not np.isnan(row[p])])
+                if not all(np.isnan(row[p]) for p in PARTIES)
+                else np.nan
+            )
             rows.append(row)
     return rows
 
@@ -125,9 +123,7 @@ def q7_party_mae() -> None:
     df = df[df["Experiment"].isin(["A", "B"])].copy()
     df["Model"] = df["Model"].str.replace("_share", "", regex=False)
     party_cols = [p.replace("_share", "") for p in PARTIES]
-    df.columns = [
-        c.replace("_share", "") if c in PARTIES else c for c in df.columns
-    ]
+    df.columns = [c.replace("_share", "") if c in PARTIES else c for c in df.columns]
     for p in party_cols:
         df[p] = pd.to_numeric(df[p], errors="coerce")
     df["Mean_MAE"] = df[party_cols].mean(axis=1)
@@ -202,7 +198,7 @@ def q8_regional_errors() -> None:
     print("[Q8] done. Worst 10 regions by mean MAE across models:")
     for exp in ["A", "B"]:
         sub = agg[agg["Experiment"] == exp].sort_values("region_mae", ascending=False)
-        print(f"  Experiment {exp} (test {2016 if exp=='A' else 2021}):")
+        print(f"  Experiment {exp} (test {2016 if exp == 'A' else 2021}):")
         print(sub.head(10).to_string(index=False))
     print("\n[Q8] best 5 regions:")
     for exp in ["A", "B"]:

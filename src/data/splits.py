@@ -11,8 +11,14 @@ from .loader import load_precinct, load_region
 
 
 def load_raw_region() -> pd.DataFrame:
-    """Load region data without feature selection (for splitting)."""
-    return load_region(apply_feature_selection=False)
+    """Load region data without feature selection (for splitting).
+
+    Includes presidential lag features (``pres_turnout_lag``,
+    ``pres_leading_candidate_share_lag``) computed from past presidential rows.
+    """
+    from .presidential_features import add_presidential_features
+
+    return add_presidential_features(load_region(apply_feature_selection=False))
 
 
 def load_raw_precinct() -> pd.DataFrame:

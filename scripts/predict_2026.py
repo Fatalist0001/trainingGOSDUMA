@@ -21,6 +21,7 @@ import pandas as pd
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
+from src.data.loader import load_electoral_weights
 from src.evaluation.backtest import BASELINE_NAMES, forecast_baseline, forecast_temporal
 from src.utils.io import get_output_dirs
 
@@ -33,9 +34,14 @@ def federal_forecast(pred_df: pd.DataFrame, target_columns: list[str], weight_co
         weights = pd.Series(1.0, index=pred_df.index)
     w = weights.fillna(weights.mean()) if weights.notna().any() else weights
     total = w.sum()
-    return {
-        c: float((pred_df[p] * w).sum() / total) for c, p in zip(target_columns, pred_cols)
-    }
+    return {c: float((pred_df[p] * w).sum() / total) for c, p in zip(target_columns, pred_cols)}
+
+
+def load_2021_valid_weights() -> pd.DataFrame:
+    """Federal weights proxy for 2026: last known valid votes (2021 parl)."""
+    weights = load_electoral_weights()
+    weights = weights[(weights["type"] == "parl") & (weights["year"] == 2021)]
+    return weights[["region_id", "valid", "turnout", "electorate"]]
 
 
 def main():
@@ -93,12 +99,12 @@ def main():
         avg.to_csv(out_path, index=False)
         print(f"  Saved per-region forecast: {out_path} ({len(avg)} regions)")
 
-        # Federal-level (weighted by electorate if available).
-        weight_col = "electorate" if "electorate" in avg.columns else (
-            "population" if "population" in avg.columns else None
-        )
-        fed = federal_forecast(avg, target_columns, weight_col or "region_id")
-        print("  Federal forecast (avg %):")
+        # Federal-level: weight by last known valid votes (2021 parl) as proxy.
+        # There are no 2026 electorate figures at forecast time.
+        weights = load_2021_valid_weights()
+        avg = avg.merge(weights, on="region_id", how="left")
+        fed = federal_forecast(avg, target_columns, "valid")
+        print("  Federal forecast (weighted by valid votes 2021, avg %):")
         for party, val in fed.items():
             print(f"    {party}: {val:.2f}")
 

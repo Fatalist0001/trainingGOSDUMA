@@ -77,6 +77,17 @@ def load_elections_metadata(dataset_root: str | Path | None = None) -> pd.DataFr
     return pd.read_csv(file_path)
 
 
+def load_electoral_weights(dataset_root: str | Path | None = None) -> pd.DataFrame:
+    """Load federal aggregation weights (electorate/turnout/valid) by region-event.
+
+    Built from RED precinct data by ``scripts/data/build_electoral_weights.py``.
+    Columns: region_id, year, type, electorate, turnout, valid, invalid.
+    """
+    root = Path(dataset_root) if dataset_root else _get_dataset_root()
+    file_path = root / "data" / "processed" / "electoral_weights.parquet"
+    return pd.read_parquet(file_path)
+
+
 def get_party_list(level: Literal["region", "precinct"] = "region") -> list[str]:
     """
     Get list of parties dynamically from data.

@@ -118,7 +118,7 @@ class _TemporalModel(BaseEstimator, RegressorMixin):
         self.y_imputer_ = None
         self.device_ = None
 
-    def fit(self, X: list[np.ndarray], y: np.ndarray):
+    def fit(self, X: list[np.ndarray], y: np.ndarray, X_val=None, y_val=None):
         _set_seed(self.random_state)
         y = np.asarray(y, dtype=np.float32)
         self.target_columns_ = list(range(y.shape[1]))
@@ -156,20 +156,22 @@ class _TemporalModel(BaseEstimator, RegressorMixin):
         X_pad, lengths = _pad_sequences(X_scaled, device)
         y_t = torch.from_numpy(y_scaled).to(device)
 
-        # Internal train/val split for early stopping (no leakage: each sample
-        # is an independent region-year target).
-        n = len(X)
-        if self.patience and n >= 10:
-            idx = np.arange(n)
-            np.random.shuffle(idx)
-            n_val = max(1, int(0.15 * n))
-            val_idx, train_idx = idx[:n_val], idx[n_val:]
+        # Early stopping set: the caller may provide a strictly-past validation
+        # year (temporal split, no random shuffle). Without one (e.g. final
+        # forecast), early stopping tracks the training loss only.
+        if X_val is not None and self.patience:
+            y_val = np.asarray(y_val, dtype=np.float32)
+            X_val_imp = [self.x_imputer_.transform(x.astype(np.float32)) for x in X_val]
+            X_val_scaled = [self.x_scaler_.transform(x) for x in X_val_imp]
+            X_val_pad, L_val = _pad_sequences(X_val_scaled, device)
+            y_val_scaled = self.y_scaler_.transform(self.y_imputer_.transform(y_val))
+            y_val_t = torch.from_numpy(y_val_scaled.astype(np.float32)).to(device)
+            use_val = True
         else:
-            train_idx = np.arange(n)
-            val_idx = train_idx
+            use_val = False
 
+        train_idx = np.arange(len(X))
         X_train_t, y_train_t, L_train = X_pad[train_idx], y_t[train_idx], lengths[train_idx]
-        X_val, y_val, L_val = X_pad[val_idx], y_t[val_idx], lengths[val_idx]
 
         optimizer = torch.optim.Adam(
             net.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay
@@ -191,8 +193,10 @@ class _TemporalModel(BaseEstimator, RegressorMixin):
 
             net.eval()
             with torch.no_grad():
-                val_pred = net(X_val, L_val)
-                val_loss = loss_fn(val_pred, y_val).item()
+                if use_val:
+                    val_loss = loss_fn(net(X_val_pad, L_val), y_val_t).item()
+                else:
+                    val_loss = loss_fn(net(X_train_t, L_train), y_train_t).item()
 
             if val_loss < best_val:
                 best_val = val_loss
@@ -200,7 +204,7 @@ class _TemporalModel(BaseEstimator, RegressorMixin):
                 epochs_no_improve = 0
             else:
                 epochs_no_improve += 1
-                if self.patience and epochs_no_improve >= self.patience:
+                if self.patience and use_val and epochs_no_improve >= self.patience:
                     break
 
         if best_state is not None:

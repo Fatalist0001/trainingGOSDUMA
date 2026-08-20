@@ -12,7 +12,7 @@ sys.path.insert(0, str(project_root))
 
 from src.evaluation.backtest import run_single_model_backtest
 from src.tracking.json_tracker import create_tracker
-from src.utils.io import save_results
+from src.utils.io import save_results_per_group
 from src.utils.reproducibility import get_seeds
 
 
@@ -103,7 +103,7 @@ def main():
             )
             print(f"  averaged MAE over {len(seed_results)} seeds = {avg_mae:.4f}")
 
-    save_results(all_results, f"neural_{args.experiment}_{args.feature_group}")
+    save_results_per_group(all_results, "neural", args.experiment)
 
     print("\n=== Summary ===")
     for r in all_results:

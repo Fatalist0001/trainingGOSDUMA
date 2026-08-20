@@ -11,6 +11,8 @@ feature_groups:
       - "turnout_rate_lag1"
       - "leading_candidate_share"
       - "leading_candidate_share_lag1"
+      - "pres_turnout_lag"
+      - "pres_leading_candidate_share_lag"
     exclude_patterns:
       - "population_"
       - "GRP_"

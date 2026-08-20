@@ -13,7 +13,7 @@ if ROOT not in sys.path:
 
 from src.evaluation.backtest import run_experiment
 from src.tracking.json_tracker import create_tracker
-from src.utils.io import save_results
+from src.utils.io import save_results_per_group
 
 
 def main():
@@ -64,7 +64,7 @@ def main():
                     tags={"level": args.level},
                 )
 
-    save_results(results, f"trees_{args.experiment}_{args.feature_group}")
+    save_results_per_group(results, "trees", args.experiment)
 
     print("\n=== Summary ===")
     for r in results:

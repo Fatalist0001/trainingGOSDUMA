@@ -109,12 +109,17 @@ def party_metrics(
 def federal_aggregation(
     df: pd.DataFrame,
     party_columns: list[str],
-    weight_column: str = "electorate",
+    weight_column: str = "valid",
     pred_suffix: str = "_pred",
     actual_suffix: str = "",
 ) -> dict[str, dict[str, float]]:
     """
     Aggregate regional predictions to federal level using weighted average.
+
+    Weights come from RED aggregation (electorate/turnout/valid per region-event,
+    see ``src.data.loader.load_electoral_weights``). The first available column
+    among ``valid`` -> ``turnout`` -> ``electorate`` is used; the caller-provided
+    ``weight_column`` takes precedence when present in ``df``.
 
     Args:
         df: DataFrame with regional predictions
@@ -126,12 +131,15 @@ def federal_aggregation(
     Returns:
         Dict with federal-level metrics per party
     """
-    results = {}
-
+    priority = ["valid", "turnout", "electorate"]
     if weight_column not in df.columns:
-        raise ValueError(f"Weight column '{weight_column}' not found")
+        weight_column = next((c for c in priority if c in df.columns), None)
+    if weight_column is None:
+        raise ValueError(f"No weight column found; need one of {priority}, got {list(df.columns)}")
 
     weights = df[weight_column].values
+
+    results: dict[str, dict[str, float]] = {}
 
     for party in party_columns:
         actual_col = party + actual_suffix

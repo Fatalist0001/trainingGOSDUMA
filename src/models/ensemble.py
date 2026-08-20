@@ -37,6 +37,24 @@ def _to_array(pred: np.ndarray | pd.DataFrame, n_targets: int) -> np.ndarray:
     return arr[:, :n_targets]
 
 
+def _temporal_folds(years: np.ndarray) -> list[tuple[np.ndarray, np.ndarray]]:
+    """Expanding-window temporal folds: train on past years, test on the next.
+
+    No random shuffling: for each consecutive test year the training fold is
+    every strictly earlier year. The first (oldest) year is never in a test fold
+    (there is no earlier data to train on).
+    """
+    ys = sorted(set(int(y) for y in years))
+    if len(ys) < 3:
+        return []
+    folds = []
+    for i in range(1, len(ys)):
+        train_mask = np.isin(years, ys[:i])
+        test_mask = years == ys[i]
+        folds.append((train_mask, test_mask))
+    return folds
+
+
 class WeightedEnsemble:
     """Average of base model predictions, weighted by inverse OOF MAE."""
 
@@ -57,13 +75,31 @@ class WeightedEnsemble:
         self.weights_: np.ndarray | None = None
         self.target_columns_: list[str] | None = None
 
-    def fit(self, X: pd.DataFrame, y: pd.DataFrame):
+    def fit(self, X: pd.DataFrame, y: pd.DataFrame, years: np.ndarray | None = None):
+        """Fit base models and estimate per-party weights from temporal OOF.
+
+        When ``years`` (one per row, aligned with ``X``) is given, out-of-fold
+        predictions come from expanding-window temporal folds (no random
+        shuffle). Without it a deterministic, non-shuffled KFold is used.
+        """
         from .registry import get_model
 
         set_seed(self.random_state)
         self.target_columns_ = list(y.columns)
         t = y.shape[1]
-        kf = KFold(n_splits=self.n_splits, shuffle=True, random_state=self.random_state)
+
+        if years is not None:
+            years = np.asarray(years)
+            fold_masks = _temporal_folds(years)
+            if not fold_masks:
+                raise ValueError(
+                    "Temporal OOF needs at least 3 distinct years to form folds"
+                )
+        else:
+            kf = KFold(
+                n_splits=self.n_splits, shuffle=False, random_state=None
+            )
+            fold_masks = None
 
         self.fitted_models_ = []
         n, b = len(X), len(self.base_models)
@@ -75,10 +111,16 @@ class WeightedEnsemble:
             self.fitted_models_.append(final)
 
             # Out-of-fold predictions to estimate this base's per-party MAE.
-            for tr, te in kf.split(X):
-                mi = get_model(name)
-                mi.fit(X.iloc[tr], y.iloc[tr])
-                oof[te, :, j] = _to_array(mi.predict(X.iloc[te]), t)
+            if fold_masks is not None:
+                for tr_mask, te_mask in fold_masks:
+                    mi = get_model(name)
+                    mi.fit(X.iloc[tr_mask], y.iloc[tr_mask])
+                    oof[te_mask, :, j] = _to_array(mi.predict(X.iloc[te_mask]), t)
+            else:
+                for tr, te in kf.split(X):
+                    mi = get_model(name)
+                    mi.fit(X.iloc[tr], y.iloc[tr])
+                    oof[te, :, j] = _to_array(mi.predict(X.iloc[te]), t)
 
         # Per-party inverse-MAE weights (each target weighted independently).
         yv = y.values
@@ -123,20 +165,38 @@ class StackingEnsemble:
         self.meta_: Any | None = None
         self.target_columns_: list[str] | None = None
 
-    def fit(self, X: pd.DataFrame, y: pd.DataFrame):
+    def fit(self, X: pd.DataFrame, y: pd.DataFrame, years: np.ndarray | None = None):
         from .registry import get_model
 
         set_seed(self.random_state)
         self.target_columns_ = list(y.columns)
-        kf = KFold(n_splits=self.n_splits, shuffle=True, random_state=self.random_state)
+
+        if years is not None:
+            years = np.asarray(years)
+            fold_masks = _temporal_folds(years)
+            if not fold_masks:
+                raise ValueError(
+                    "Temporal OOF needs at least 3 distinct years to form folds"
+                )
+        else:
+            kf = KFold(
+                n_splits=self.n_splits, shuffle=False, random_state=None
+            )
+            fold_masks = None
 
         n, t, b = len(X), y.shape[1], len(self.base_models)
         oof = np.zeros((n, t, b))
         for j, name in enumerate(self.base_models):
-            for tr, te in kf.split(X):
-                mi = get_model(name)
-                mi.fit(X.iloc[tr], y.iloc[tr])
-                oof[te, :, j] = _to_array(mi.predict(X.iloc[te]), t)
+            if fold_masks is not None:
+                for tr_mask, te_mask in fold_masks:
+                    mi = get_model(name)
+                    mi.fit(X.iloc[tr_mask], y.iloc[tr_mask])
+                    oof[te_mask, :, j] = _to_array(mi.predict(X.iloc[te_mask]), t)
+            else:
+                for tr, te in kf.split(X):
+                    mi = get_model(name)
+                    mi.fit(X.iloc[tr], y.iloc[tr])
+                    oof[te, :, j] = _to_array(mi.predict(X.iloc[te]), t)
 
         meta_X = oof.reshape(n, -1)
         self.meta_ = get_model(self.meta_model)

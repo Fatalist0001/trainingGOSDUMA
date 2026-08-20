@@ -19,18 +19,35 @@ class TestTemporalSplits:
     """Tests for temporal split logic."""
 
     def test_experiment_A_split(self):
-        """Test Experiment A: train=2003-2011, test=2016."""
+        """Test Experiment A: train=2003-2007, val=2011, test=2016."""
         split = get_experiment_splits("A")
-        assert split.train_years == [2003, 2007, 2011]
+        assert split.train_years == [2003, 2007]
         assert split.test_years == [2016]
-        assert split.val_years == [2016]
+        assert split.val_years == [2011]
 
     def test_experiment_B_split(self):
-        """Test Experiment B: train=2003-2016, test=2021."""
+        """Test Experiment B: train=2003-2011, val=2016, test=2021."""
         split = get_experiment_splits("B")
-        assert split.train_years == [2003, 2007, 2011, 2016]
+        assert split.train_years == [2003, 2007, 2011]
         assert split.test_years == [2021]
-        assert split.val_years == [2021]
+        assert split.val_years == [2016]
+
+    def test_validation_not_in_test(self):
+        """Validation years must never overlap with test years."""
+        for exp_name in ["A", "B", "C", "D"]:
+            split = get_experiment_splits(exp_name)
+            assert set(split.val_years).isdisjoint(set(split.test_years)), (
+                f"val/test overlap in {exp_name}"
+            )
+            # Validation must lie strictly inside the past relative to test.
+            if split.val_years and split.test_years:
+                assert max(split.val_years) < min(split.test_years), (
+                    f"val not before test in {exp_name}"
+                )
+            # Validation must not be part of training.
+            assert set(split.val_years).isdisjoint(set(split.train_years)), (
+                f"val/train overlap in {exp_name}"
+            )
 
     def test_experiment_C_split(self):
         """Test Experiment C: train=2003-2021, test=2026 (final prediction)."""
@@ -62,13 +79,16 @@ class TestTemporalSplits:
         train_df, val_df, test_df = create_temporal_splits(df, "A")
 
         # Check years (parliamentary only)
-        assert set(train_df["year"].unique()) == set([2003, 2007, 2011])
+        assert set(train_df["year"].unique()) == set([2003, 2007])
+        assert set(val_df["year"].unique()) == set([2011])
         assert set(test_df["year"].unique()) == set([2016])
 
         # Check no overlap
         train_regions_years = set(zip(train_df["region_id"], train_df["year"]))
+        val_regions_years = set(zip(val_df["region_id"], val_df["year"]))
         test_regions_years = set(zip(test_df["region_id"], test_df["year"]))
         assert len(train_regions_years & test_regions_years) == 0
+        assert len(val_regions_years & test_regions_years) == 0
 
     def test_filter_by_years(self):
         """Test year filtering."""

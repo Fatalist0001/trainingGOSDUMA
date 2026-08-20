@@ -3,20 +3,22 @@
 # Используются в RandomizedSearch / Optuna
 
 models:
-  # P0 Baselines (no hyperparameters)
+  # P0 Baselines
   NaivePreviousElection: {}
   HistoricalMean: {}
+  # WeightedHistoricalMean: decay/decay_rate подбираются ТОЛЬКО на validation
+  # (см. tuning.py, tune_weighted_historical_mean). decay_rate=1.0 -> HistoricalMean,
+  # decay_rate=0.0 -> NaivePreviousElection (крайние точки интерполяции).
   WeightedHistoricalMean:
-    decay_schemes: ["exponential", "linear"]
-    max_history_years: 5
+    decay: ["exponential", "linear"]
+    decay_rate: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    max_history: [5]
 
   # Linear models
   LinearRegression: {}
 
   Ridge:
     alpha: [0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0]
-    solver: ["auto", "svd", "cholesky", "lsqr", "sparse_cg", "sag", "saga"]
-    max_iter: [1000, 5000]
 
   ElasticNet:
     alpha: [0.001, 0.01, 0.1, 1.0, 10.0, 100.0]
@@ -157,6 +159,23 @@ search:
   scoring: "neg_mean_absolute_error"
   n_jobs: -1
   random_state: 42
+
+# Temporal-validated tuning (см. src/evaluation/tuning.py).
+# Все гиперпараметры отбираются ТОЛЬКО на validation году (прошлое -> future).
+# Модель, оцениваемая на test, дообучается на train+val после отбора.
+tuning:
+  enabled: true
+  n_iter: 15
+  random_state: 42
+  override:
+    # sklearn MLP не умеет внешний eval_set -> отключаем случайный внутренний split.
+    MLPSklearn:
+      early_stopping: [false]
+    # HistGradientBoosting так же: внутренний random split на validation_fraction
+    # нарушает temporal-принцип; полагаемся на отобранный max_iter.
+    HistGradientBoosting:
+      early_stopping: [false]
+      validation_fraction: [0.15]
 
 optuna:
   n_trials: 100

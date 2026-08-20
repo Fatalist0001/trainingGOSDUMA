@@ -1,10 +1,10 @@
 [
   {
     "Model": "WeightedHistoricalMean",
-    "UR": 7.125,
-    "KPRF": 5.768,
-    "LDPR": 3.786,
-    "Mean_MAE": 5.56
+    "UR": 6.787,
+    "KPRF": 5.11,
+    "LDPR": 4.074,
+    "Mean_MAE": 5.324
   },
   {
     "Model": "HistoricalMean",
@@ -14,18 +14,18 @@
     "Mean_MAE": 5.594
   },
   {
-    "Model": "XGBoost",
-    "UR": 7.194,
-    "KPRF": 5.608,
-    "LDPR": 4.044,
-    "Mean_MAE": 5.615
+    "Model": "GRU",
+    "UR": 6.904,
+    "KPRF": 6.349,
+    "LDPR": 4.725,
+    "Mean_MAE": 5.992
   },
   {
-    "Model": "CatBoost",
-    "UR": 7.966,
-    "KPRF": 5.356,
-    "LDPR": 4.061,
-    "Mean_MAE": 5.794
+    "Model": "LSTM",
+    "UR": 6.908,
+    "KPRF": 6.334,
+    "LDPR": 4.763,
+    "Mean_MAE": 6.002
   },
   {
     "Model": "NaivePreviousElection",
@@ -35,94 +35,94 @@
     "Mean_MAE": 6.06
   },
   {
-    "Model": "RandomForest",
-    "UR": 7.808,
-    "KPRF": 6.267,
-    "LDPR": 5.105,
-    "Mean_MAE": 6.393
-  },
-  {
     "Model": "Transformer",
-    "UR": 7.949,
-    "KPRF": 5.704,
-    "LDPR": 5.704,
-    "Mean_MAE": 6.452
+    "UR": 7.227,
+    "KPRF": 6.434,
+    "LDPR": 4.799,
+    "Mean_MAE": 6.153
   },
   {
-    "Model": "WeightedEnsemble",
-    "UR": 7.489,
-    "KPRF": 8.121,
-    "LDPR": 4.938,
-    "Mean_MAE": 6.849
-  },
-  {
-    "Model": "KNN",
-    "UR": 8.323,
-    "KPRF": 7.343,
-    "LDPR": 5.268,
-    "Mean_MAE": 6.978
-  },
-  {
-    "Model": "GRU",
-    "UR": 9.115,
-    "KPRF": 7.147,
-    "LDPR": 5.451,
-    "Mean_MAE": 7.237
-  },
-  {
-    "Model": "StackingEnsemble",
-    "UR": 7.843,
-    "KPRF": 8.921,
-    "LDPR": 5.113,
-    "Mean_MAE": 7.292
-  },
-  {
-    "Model": "HistGradientBoosting",
-    "UR": 9.215,
-    "KPRF": 7.267,
-    "LDPR": 5.813,
-    "Mean_MAE": 7.432
-  },
-  {
-    "Model": "ElasticNet",
-    "UR": 9.612,
-    "KPRF": 10.996,
-    "LDPR": 5.046,
-    "Mean_MAE": 8.551
+    "Model": "RandomForest",
+    "UR": 8.548,
+    "KPRF": 6.177,
+    "LDPR": 4.213,
+    "Mean_MAE": 6.312
   },
   {
     "Model": "Ridge",
-    "UR": 9.809,
-    "KPRF": 11.951,
-    "LDPR": 5.035,
-    "Mean_MAE": 8.932
+    "UR": 7.769,
+    "KPRF": 6.117,
+    "LDPR": 5.122,
+    "Mean_MAE": 6.336
   },
   {
-    "Model": "LinearRegression",
-    "UR": 10.119,
-    "KPRF": 12.498,
-    "LDPR": 5.042,
-    "Mean_MAE": 9.22
+    "Model": "CatBoost",
+    "UR": 8.642,
+    "KPRF": 5.845,
+    "LDPR": 5.165,
+    "Mean_MAE": 6.551
   },
   {
-    "Model": "LSTM",
-    "UR": 14.238,
-    "KPRF": 9.515,
-    "LDPR": 5.273,
-    "Mean_MAE": 9.675
+    "Model": "XGBoost",
+    "UR": 8.956,
+    "KPRF": 6.96,
+    "LDPR": 4.256,
+    "Mean_MAE": 6.724
   },
   {
-    "Model": "MLPTorch",
-    "UR": 12.407,
-    "KPRF": 13.177,
-    "LDPR": 4.795,
-    "Mean_MAE": 10.126
+    "Model": "KNN",
+    "UR": 8.102,
+    "KPRF": 7.142,
+    "LDPR": 5.235,
+    "Mean_MAE": 6.826
+  },
+  {
+    "Model": "HistGradientBoosting",
+    "UR": 9.214,
+    "KPRF": 7.839,
+    "LDPR": 4.119,
+    "Mean_MAE": 7.057
+  },
+  {
+    "Model": "WeightedEnsemble",
+    "UR": 9.551,
+    "KPRF": 8.571,
+    "LDPR": 4.753,
+    "Mean_MAE": 7.625
+  },
+  {
+    "Model": "ElasticNet",
+    "UR": 11.383,
+    "KPRF": 8.471,
+    "LDPR": 3.419,
+    "Mean_MAE": 7.758
   },
   {
     "Model": "MLPSklearn",
-    "UR": 17.087,
-    "KPRF": 11.044,
-    "LDPR": 6.408,
-    "Mean_MAE": 11.513
+    "UR": 11.522,
+    "KPRF": 7.407,
+    "LDPR": 4.786,
+    "Mean_MAE": 7.905
+  },
+  {
+    "Model": "MLPTorch",
+    "UR": 12.113,
+    "KPRF": 9.006,
+    "LDPR": 4.162,
+    "Mean_MAE": 8.427
+  },
+  {
+    "Model": "LinearRegression",
+    "UR": 14.178,
+    "KPRF": 12.213,
+    "LDPR": 4.608,
+    "Mean_MAE": 10.333
+  },
+  {
+    "Model": "StackingEnsemble",
+    "UR": 36.74,
+    "KPRF": 17.881,
+    "LDPR": 3.989,
+    "Mean_MAE": 19.536
   }
 ]

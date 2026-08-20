@@ -18,7 +18,7 @@ import src.tracking.json_tracker
 import src.utils.io
 
 run_experiment = src.evaluation.backtest.run_experiment
-save_results = src.utils.io.save_results
+save_results_per_group = src.utils.io.save_results_per_group
 get_output_dirs = src.utils.io.get_output_dirs
 create_tracker = src.tracking.json_tracker.create_tracker
 get_p0_models = src.models.registry.get_p0_models
@@ -72,7 +72,7 @@ def main():
                 )
 
     # Save results
-    save_results(results, f"baselines_{args.experiment}_{args.feature_group}")
+    save_results_per_group(results, "baselines", args.experiment)
 
     # Print summary
     print("\n=== Summary ===")

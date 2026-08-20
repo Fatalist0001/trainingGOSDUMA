@@ -28,9 +28,7 @@ FLAT = ["NaivePreviousElection", "XGBoost", "CatBoost", "RandomForest", "LinearR
 
 def main():
     parser = argparse.ArgumentParser(description="Run ablation studies")
-    parser.add_argument(
-        "--experiments", nargs="+", default=["A", "B"], help="Experiments to run"
-    )
+    parser.add_argument("--experiments", nargs="+", default=["A", "B"], help="Experiments to run")
     parser.add_argument(
         "--models", nargs="+", default=None, help="Models (default: flat + temporal set)"
     )
@@ -66,9 +64,7 @@ def main():
                 print(f"  feature {r['feature_group']}: MAE={r['mae']}")
             feature_rows.extend(fa)
 
-            hd = history_depth_ablation(
-                model, exp, seeds=model_seeds
-            )
+            hd = history_depth_ablation(model, exp, seeds=model_seeds)
             for r in hd:
                 print(f"  depth {r['depth']} ({r['train_years']}): MAE={r['mae']}")
             history_rows.extend(hd)

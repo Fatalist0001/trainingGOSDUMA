@@ -1,21 +1,29 @@
 # config/experiments.yaml
 # Определение временных сплитов для rolling backtest
 # Годы читаются из metadata/elections.csv (parliamentary elections)
+#
+# ВАЖНО (методология, см. AGENTS.md):
+#   * val и test НИКОГДА не пересекаются: validation год находится строго внутри
+#     прошлого относительно test. val используется ТОЛЬКО для выбора гиперпараметров
+#     и early stopping; модель, оцениваемая на test, дообучается на train+val.
+#   * A: train 2003-2007 -> val 2011 -> test 2016
+#   * B: train 2003-2011 -> val 2016 -> test 2021
+#   * C/D: финальный прогноз 2026 (нет ground truth), val пуст.
 
 experiments:
   A:
     name: "Experiment A"
-    description: "Train: 2003-2011, Test: 2016"
-    train_years: [2003, 2007, 2011]
-    val_years: [2016]
+    description: "Train: 2003-2007, Val: 2011, Test: 2016"
+    train_years: [2003, 2007]
+    val_years: [2011]
     test_years: [2016]
     election_type: "parl"
 
   B:
     name: "Experiment B"
-    description: "Train: 2003-2016, Test: 2021"
-    train_years: [2003, 2007, 2011, 2016]
-    val_years: [2021]
+    description: "Train: 2003-2011, Val: 2016, Test: 2021"
+    train_years: [2003, 2007, 2011]
+    val_years: [2016]
     test_years: [2021]
     election_type: "parl"
 
@@ -35,14 +43,3 @@ experiments:
     test_years: [2026]
     election_type: "parl"
     is_final: true
-
-# Параметры для внутренней валидации (hyperparameter tuning)
-internal_validation:
-  val_split_ratio: 0.2
-  min_train_years: 3
-  # Для temporal models: используем более старые годы как validation
-  temporal_val_years:
-    A: [2012]
-    B: [2016]
-    C: [2018]
-    D: [2021]

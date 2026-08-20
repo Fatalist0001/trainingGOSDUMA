@@ -14,6 +14,23 @@ sys.path.insert(0, str(project_root))
 
 from src.utils.io import get_output_dirs, load_results, save_benchmark_table
 
+# League assignment: models are compared within their league only.
+LEAGUES: dict[str, str] = {
+    # Baselines: no features, own history only.
+    "NaivePreviousElection": "Baseline",
+    "HistoricalMean": "Baseline",
+    "WeightedHistoricalMean": "Baseline",
+    # Sequential: sequence models over per-region election history.
+    "GRU": "Sequential",
+    "LSTM": "Sequential",
+    "Transformer": "Sequential",
+}
+
+
+def get_league(model_name: str) -> str:
+    """Return the comparison league for a model (default: Tabular)."""
+    return LEAGUES.get(model_name, "Tabular")
+
 
 def aggregate_benchmark(
     experiment: str | None = None,
@@ -75,7 +92,12 @@ def aggregate_benchmark(
             test_years = ["test"]
 
         # Average MAE across parties for each test year
-        row = {"model": model, "experiment": exp, "feature_group": feat_group}
+        row = {
+            "model": model,
+            "experiment": exp,
+            "feature_group": feat_group,
+            "league": get_league(model),
+        }
         for i, year in enumerate(test_years):
             # For now, use average across parties
             party_maes = [m["mae"] for m in test_metrics]
@@ -88,7 +110,7 @@ def aggregate_benchmark(
     # Pivot to have years as columns
     if not df.empty:
         # Create a combined model key
-        df["model_key"] = df["model"] + " (" + df["feature_group"] + ")"
+        df["model_key"] = df["league"] + " | " + df["model"] + " (" + df["feature_group"] + ")"
 
         # Pivot
         pivot = df.pivot_table(
@@ -100,6 +122,10 @@ def aggregate_benchmark(
         pivot.columns = [f"{col[1]}_{col[0]}" for col in pivot.columns]
         pivot = pivot.reset_index()
         pivot = pivot.rename(columns={"model_key": "Model"})
+        # Sort by league (Baseline < Tabular < Sequential) then model name.
+        league_order = {"Baseline": 0, "Tabular": 1, "Sequential": 2}
+        pivot["_league"] = pivot["Model"].str.split(" | ").str[0].map(league_order)
+        pivot = pivot.sort_values("_league").drop(columns="_league")
     else:
         pivot = df
 

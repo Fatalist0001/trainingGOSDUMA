@@ -1,7 +1,7 @@
 # Makefile for trainingGOSDUMA
 # Usage: make <target>
 
-.PHONY: help install test lint clean benchmark baselines linear trees knn neural temporal ablation report
+.PHONY: help install test lint clean benchmark baselines linear trees knn neural temporal ablation report weights
 
 # Default target
 help:
@@ -83,6 +83,9 @@ temporal:
 # Evaluation targets
 benchmark:
 	uv run python scripts/evaluation/benchmark.py --save
+
+weights:
+	uv run python scripts/data/build_electoral_weights.py
 
 ablation:
 	uv run python scripts/evaluation/ablation.py

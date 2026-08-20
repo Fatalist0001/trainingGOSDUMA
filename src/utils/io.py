@@ -119,6 +119,27 @@ def save_results(
     return json_path
 
 
+def save_results_per_group(
+    results: list[dict[str, Any]],
+    prefix: str,
+    experiment: str,
+    base_dir: str | Path | None = None,
+) -> list[Path]:
+    """Save each feature-group subset to its own ``{prefix}_{exp}_{group}`` file.
+
+    Avoids filename collisions when multiple ``--feature-groups`` are passed to a
+    run script (each group must not overwrite the others).
+    """
+    by_group: dict[str, list[dict[str, Any]]] = {}
+    for r in results:
+        group = r.get("feature_group", "ALL_FEATURES")
+        by_group.setdefault(group, []).append(r)
+    saved = []
+    for group, group_results in by_group.items():
+        saved.append(save_results(group_results, f"{prefix}_{experiment}_{group}", base_dir))
+    return saved
+
+
 def load_results(
     filename: str,
     base_dir: str | Path | None = None,

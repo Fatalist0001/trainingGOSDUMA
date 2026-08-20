@@ -72,9 +72,7 @@ def plot_history_depth(hist: pd.DataFrame) -> None:
     fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharey=True)
     for ax, exp in zip(axes, ["A", "B"]):
         sub = hist[(hist["experiment"] == exp) & hist["model"].isin(["GRU", "LSTM", "Transformer"])]
-        for model, color in zip(
-            ["GRU", "LSTM", "Transformer"], ["#4C72B0", "#DD8452", "#55A868"]
-        ):
+        for model, color in zip(["GRU", "LSTM", "Transformer"], ["#4C72B0", "#DD8452", "#55A868"]):
             m = sub[sub["model"] == model].sort_values("depth")
             m = m.dropna(subset=["mae"])
             if not m.empty:

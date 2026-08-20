@@ -1,7 +1,7 @@
 # PROGRESS.md — Отслеживание выполнения PLAN.md
 
-**Статус**: ✅ P0, P1, P2, P3 выполнены (baselines + Linear + Trees + KNN + Neural + Temporal на экспериментах A, B)
-**Последнее обновление**: 2026-08-19
+**Статус**: ✅ P0, P1, P2, P3 выполнены + методологический аудит (честные сплиты, федеральные веса из RED, президентские лаги)
+**Последнее обновление**: 2026-08-20
 
 ---
 
@@ -49,7 +49,7 @@
 | 1.2 | Проверить доступные годы | ✅ | 2000, 2003, 2004, 2007, 2008, 2011, 2012, 2016, 2018, 2021, 2024 |
 | 1.3 | Проверить типы выборов | ✅ | parliamentary / presidential разделены |
 | 1.4 | Проверить таргеты (партии) | ✅ | Region-level: UR, KPRF, LDPR (только 3 партии; других в данных нет) |
-| 1.5 | Проверить композиционность | ✅ | 3 ключевые партии покрывают ~78% голосов; таргеты — реальные доли (не нормализуются); пост-хок нормализация к 100% применяется только к предсказаниям плоских моделей (Approach A), временные — без неё. Пересчёт без нормализации — в плане |
+| 1.5 | Проверить композиционность | ✅ | 3 ключевые партии покрывают ~78% голосов; таргеты — реальные доли. Нормализация к 100% **не применяется** (default `normalize_predictions=False` везде, `normalize_compositional` — opt-in) |
 | 1.6 | Проверить lag features | ✅ | Все социоэкономические признаки с суффиксом `_lag1` |
 | 1.7 | Проверить leakage (ID columns) | ✅ | `region_id`, `uik`, `tik` не в признаках |
 
@@ -64,12 +64,12 @@
 
 | № | Задача | Статус | Примечания |
 |---|--------|--------|------------|
-| 2.1 | Experiment A (train: 2003-2011, test: 2016) | ✅ | В `experiments.yaml`, оценивается |
-| 2.2 | Experiment B (train: 2003-2016, test: 2021) | ✅ | В `experiments.yaml`, оценивается |
+| 2.1 | Experiment A (train: 2003-2007, val: 2011, test: 2016) | ✅ | В `experiments.yaml`, оценивается; tuning на val 2011 → refit train+val |
+| 2.2 | Experiment B (train: 2003-2011, val: 2016, test: 2021) | ✅ | В `experiments.yaml`, оценивается; tuning на val 2016 → refit train+val |
 | 2.3 | Experiment C (train: 2003-2021, test: 2026) | ✅ | В `experiments.yaml`, финальный прогноз |
 | 2.4 | Experiment D (train: all parl, target: 2026) | ✅ | В `experiments.yaml`, `is_final` |
 | 2.5 | Реализовать TemporalSplitter | ✅ | В `splits.py` |
-| 2.6 | Internal validation splits | ✅ | `internal_validation.temporal_val_years` |
+| 2.6 | Internal validation splits | ✅ | `internal_validation.temporal_val_years`; tuning гиперпараметров ТОЛЬКО на val |
 
 ---
 
@@ -216,10 +216,15 @@ HistGradientBoosting, MLPSklearn, LinearRegression (бейзлайны искл�
 
 ## 13. Hyperparameter Tuning (PLAN §46)
 
+Tuning реализован в `src/evaluation/tuning.py` (`tune_flat_model`, `tune_temporal_model`,
+`tune_weighted_historical_mean`) и применяется **только на валидационном годе** (val) —
+не случайный сплит. После отбора параметров финальная модель **переобучается на train+val**
+и оценивается на test (двухстадийный протокол). `WeightedHistoricalMean` decay тюнится на val.
+
 | № | Задача | Статус |
 |---|--------|--------|
-| 13.1 | RandomizedSearch | ⏳ В `models.yaml` настроены grids |
-| 13.2 | Optuna integration | ⏳ В `models.yaml` настроено |
+| 13.1 | RandomizedSearch на val | ✅ В `models.yaml` grids + `tuning.py` |
+| 13.2 | Optuna integration | ✅ `tuning.py` (backend optuna) |
 
 ---
 
@@ -266,16 +271,19 @@ HistGradientBoosting, MLPSklearn, LinearRegression (бейзлайны искл�
 Реализован `scripts/predict_2026.py` + `forecast_baseline`/`forecast_temporal` в `backtest.py`.
 Основной прогноз — по лучшей модели бенчмарка **WeightedHistoricalMean** (детерминированная,
 усреднение по seeds не требуется): взвешенное среднее прошлых результатов каждого региона
-(экспоненциальный спад). Transformer (лучшая временная) сохранён как альтернатива
-(`--model Transformer`, усреднение по 5 seeds). Федеральный прогноз — среднее по 83 регионам:
+(экспоненциальный спад; decay — из tuning на B, т.е. лучший по 2021). Transformer
+(лучшая временная) сохранён как альтернатива (`--model Transformer`, усреднение по 5 seeds).
+Федеральный прогноз — **взвешивание по федеральным весам из RED** (суммирование по УИК;
+весовая колонка valid → turnout → electorate; для 2026 — valid 2021 как прокси, т.к. весов
+2026 в данных нет):
 
 | № | Задача | Статус | Результат |
 |---|--------|--------|-----------|
 | 17.1 | Final training on all history | ✅ | WeightedHistoricalMean на 2003–2021 |
 | 17.2 | 2026 prediction script | ✅ | `scripts/predict_2026.py` → `predictions/WeightedHistoricalMean/C,D/2026_forecast.csv` |
-| 17.3 | Federal aggregation | ✅ | `results/forecast_{C,D}_WeightedHistoricalMean_federal.csv` (UR 49.8 / KPRF 13.0 / LDPR 10.9, реальные доли) |
-| 17.4 | Temporal alternative (Transformer) | ✅ | `results/forecast_{C,D}_Transformer_federal.csv` (UR 64.8 / KPRF 22.9 / LDPR 12.3, нормировано к 100%) |
-| 17.4 | Seat allocation pipeline | ⏳ (отдельно, после отчёта) | |
+| 17.3 | Federal aggregation (веса RED, valid 2021 прокси) | ✅ | `results/forecast_{C,D}_WeightedHistoricalMean_federal.csv` (реальные доли, без нормировки) |
+| 17.4 | Temporal alternative (Transformer) | ✅ | `results/forecast_{C,D}_Transformer_federal.csv` (реальные доли, без нормировки) |
+| 17.5 | Seat allocation pipeline | ⏳ (отдельно, после отчёта) | |
 
 ---
 
@@ -304,13 +312,31 @@ HistGradientBoosting, MLPSklearn, LinearRegression (бейзлайны искл�
 
 ---
 
+## 19. Методологический аудит (2026-08-20)
+
+Закрыты замечания ревью по честности эксперимента:
+
+| № | Замечание | Что сделано |
+|---|-----------|-------------|
+| 19.1 | Сплиты A/B: test-год был в train | Сплиты пересмотрены: A train 2003–2007, val 2011, test 2016; B train 2003–2011, val 2016, test 2021. `get_experiment_splits` возвращает train/val/test; тесты проверяют `max(train) < min(test)` и val ∉ train |
+| 19.2 | Tuning гиперпараметров на train (текут на test) | `src/evaluation/tuning.py`: RandomSearch/Optuna на **val**; двухстадийный протокол — отбор на val → refit на train+val → оценка на test |
+| 19.3 | Temporal/MLP ранний стоп по train | `MLPTorch.fit(X, y, X_val, y_val)`: ранний стоп по внешнему val; MLPSklearn `early_stopping=False`; temporal-модели валидируются на val-секвенциях |
+| 19.4 | Ensemble OOF — случайный KFold | `src/models/ensemble.py`: temporal expanding-window OOF (`fit(X, y, years=None)`), без shuffle |
+| 19.5 | Нет настоящего multioutput | `run_multioutput_backtest`: независимые per-party регрессии с per-party tuning на val |
+| 19.6 | Федеральные веса из Росстата | `scripts/data/build_electoral_weights.py` (RED по УИК, `electoral_weights.parquet`, 912 region-events) + `federal_aggregation` (приоритет valid→turnout→electorate) |
+| 19.7 | Президентские признаки 2024 не использовались | `src/data/presidential_features.py`: `pres_turnout_lag`/`pres_leading_candidate_share_lag` (ближайшие прошедшие президентские выборы); для 2026 — синтетический контекст из 2024 pres |
+| 19.8 | Пост-хок нормализация к 100% | `normalize_predictions` default `False` везде; `normalize_compositional` — opt-in; прогноз 2026 — реальные доли |
+| 19.9 | Нет лиг сравнения | `LEAGUES` в `scripts/evaluation/benchmark.py`: Baseline / Tabular / Sequential |
+| 19.10 | Усиление тестов на leakage | `tests/test_leakage.py`: ручная проверка `UR_share_lag1`(2016)==UR_share(2011) и `pres_leading_candidate_share_lag`(2016)==pres(2012) по регионам |
+
+---
+
 ## Следующие шаги (Priority)
 
-1. ✅ **P0/P1/P2/P3 завершены**: P0 (baselines+Linear+Trees+KNN), P1 (MLPSklearn+MLPTorch), P2/P3 (GRU+LSTM+Transformer) запущены на A/B × 3 группы; результаты в `results/benchmark_all_*.csv`.
-2. ✅ **Ablation выполнен**: `make ablation` → `results/ablation_feature.csv` (Q2) и `results/ablation_history.csv` (Q3). ROSSTAT помогает при короткой истории (A); длинная история помогает временным моделям.
-3. ✅ **Ensemble выполнен** (Q10): `WeightedEnsemble`/`StackingEnsemble` в `ensemble.py`. Не превосходят лучшую одиночную модель (Transformer) и даже XGBoost.
-4. ✅ **Финальный прогноз 2026** (эксп. C/D): `scripts/predict_2026.py` (WeightedHistoricalMean — лучшая модель; Transformer — временная альтернатива) → per-region и federal прогнозы в `predictions/` и `results/`.
-5. ✅ **Визуализация и отчёт**: `reports/FINAL_MODEL_REPORT.md` (Q1–Q10, прогноз 2026) + `reports/figures/{model_comparison,feature_ablation,history_depth}.png` (`make report`).
+1. ✅ **Методологический аудит завершён (2026-08-20)**: честные сплиты train/val/test, tuning на val, двухстадийный протокол, президентские лаги, федеральные веса из RED, temporal OOF, per-party регрессии, лиги в benchmark. Бенчмарк пересчитан по новому протоколу (`results/benchmark_all_20260820.csv`) для всех 3 фич-групп на A/B; прогноз 2026 обновлён (ЕР 49.2 / КПРФ 13.7 / ЛДПР 10.6, веса = valid 2021).
+2. ✅ **Ablation пересчитан по новому протоколу** (2026-08-20): `make ablation` → `results/ablation_feature.csv` и `results/ablation_history.csv` (ALL_FEATURES почти всегда лучший; ROSSTAT_ONLY в одиночку худший; глубина истории помогает линейным, слабо — временным).
+3. ✅ **Q4/Q7/Q8/Q9 пересчитаны по новому протоколу** (2026-08-20): `scripts/evaluation/research_questions.py` → `results/q{4,7,8,9}_*.csv`. Исправлен баг с классификацией моделей по классам в Q4 (лиги в `Model` ломали разбор имени).
+4. ⏳ **Возможные доработки**: пересчёт долей в мандаты (seat allocation), bootstrap-CI для устойчивости MAE, SHAP-анализ, калибровка StackingEnsemble.
 
 ---
 
@@ -318,11 +344,12 @@ HistGradientBoosting, MLPSklearn, LinearRegression (бейзлайны искл�
 
 | # | Описание | Статус |
 |---|----------|--------|
-| 1 | `uv run pytest tests/` проходит без ошибок | ✅ 30/30 passed |
+| 1 | `uv run pytest tests/` проходит без ошибок | ✅ 42 passed |
 | 2 | `make lint` (ruff) проходит | ✅ All checks passed (скорректирован список правил под research-код) |
 | 3 | CatBoost/XGBoost могут требовать настройки для categorical features | ⏳ пока не используются (признаки числовые) |
 | 4 | Precinct-level data очень большой (1M+ строк) — может потребоваться sampling | ⏳ P0 только на region level |
 | 5 | 2024 в данных — президентские, а не парламентские → нет 3-го оцениваемого backtest | ✅ учтено: оцениваются A, B; C/D — финальный прогноз 2026 |
+| 6 | В 2003 `turnout_rate_lag1`/`*_share_lag1` полностью NaN (нет предыдущих парл. выборов) | ✅ pre-existing, не чинить (SimpleImputer warning) |
 
 ---
 

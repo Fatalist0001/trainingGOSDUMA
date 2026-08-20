@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -80,6 +81,36 @@ class TestTemporalLeakage:
                 nan_count = df_2016[col].isna().sum()
                 # Some regions might not have 2012 data, that's OK
                 assert nan_count < len(df_2016) * 0.5, f"Too many NaN in {col} for 2016"
+
+    def test_lag_features_match_previous_election(self):
+        """UR_share_lag1 for 2016 must equal UR_share from the 2011 election."""
+        df = load_raw_region()
+        parl = df[df["type"] == "parl"]
+        prev = parl[parl["year"] == 2011][["region_id", "UR_share"]].rename(
+            columns={"UR_share": "UR_share_2011"}
+        )
+        cur = parl[parl["year"] == 2016][["region_id", "UR_share_lag1"]]
+        merged = cur.merge(prev, on="region_id", how="inner").dropna()
+        assert len(merged) > 0, "no overlapping regions for 2011/2016"
+        assert np.allclose(merged["UR_share_lag1"], merged["UR_share_2011"]), (
+            "UR_share_lag1 does not match the previous (2011) election"
+        )
+
+    def test_pres_lag_matches_previous_presidential(self):
+        """pres_leading_candidate_share_lag for 2016 must equal the 2012 pres share."""
+        df = load_raw_region()
+        parl = df[df["type"] == "parl"]
+        pres = df[df["type"] == "pres"]
+
+        prev = pres[pres["year"] == 2012][["region_id", "leading_candidate_share"]].rename(
+            columns={"leading_candidate_share": "pres_share_2012"}
+        )
+        cur = parl[parl["year"] == 2016][["region_id", "pres_leading_candidate_share_lag"]]
+        merged = cur.merge(prev, on="region_id", how="inner").dropna()
+        assert len(merged) > 0, "no overlapping regions for 2012/2016"
+        assert np.allclose(merged["pres_leading_candidate_share_lag"], merged["pres_share_2012"]), (
+            "pres_leading_candidate_share_lag does not match the 2012 presidential election"
+        )
 
 
 class TestFeatureLeakage:

@@ -7,21 +7,21 @@
     "test_metrics": [
       {
         "party": "UR_share",
-        "mae": 18.59143047642185,
+        "mae": 10.40054760047811,
         "n_samples": null
       },
       {
         "party": "KPRF_share",
-        "mae": 13.718196391684092,
+        "mae": 4.892859309621551,
         "n_samples": null
       },
       {
         "party": "LDPR_share",
-        "mae": 5.818077578044255,
+        "mae": 5.124878493847602,
         "n_samples": null
       }
     ],
-    "n_train": 249,
+    "n_train": 166,
     "n_test": 83,
     "seeds": [
       42,
@@ -40,21 +40,21 @@
     "test_metrics": [
       {
         "party": "UR_share",
-        "mae": 16.272752072423955,
+        "mae": 10.573301902677688,
         "n_samples": null
       },
       {
         "party": "KPRF_share",
-        "mae": 16.29328758622388,
+        "mae": 7.272935743348761,
         "n_samples": null
       },
       {
         "party": "LDPR_share",
-        "mae": 2.8645544364251228,
+        "mae": 4.554208073916065,
         "n_samples": null
       }
     ],
-    "n_train": 249,
+    "n_train": 166,
     "n_test": 83,
     "seeds": [
       42,

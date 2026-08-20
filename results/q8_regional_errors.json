@@ -2,997 +2,997 @@
   {
     "region_name": "Алтайский край",
     "Experiment": "A",
-    "region_mae": 9.361,
-    "region_bias": 4.285
+    "region_mae": 6.492,
+    "region_bias": 1.433
   },
   {
     "region_name": "Алтайский край",
     "Experiment": "B",
-    "region_mae": 11.276,
-    "region_bias": 0.898
+    "region_mae": 13.08,
+    "region_bias": 1.713
   },
   {
     "region_name": "Амурская область",
     "Experiment": "A",
-    "region_mae": 9.885,
-    "region_bias": -0.077
+    "region_mae": 7.939,
+    "region_bias": -2.066
   },
   {
     "region_name": "Амурская область",
     "Experiment": "B",
-    "region_mae": 9.963,
-    "region_bias": 2.487
+    "region_mae": 9.862,
+    "region_bias": 1.444
   },
   {
     "region_name": "Архангельская область",
     "Experiment": "A",
-    "region_mae": 8.574,
-    "region_bias": 2.974
+    "region_mae": 7.617,
+    "region_bias": 0.756
   },
   {
     "region_name": "Архангельская область",
     "Experiment": "B",
-    "region_mae": 8.48,
-    "region_bias": 5.544
+    "region_mae": 8.938,
+    "region_bias": 4.745
   },
   {
     "region_name": "Астраханская область",
     "Experiment": "A",
-    "region_mae": 5.495,
-    "region_bias": 1.821
+    "region_mae": 5.619,
+    "region_bias": 2.445
   },
   {
     "region_name": "Астраханская область",
     "Experiment": "B",
-    "region_mae": 5.078,
-    "region_bias": 1.35
+    "region_mae": 5.465,
+    "region_bias": 1.392
   },
   {
     "region_name": "Белгородская область",
     "Experiment": "A",
-    "region_mae": 4.832,
-    "region_bias": 0.759
+    "region_mae": 6.761,
+    "region_bias": -1.821
   },
   {
     "region_name": "Белгородская область",
     "Experiment": "B",
-    "region_mae": 4.443,
-    "region_bias": 2.159
+    "region_mae": 5.168,
+    "region_bias": 1.532
   },
   {
     "region_name": "Брянская область",
     "Experiment": "A",
-    "region_mae": 9.449,
-    "region_bias": -1.571
+    "region_mae": 10.659,
+    "region_bias": -3.884
   },
   {
     "region_name": "Брянская область",
     "Experiment": "B",
-    "region_mae": 3.574,
-    "region_bias": 1.082
+    "region_mae": 2.585,
+    "region_bias": 0.02
   },
   {
     "region_name": "Владимирская область",
     "Experiment": "A",
-    "region_mae": 7.778,
-    "region_bias": 2.278
+    "region_mae": 6.543,
+    "region_bias": -1.057
   },
   {
     "region_name": "Владимирская область",
     "Experiment": "B",
-    "region_mae": 9.35,
-    "region_bias": 1.475
+    "region_mae": 9.81,
+    "region_bias": 0.935
   },
   {
     "region_name": "Волгоградская область",
     "Experiment": "A",
-    "region_mae": 5.576,
-    "region_bias": -0.114
+    "region_mae": 6.127,
+    "region_bias": -2.8
   },
   {
     "region_name": "Волгоградская область",
     "Experiment": "B",
-    "region_mae": 1.856,
-    "region_bias": -0.56
+    "region_mae": 2.777,
+    "region_bias": 0.385
   },
   {
     "region_name": "Вологодская область",
     "Experiment": "A",
-    "region_mae": 8.701,
-    "region_bias": 2.941
+    "region_mae": 7.989,
+    "region_bias": 1.071
   },
   {
     "region_name": "Вологодская область",
     "Experiment": "B",
-    "region_mae": 8.788,
-    "region_bias": 3.827
+    "region_mae": 9.544,
+    "region_bias": 3.062
   },
   {
     "region_name": "Воронежская область",
     "Experiment": "A",
-    "region_mae": 7.153,
-    "region_bias": -0.537
+    "region_mae": 9.207,
+    "region_bias": -2.595
   },
   {
     "region_name": "Воронежская область",
     "Experiment": "B",
-    "region_mae": 4.876,
-    "region_bias": 1.027
+    "region_mae": 4.779,
+    "region_bias": -0.105
   },
   {
     "region_name": "Еврейская автономная область",
     "Experiment": "A",
-    "region_mae": 6.175,
-    "region_bias": -2.067
+    "region_mae": 5.547,
+    "region_bias": -2.185
   },
   {
     "region_name": "Еврейская автономная область",
     "Experiment": "B",
-    "region_mae": 5.307,
-    "region_bias": -0.043
+    "region_mae": 5.681,
+    "region_bias": 0.333
   },
   {
     "region_name": "Забайкальский край",
     "Experiment": "A",
-    "region_mae": 8.327,
-    "region_bias": -0.776
+    "region_mae": 6.756,
+    "region_bias": -1.862
   },
   {
     "region_name": "Забайкальский край",
     "Experiment": "B",
-    "region_mae": 6.87,
-    "region_bias": 3.166
+    "region_mae": 7.335,
+    "region_bias": 3.219
   },
   {
     "region_name": "Ивановская область",
     "Experiment": "A",
-    "region_mae": 6.369,
-    "region_bias": 1.9
+    "region_mae": 4.465,
+    "region_bias": -1.05
   },
   {
     "region_name": "Ивановская область",
     "Experiment": "B",
-    "region_mae": 9.401,
-    "region_bias": 1.215
+    "region_mae": 10.677,
+    "region_bias": 1.663
   },
   {
     "region_name": "Иркутская область",
     "Experiment": "A",
-    "region_mae": 8.256,
-    "region_bias": 1.501
+    "region_mae": 5.74,
+    "region_bias": -1.559
   },
   {
     "region_name": "Иркутская область",
     "Experiment": "B",
-    "region_mae": 9.14,
-    "region_bias": 2.078
+    "region_mae": 10.559,
+    "region_bias": 2.512
   },
   {
     "region_name": "Кабардино-Балкарская Республика",
     "Experiment": "A",
-    "region_mae": 3.488,
-    "region_bias": 1.823
+    "region_mae": 4.91,
+    "region_bias": 0.068
   },
   {
     "region_name": "Кабардино-Балкарская Республика",
     "Experiment": "B",
-    "region_mae": 3.334,
-    "region_bias": -0.001
+    "region_mae": 3.538,
+    "region_bias": -0.443
   },
   {
     "region_name": "Калининградская область",
     "Experiment": "A",
-    "region_mae": 6.763,
-    "region_bias": 3.214
+    "region_mae": 5.988,
+    "region_bias": -0.416
   },
   {
     "region_name": "Калининградская область",
     "Experiment": "B",
-    "region_mae": 6.24,
-    "region_bias": 2.188
+    "region_mae": 7.247,
+    "region_bias": 2.068
   },
   {
     "region_name": "Калужская область",
     "Experiment": "A",
-    "region_mae": 5.446,
-    "region_bias": 1.23
+    "region_mae": 5.924,
+    "region_bias": -1.981
   },
   {
     "region_name": "Калужская область",
     "Experiment": "B",
-    "region_mae": 9.048,
-    "region_bias": 4.175
+    "region_mae": 10.107,
+    "region_bias": 3.642
   },
   {
     "region_name": "Камчатский край",
     "Experiment": "A",
-    "region_mae": 7.799,
-    "region_bias": 2.091
+    "region_mae": 6.895,
+    "region_bias": -1.019
   },
   {
     "region_name": "Камчатский край",
     "Experiment": "B",
-    "region_mae": 10.747,
-    "region_bias": 4.688
+    "region_mae": 10.272,
+    "region_bias": 2.945
   },
   {
     "region_name": "Карачаево-Черкесская Республика",
     "Experiment": "A",
-    "region_mae": 4.347,
-    "region_bias": 4.249
+    "region_mae": 5.589,
+    "region_bias": 2.032
   },
   {
     "region_name": "Карачаево-Черкесская Республика",
     "Experiment": "B",
     "region_mae": 3.314,
-    "region_bias": 0.014
+    "region_bias": -0.645
   },
   {
     "region_name": "Кемеровская область - Кузбасс",
     "Experiment": "A",
-    "region_mae": 6.9,
-    "region_bias": -0.593
+    "region_mae": 6.534,
+    "region_bias": -0.481
   },
   {
     "region_name": "Кемеровская область - Кузбасс",
     "Experiment": "B",
-    "region_mae": 4.599,
-    "region_bias": 0.282
+    "region_mae": 3.311,
+    "region_bias": -0.243
   },
   {
     "region_name": "Кировская область",
     "Experiment": "A",
-    "region_mae": 10.779,
-    "region_bias": 2.437
+    "region_mae": 8.152,
+    "region_bias": -1.055
   },
   {
     "region_name": "Кировская область",
     "Experiment": "B",
-    "region_mae": 9.145,
-    "region_bias": 6.219
+    "region_mae": 9.209,
+    "region_bias": 5.409
   },
   {
     "region_name": "Костромская область",
     "Experiment": "A",
-    "region_mae": 9.529,
-    "region_bias": 4.09
+    "region_mae": 7.866,
+    "region_bias": 0.579
   },
   {
     "region_name": "Костромская область",
     "Experiment": "B",
-    "region_mae": 11.02,
-    "region_bias": 3.301
+    "region_mae": 12.251,
+    "region_bias": 3.404
   },
   {
     "region_name": "Краснодарский край",
     "Experiment": "A",
-    "region_mae": 8.298,
-    "region_bias": -1.581
+    "region_mae": 9.512,
+    "region_bias": -2.048
   },
   {
     "region_name": "Краснодарский край",
     "Experiment": "B",
-    "region_mae": 3.77,
-    "region_bias": 1.492
+    "region_mae": 3.344,
+    "region_bias": 1.247
   },
   {
     "region_name": "Красноярский край",
     "Experiment": "A",
-    "region_mae": 8.474,
-    "region_bias": 2.691
+    "region_mae": 6.487,
+    "region_bias": 0.362
   },
   {
     "region_name": "Красноярский край",
     "Experiment": "B",
-    "region_mae": 7.559,
-    "region_bias": 1.831
+    "region_mae": 8.729,
+    "region_bias": 2.013
   },
   {
     "region_name": "Курганская область",
     "Experiment": "A",
-    "region_mae": 6.694,
-    "region_bias": 2.529
+    "region_mae": 4.94,
+    "region_bias": 0.341
   },
   {
     "region_name": "Курганская область",
     "Experiment": "B",
-    "region_mae": 8.304,
-    "region_bias": 1.965
+    "region_mae": 8.921,
+    "region_bias": 1.935
   },
   {
     "region_name": "Курская область",
     "Experiment": "A",
-    "region_mae": 6.655,
-    "region_bias": 0.708
+    "region_mae": 7.685,
+    "region_bias": -1.994
   },
   {
     "region_name": "Курская область",
     "Experiment": "B",
-    "region_mae": 4.887,
-    "region_bias": 1.883
+    "region_mae": 6.164,
+    "region_bias": 1.047
   },
   {
     "region_name": "Ленинградская область",
     "Experiment": "A",
-    "region_mae": 6.228,
-    "region_bias": 2.049
+    "region_mae": 5.673,
+    "region_bias": 0.511
   },
   {
     "region_name": "Ленинградская область",
     "Experiment": "B",
-    "region_mae": 5.494,
-    "region_bias": 1.322
+    "region_mae": 5.583,
+    "region_bias": 1.497
   },
   {
     "region_name": "Липецкая область",
     "Experiment": "A",
-    "region_mae": 6.845,
-    "region_bias": 0.83
+    "region_mae": 8.35,
+    "region_bias": -2.412
   },
   {
     "region_name": "Липецкая область",
     "Experiment": "B",
-    "region_mae": 5.328,
-    "region_bias": 1.703
+    "region_mae": 6.154,
+    "region_bias": 0.811
   },
   {
     "region_name": "Магаданская область",
     "Experiment": "A",
-    "region_mae": 8.645,
-    "region_bias": 5.364
+    "region_mae": 5.777,
+    "region_bias": -0.238
   },
   {
     "region_name": "Магаданская область",
     "Experiment": "B",
-    "region_mae": 7.18,
-    "region_bias": 1.399
+    "region_mae": 6.286,
+    "region_bias": 0.2
   },
   {
     "region_name": "Московская область",
     "Experiment": "A",
-    "region_mae": 8.612,
-    "region_bias": 4.584
+    "region_mae": 5.734,
+    "region_bias": 0.534
   },
   {
     "region_name": "Московская область",
     "Experiment": "B",
-    "region_mae": 5.658,
-    "region_bias": 1.394
+    "region_mae": 5.958,
+    "region_bias": 0.849
   },
   {
     "region_name": "Мурманская область",
     "Experiment": "A",
-    "region_mae": 9.414,
-    "region_bias": 4.76
+    "region_mae": 8.014,
+    "region_bias": 2.079
   },
   {
     "region_name": "Мурманская область",
     "Experiment": "B",
-    "region_mae": 7.822,
-    "region_bias": 4.314
+    "region_mae": 9.011,
+    "region_bias": 3.977
   },
   {
     "region_name": "Ненецкий автономный округ",
     "Experiment": "A",
-    "region_mae": 15.042,
-    "region_bias": 7.7
+    "region_mae": 6.222,
+    "region_bias": -1.692
   },
   {
     "region_name": "Ненецкий автономный округ",
     "Experiment": "B",
-    "region_mae": 12.925,
-    "region_bias": 2.694
+    "region_mae": 14.042,
+    "region_bias": 3.391
   },
   {
     "region_name": "Нижегородская область",
     "Experiment": "A",
-    "region_mae": 9.44,
-    "region_bias": 0.88
+    "region_mae": 10.105,
+    "region_bias": -2.889
   },
   {
     "region_name": "Нижегородская область",
     "Experiment": "B",
-    "region_mae": 5.31,
-    "region_bias": 0.939
+    "region_mae": 5.204,
+    "region_bias": -0.082
   },
   {
     "region_name": "Новгородская область",
     "Experiment": "A",
-    "region_mae": 7.225,
-    "region_bias": 3.865
+    "region_mae": 5.399,
+    "region_bias": -0.581
   },
   {
     "region_name": "Новгородская область",
     "Experiment": "B",
-    "region_mae": 8.774,
-    "region_bias": 4.72
+    "region_mae": 9.977,
+    "region_bias": 4.768
   },
   {
     "region_name": "Новосибирская область",
     "Experiment": "A",
-    "region_mae": 8.967,
-    "region_bias": 2.665
+    "region_mae": 7.429,
+    "region_bias": 0.395
   },
   {
     "region_name": "Новосибирская область",
     "Experiment": "B",
-    "region_mae": 8.798,
-    "region_bias": 2.277
+    "region_mae": 10.303,
+    "region_bias": 2.476
   },
   {
     "region_name": "Омская область",
     "Experiment": "A",
-    "region_mae": 7.114,
-    "region_bias": 1.74
+    "region_mae": 4.996,
+    "region_bias": -1.107
   },
   {
     "region_name": "Омская область",
     "Experiment": "B",
-    "region_mae": 11.258,
-    "region_bias": 1.938
+    "region_mae": 12.748,
+    "region_bias": 2.705
   },
   {
     "region_name": "Оренбургская область",
     "Experiment": "A",
-    "region_mae": 9.266,
-    "region_bias": 1.281
+    "region_mae": 6.863,
+    "region_bias": -1.987
   },
   {
     "region_name": "Оренбургская область",
     "Experiment": "B",
-    "region_mae": 9.206,
-    "region_bias": 2.256
+    "region_mae": 10.59,
+    "region_bias": 2.239
   },
   {
     "region_name": "Орловская область",
     "Experiment": "A",
-    "region_mae": 6.983,
-    "region_bias": 3.284
+    "region_mae": 6.019,
+    "region_bias": -1.925
   },
   {
     "region_name": "Орловская область",
     "Experiment": "B",
-    "region_mae": 7.223,
-    "region_bias": 3.07
+    "region_mae": 8.821,
+    "region_bias": 3.715
   },
   {
     "region_name": "Пензенская область",
     "Experiment": "A",
-    "region_mae": 8.523,
-    "region_bias": -1.988
+    "region_mae": 9.446,
+    "region_bias": -2.028
   },
   {
     "region_name": "Пензенская область",
     "Experiment": "B",
-    "region_mae": 4.888,
-    "region_bias": 1.039
+    "region_mae": 3.934,
+    "region_bias": 0.309
   },
   {
     "region_name": "Пермский край",
-    "Experiment": "A",
-    "region_mae": 7.042,
-    "region_bias": 3.057
-  },
-  {
-    "region_name": "Пермский край",
-    "Experiment": "B",
-    "region_mae": 8.582,
-    "region_bias": 2.962
-  },
-  {
-    "region_name": "Приморский край",
-    "Experiment": "A",
-    "region_mae": 8.086,
-    "region_bias": 2.61
-  },
-  {
-    "region_name": "Приморский край",
-    "Experiment": "B",
-    "region_mae": 10.266,
-    "region_bias": 1.699
-  },
-  {
-    "region_name": "Псковская область",
-    "Experiment": "A",
-    "region_mae": 7.34,
-    "region_bias": 4.185
-  },
-  {
-    "region_name": "Псковская область",
-    "Experiment": "B",
-    "region_mae": 7.017,
-    "region_bias": 3.243
-  },
-  {
-    "region_name": "Республика Адыгея (Адыгея)",
-    "Experiment": "A",
-    "region_mae": 6.37,
-    "region_bias": -1.179
-  },
-  {
-    "region_name": "Республика Адыгея (Адыгея)",
-    "Experiment": "B",
-    "region_mae": 3.831,
-    "region_bias": 0.219
-  },
-  {
-    "region_name": "Республика Алтай",
-    "Experiment": "A",
-    "region_mae": 4.375,
-    "region_bias": 0.222
-  },
-  {
-    "region_name": "Республика Алтай",
-    "Experiment": "B",
-    "region_mae": 10.652,
-    "region_bias": 1.134
-  },
-  {
-    "region_name": "Республика Башкортостан",
-    "Experiment": "A",
-    "region_mae": 4.149,
-    "region_bias": 0.806
-  },
-  {
-    "region_name": "Республика Башкортостан",
-    "Experiment": "B",
-    "region_mae": 3.616,
-    "region_bias": -1.55
-  },
-  {
-    "region_name": "Республика Бурятия",
-    "Experiment": "A",
-    "region_mae": 4.413,
-    "region_bias": 0.895
-  },
-  {
-    "region_name": "Республика Бурятия",
-    "Experiment": "B",
-    "region_mae": 8.108,
-    "region_bias": 1.419
-  },
-  {
-    "region_name": "Республика Дагестан",
-    "Experiment": "A",
-    "region_mae": 7.206,
-    "region_bias": 3.327
-  },
-  {
-    "region_name": "Республика Дагестан",
-    "Experiment": "B",
-    "region_mae": 2.605,
-    "region_bias": 1.612
-  },
-  {
-    "region_name": "Республика Ингушетия",
-    "Experiment": "A",
-    "region_mae": 8.592,
-    "region_bias": 8.118
-  },
-  {
-    "region_name": "Республика Ингушетия",
-    "Experiment": "B",
-    "region_mae": 4.557,
-    "region_bias": -1.537
-  },
-  {
-    "region_name": "Республика Калмыкия",
-    "Experiment": "A",
-    "region_mae": 9.111,
-    "region_bias": -1.017
-  },
-  {
-    "region_name": "Республика Калмыкия",
-    "Experiment": "B",
-    "region_mae": 11.709,
-    "region_bias": 4.673
-  },
-  {
-    "region_name": "Республика Карелия",
-    "Experiment": "A",
-    "region_mae": 8.261,
-    "region_bias": 5.425
-  },
-  {
-    "region_name": "Республика Карелия",
-    "Experiment": "B",
-    "region_mae": 7.626,
-    "region_bias": 6.249
-  },
-  {
-    "region_name": "Республика Коми",
-    "Experiment": "A",
-    "region_mae": 8.142,
-    "region_bias": 2.211
-  },
-  {
-    "region_name": "Республика Коми",
-    "Experiment": "B",
-    "region_mae": 11.993,
-    "region_bias": 3.408
-  },
-  {
-    "region_name": "Республика Марий Эл",
-    "Experiment": "A",
-    "region_mae": 5.608,
-    "region_bias": -2.164
-  },
-  {
-    "region_name": "Республика Марий Эл",
-    "Experiment": "B",
-    "region_mae": 13.296,
-    "region_bias": 1.025
-  },
-  {
-    "region_name": "Республика Мордовия",
-    "Experiment": "A",
-    "region_mae": 5.931,
-    "region_bias": 0.869
-  },
-  {
-    "region_name": "Республика Мордовия",
-    "Experiment": "B",
-    "region_mae": 4.726,
-    "region_bias": 0.835
-  },
-  {
-    "region_name": "Республика Саха (Якутия)",
     "Experiment": "A",
     "region_mae": 4.891,
-    "region_bias": 3.957
+    "region_bias": 0.642
+  },
+  {
+    "region_name": "Пермский край",
+    "Experiment": "B",
+    "region_mae": 10.045,
+    "region_bias": 2.891
+  },
+  {
+    "region_name": "Приморский край",
+    "Experiment": "A",
+    "region_mae": 7.009,
+    "region_bias": 0.741
+  },
+  {
+    "region_name": "Приморский край",
+    "Experiment": "B",
+    "region_mae": 11.134,
+    "region_bias": 1.758
+  },
+  {
+    "region_name": "Псковская область",
+    "Experiment": "A",
+    "region_mae": 4.355,
+    "region_bias": -0.646
+  },
+  {
+    "region_name": "Псковская область",
+    "Experiment": "B",
+    "region_mae": 7.508,
+    "region_bias": 2.608
+  },
+  {
+    "region_name": "Республика Адыгея (Адыгея)",
+    "Experiment": "A",
+    "region_mae": 8.268,
+    "region_bias": -1.659
+  },
+  {
+    "region_name": "Республика Адыгея (Адыгея)",
+    "Experiment": "B",
+    "region_mae": 2.95,
+    "region_bias": 0.068
+  },
+  {
+    "region_name": "Республика Алтай",
+    "Experiment": "A",
+    "region_mae": 4.192,
+    "region_bias": -0.338
+  },
+  {
+    "region_name": "Республика Алтай",
+    "Experiment": "B",
+    "region_mae": 11.496,
+    "region_bias": 1.274
+  },
+  {
+    "region_name": "Республика Башкортостан",
+    "Experiment": "A",
+    "region_mae": 3.454,
+    "region_bias": 0.072
+  },
+  {
+    "region_name": "Республика Башкортостан",
+    "Experiment": "B",
+    "region_mae": 3.168,
+    "region_bias": -0.829
+  },
+  {
+    "region_name": "Республика Бурятия",
+    "Experiment": "A",
+    "region_mae": 3.782,
+    "region_bias": -0.486
+  },
+  {
+    "region_name": "Республика Бурятия",
+    "Experiment": "B",
+    "region_mae": 9.723,
+    "region_bias": 1.618
+  },
+  {
+    "region_name": "Республика Дагестан",
+    "Experiment": "A",
+    "region_mae": 7.2,
+    "region_bias": 0.144
+  },
+  {
+    "region_name": "Республика Дагестан",
+    "Experiment": "B",
+    "region_mae": 1.776,
+    "region_bias": 0.988
+  },
+  {
+    "region_name": "Республика Ингушетия",
+    "Experiment": "A",
+    "region_mae": 6.551,
+    "region_bias": 4.123
+  },
+  {
+    "region_name": "Республика Ингушетия",
+    "Experiment": "B",
+    "region_mae": 3.27,
+    "region_bias": -0.866
+  },
+  {
+    "region_name": "Республика Калмыкия",
+    "Experiment": "A",
+    "region_mae": 10.884,
+    "region_bias": -1.23
+  },
+  {
+    "region_name": "Республика Калмыкия",
+    "Experiment": "B",
+    "region_mae": 13.549,
+    "region_bias": 4.906
+  },
+  {
+    "region_name": "Республика Карелия",
+    "Experiment": "A",
+    "region_mae": 7.638,
+    "region_bias": 3.445
+  },
+  {
+    "region_name": "Республика Карелия",
+    "Experiment": "B",
+    "region_mae": 7.831,
+    "region_bias": 5.896
+  },
+  {
+    "region_name": "Республика Коми",
+    "Experiment": "A",
+    "region_mae": 8.148,
+    "region_bias": 1.04
+  },
+  {
+    "region_name": "Республика Коми",
+    "Experiment": "B",
+    "region_mae": 12.93,
+    "region_bias": 3.051
+  },
+  {
+    "region_name": "Республика Марий Эл",
+    "Experiment": "A",
+    "region_mae": 5.784,
+    "region_bias": -2.311
+  },
+  {
+    "region_name": "Республика Марий Эл",
+    "Experiment": "B",
+    "region_mae": 14.904,
+    "region_bias": 1.433
+  },
+  {
+    "region_name": "Республика Мордовия",
+    "Experiment": "A",
+    "region_mae": 7.087,
+    "region_bias": -1.556
+  },
+  {
+    "region_name": "Республика Мордовия",
+    "Experiment": "B",
+    "region_mae": 3.816,
+    "region_bias": -0.266
+  },
+  {
+    "region_name": "Республика Саха (Якутия)",
+    "Experiment": "A",
+    "region_mae": 4.566,
+    "region_bias": 1.594
   },
   {
     "region_name": "Республика Саха (Якутия)",
     "Experiment": "B",
-    "region_mae": 15.652,
-    "region_bias": 1.448
+    "region_mae": 15.629,
+    "region_bias": 0.571
   },
   {
     "region_name": "Республика Северная Осетия - Алания",
     "Experiment": "A",
-    "region_mae": 5.088,
-    "region_bias": 2.087
+    "region_mae": 4.011,
+    "region_bias": -0.118
   },
   {
     "region_name": "Республика Северная Осетия - Алания",
     "Experiment": "B",
-    "region_mae": 5.005,
-    "region_bias": 4.43
+    "region_mae": 4.281,
+    "region_bias": 3.058
   },
   {
     "region_name": "Республика Татарстан (Татарстан)",
     "Experiment": "A",
-    "region_mae": 10.785,
-    "region_bias": 0.844
+    "region_mae": 11.66,
+    "region_bias": -0.825
   },
   {
     "region_name": "Республика Татарстан (Татарстан)",
     "Experiment": "B",
-    "region_mae": 4.0,
-    "region_bias": 1.854
+    "region_mae": 3.37,
+    "region_bias": -0.67
   },
   {
     "region_name": "Республика Тыва",
     "Experiment": "A",
-    "region_mae": 4.054,
-    "region_bias": 3.221
+    "region_mae": 5.275,
+    "region_bias": 0.408
   },
   {
     "region_name": "Республика Тыва",
     "Experiment": "B",
-    "region_mae": 3.971,
-    "region_bias": -1.152
+    "region_mae": 1.91,
+    "region_bias": -0.711
   },
   {
     "region_name": "Республика Хакасия",
     "Experiment": "A",
-    "region_mae": 7.199,
-    "region_bias": 0.907
+    "region_mae": 5.163,
+    "region_bias": -1.384
   },
   {
     "region_name": "Республика Хакасия",
     "Experiment": "B",
-    "region_mae": 11.065,
-    "region_bias": 1.87
+    "region_mae": 12.942,
+    "region_bias": 2.318
   },
   {
     "region_name": "Ростовская область",
     "Experiment": "A",
-    "region_mae": 7.195,
-    "region_bias": -2.191
+    "region_mae": 9.205,
+    "region_bias": -3.092
   },
   {
     "region_name": "Ростовская область",
     "Experiment": "B",
-    "region_mae": 5.744,
-    "region_bias": 0.414
+    "region_mae": 6.181,
+    "region_bias": 0.21
   },
   {
     "region_name": "Рязанская область",
     "Experiment": "A",
-    "region_mae": 7.414,
-    "region_bias": 0.768
+    "region_mae": 7.915,
+    "region_bias": -2.951
   },
   {
     "region_name": "Рязанская область",
     "Experiment": "B",
-    "region_mae": 5.199,
-    "region_bias": 1.79
+    "region_mae": 4.634,
+    "region_bias": 0.342
   },
   {
     "region_name": "Самарская область",
     "Experiment": "A",
-    "region_mae": 4.446,
-    "region_bias": 0.682
+    "region_mae": 5.296,
+    "region_bias": -1.846
   },
   {
     "region_name": "Самарская область",
     "Experiment": "B",
-    "region_mae": 6.787,
-    "region_bias": 0.791
+    "region_mae": 7.418,
+    "region_bias": 1.125
   },
   {
     "region_name": "Саратовская область",
     "Experiment": "A",
-    "region_mae": 8.195,
-    "region_bias": -2.631
+    "region_mae": 8.608,
+    "region_bias": -1.92
   },
   {
     "region_name": "Саратовская область",
     "Experiment": "B",
-    "region_mae": 7.573,
-    "region_bias": -1.943
+    "region_mae": 7.231,
+    "region_bias": -2.238
   },
   {
     "region_name": "Сахалинская область",
     "Experiment": "A",
-    "region_mae": 8.681,
-    "region_bias": 3.636
+    "region_mae": 5.809,
+    "region_bias": -0.741
   },
   {
     "region_name": "Сахалинская область",
     "Experiment": "B",
-    "region_mae": 11.727,
-    "region_bias": 3.332
+    "region_mae": 11.645,
+    "region_bias": 2.093
   },
   {
     "region_name": "Свердловская область",
     "Experiment": "A",
-    "region_mae": 7.379,
-    "region_bias": 3.933
+    "region_mae": 6.628,
+    "region_bias": 2.304
   },
   {
     "region_name": "Свердловская область",
     "Experiment": "B",
-    "region_mae": 9.177,
-    "region_bias": 3.493
+    "region_mae": 9.534,
+    "region_bias": 2.952
   },
   {
     "region_name": "Смоленская область",
     "Experiment": "A",
-    "region_mae": 7.678,
-    "region_bias": 0.938
+    "region_mae": 6.665,
+    "region_bias": -2.801
   },
   {
     "region_name": "Смоленская область",
     "Experiment": "B",
-    "region_mae": 7.02,
-    "region_bias": 1.736
+    "region_mae": 8.395,
+    "region_bias": 2.359
   },
   {
     "region_name": "Ставропольский край",
     "Experiment": "A",
-    "region_mae": 5.939,
-    "region_bias": -1.924
+    "region_mae": 6.0,
+    "region_bias": -1.832
   },
   {
     "region_name": "Ставропольский край",
     "Experiment": "B",
-    "region_mae": 4.395,
-    "region_bias": 1.25
+    "region_mae": 3.888,
+    "region_bias": 1.378
   },
   {
     "region_name": "Тамбовская область",
     "Experiment": "A",
-    "region_mae": 10.385,
-    "region_bias": -0.263
+    "region_mae": 11.336,
+    "region_bias": -0.791
   },
   {
     "region_name": "Тамбовская область",
     "Experiment": "B",
-    "region_mae": 5.831,
-    "region_bias": 3.219
+    "region_mae": 3.757,
+    "region_bias": 1.868
   },
   {
     "region_name": "Тверская область",
     "Experiment": "A",
-    "region_mae": 7.107,
-    "region_bias": 3.006
+    "region_mae": 5.576,
+    "region_bias": -1.082
   },
   {
     "region_name": "Тверская область",
     "Experiment": "B",
-    "region_mae": 9.25,
-    "region_bias": 4.041
+    "region_mae": 9.928,
+    "region_bias": 3.381
   },
   {
     "region_name": "Томская область",
     "Experiment": "A",
-    "region_mae": 8.916,
-    "region_bias": 2.91
+    "region_mae": 6.834,
+    "region_bias": 0.705
   },
   {
     "region_name": "Томская область",
     "Experiment": "B",
-    "region_mae": 8.618,
-    "region_bias": 3.347
+    "region_mae": 9.983,
+    "region_bias": 3.612
   },
   {
     "region_name": "Тульская область",
     "Experiment": "A",
-    "region_mae": 6.923,
-    "region_bias": -1.641
+    "region_mae": 7.601,
+    "region_bias": -2.359
   },
   {
     "region_name": "Тульская область",
     "Experiment": "B",
-    "region_mae": 4.408,
-    "region_bias": 1.613
+    "region_mae": 4.102,
+    "region_bias": 0.815
   },
   {
     "region_name": "Тюменская область",
     "Experiment": "A",
-    "region_mae": 6.567,
-    "region_bias": 4.921
+    "region_mae": 4.592,
+    "region_bias": 2.006
   },
   {
     "region_name": "Тюменская область",
     "Experiment": "B",
-    "region_mae": 2.159,
-    "region_bias": 1.052
+    "region_mae": 3.409,
+    "region_bias": 2.09
   },
   {
     "region_name": "Удмуртская Республика",
     "Experiment": "A",
-    "region_mae": 5.391,
-    "region_bias": 0.617
+    "region_mae": 6.047,
+    "region_bias": -0.236
   },
   {
     "region_name": "Удмуртская Республика",
     "Experiment": "B",
-    "region_mae": 8.64,
-    "region_bias": 1.312
-  },
-  {
-    "region_name": "Ульяновская область",
-    "Experiment": "A",
-    "region_mae": 4.219,
-    "region_bias": -0.453
-  },
-  {
-    "region_name": "Ульяновская область",
-    "Experiment": "B",
-    "region_mae": 11.632,
-    "region_bias": -0.049
-  },
-  {
-    "region_name": "Хабаровский край",
-    "Experiment": "A",
-    "region_mae": 9.415,
+    "region_mae": 10.563,
     "region_bias": 1.962
   },
   {
+    "region_name": "Ульяновская область",
+    "Experiment": "A",
+    "region_mae": 5.447,
+    "region_bias": -3.252
+  },
+  {
+    "region_name": "Ульяновская область",
+    "Experiment": "B",
+    "region_mae": 13.085,
+    "region_bias": 0.338
+  },
+  {
+    "region_name": "Хабаровский край",
+    "Experiment": "A",
+    "region_mae": 7.206,
+    "region_bias": -1.286
+  },
+  {
     "region_name": "Хабаровский край",
     "Experiment": "B",
-    "region_mae": 13.319,
-    "region_bias": 5.242
+    "region_mae": 12.859,
+    "region_bias": 3.955
   },
   {
     "region_name": "Ханты-Мансийский автономный округ - Югра",
     "Experiment": "A",
-    "region_mae": 9.937,
-    "region_bias": 2.626
+    "region_mae": 7.883,
+    "region_bias": -2.399
   },
   {
     "region_name": "Ханты-Мансийский автономный округ - Югра",
     "Experiment": "B",
-    "region_mae": 5.9,
-    "region_bias": 2.171
+    "region_mae": 5.874,
+    "region_bias": 0.966
   },
   {
     "region_name": "Челябинская область",
     "Experiment": "A",
-    "region_mae": 5.863,
-    "region_bias": 2.728
+    "region_mae": 4.847,
+    "region_bias": 1.554
   },
   {
     "region_name": "Челябинская область",
     "Experiment": "B",
-    "region_mae": 8.56,
-    "region_bias": 3.907
+    "region_mae": 9.316,
+    "region_bias": 3.807
   },
   {
     "region_name": "Чеченская Республика",
     "Experiment": "A",
-    "region_mae": 9.298,
-    "region_bias": 5.004
+    "region_mae": 8.529,
+    "region_bias": -0.317
   },
   {
     "region_name": "Чеченская Республика",
     "Experiment": "B",
-    "region_mae": 3.649,
-    "region_bias": 1.681
+    "region_mae": 4.549,
+    "region_bias": -0.988
   },
   {
     "region_name": "Чувашская Республика - Чувашия",
     "Experiment": "A",
-    "region_mae": 3.295,
-    "region_bias": 1.175
+    "region_mae": 5.04,
+    "region_bias": -0.439
   },
   {
     "region_name": "Чувашская Республика - Чувашия",
     "Experiment": "B",
-    "region_mae": 8.588,
-    "region_bias": 3.248
+    "region_mae": 10.854,
+    "region_bias": 4.556
   },
   {
     "region_name": "Чукотский автономный округ",
     "Experiment": "A",
-    "region_mae": 9.39,
-    "region_bias": 3.843
+    "region_mae": 7.288,
+    "region_bias": -0.741
   },
   {
     "region_name": "Чукотский автономный округ",
     "Experiment": "B",
-    "region_mae": 6.309,
-    "region_bias": 5.169
+    "region_mae": 6.475,
+    "region_bias": 2.852
   },
   {
     "region_name": "Ямало-Ненецкий автономный округ",
     "Experiment": "A",
-    "region_mae": 10.791,
-    "region_bias": 6.47
+    "region_mae": 4.685,
+    "region_bias": -0.726
   },
   {
     "region_name": "Ямало-Ненецкий автономный округ",
     "Experiment": "B",
-    "region_mae": 4.696,
-    "region_bias": 0.076
+    "region_mae": 3.148,
+    "region_bias": -1.523
   },
   {
     "region_name": "Ярославская область",
     "Experiment": "A",
-    "region_mae": 8.266,
-    "region_bias": 4.193
+    "region_mae": 6.833,
+    "region_bias": 1.355
   },
   {
     "region_name": "Ярославская область",
     "Experiment": "B",
-    "region_mae": 11.355,
-    "region_bias": 4.826
+    "region_mae": 12.593,
+    "region_bias": 5.114
   },
   {
     "region_name": "город Москва",
     "Experiment": "A",
-    "region_mae": 11.016,
-    "region_bias": 9.067
+    "region_mae": 6.712,
+    "region_bias": 2.676
   },
   {
     "region_name": "город Москва",
     "Experiment": "B",
-    "region_mae": 13.813,
-    "region_bias": 3.117
+    "region_mae": 13.899,
+    "region_bias": 2.623
   },
   {
     "region_name": "город Санкт-Петербург",
     "Experiment": "A",
-    "region_mae": 7.661,
-    "region_bias": 6.192
+    "region_mae": 5.96,
+    "region_bias": 1.616
   },
   {
     "region_name": "город Санкт-Петербург",
     "Experiment": "B",
-    "region_mae": 7.668,
-    "region_bias": 4.967
+    "region_mae": 7.242,
+    "region_bias": 4.143
   }
 ]
