@@ -148,13 +148,20 @@ class WeightedHistoricalMean(BaseBaseline):
         self.global_mean_ = 0.0
 
     def _compute_weights(self, n: int) -> np.ndarray:
-        """Compute decay weights for n historical points."""
+        """Compute decay weights for n historical points.
+
+        Index 0 is the oldest election, index ``n - 1`` the most recent one.
+        The most recent election receives the highest weight (``decay_rate^0``),
+        older ones fade geometrically/linearly.
+        """
         if self.decay == "exponential":
-            # Exponential decay: w_i = decay_rate^i
-            weights = np.array([self.decay_rate**i for i in range(n)])
+            # Exponential decay: w_i = decay_rate^(n-1-i) -> newest gets decay_rate^0.
+            weights = np.array([self.decay_rate ** (n - 1 - i) for i in range(n)])
         elif self.decay == "linear":
-            # Linear decay: w_i = 1 - i/n * (1 - decay_rate)
-            weights = np.array([1 - (i / max(1, n - 1)) * (1 - self.decay_rate) for i in range(n)])
+            # Linear decay: newest gets ~1, oldest gets decay_rate.
+            weights = np.array(
+                [1 - ((n - 1 - i) / max(1, n - 1)) * (1 - self.decay_rate) for i in range(n)]
+            )
         else:
             raise ValueError(f"Unknown decay type: {self.decay}")
 

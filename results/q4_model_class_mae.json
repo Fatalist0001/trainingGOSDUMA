@@ -1,9 +1,9 @@
 [
   {
     "Class": "baseline",
-    "A_MAE": 4.868,
-    "B_MAE": 6.45,
-    "Mean_MAE": 5.659
+    "A_MAE": 4.735,
+    "B_MAE": 6.42,
+    "Mean_MAE": 5.577
   },
   {
     "Class": "ensemble",

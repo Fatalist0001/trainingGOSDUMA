@@ -18,10 +18,10 @@
   {
     "Model": "WeightedHistoricalMean",
     "Experiment": "A",
-    "UR": 6.017715675144334,
-    "KPRF": 3.0706131093729256,
-    "LDPR": 4.241965459904189,
-    "Mean_MAE": 4.44343141480715
+    "UR": 5.188579184539766,
+    "KPRF": 2.736701991510245,
+    "LDPR": 4.2062530015171395,
+    "Mean_MAE": 4.043844725855717
   },
   {
     "Model": "NaivePreviousElection",
@@ -42,10 +42,10 @@
   {
     "Model": "WeightedHistoricalMean",
     "Experiment": "B",
-    "UR": 7.55590040213559,
-    "KPRF": 7.149451307990193,
-    "LDPR": 3.9064164678905655,
-    "Mean_MAE": 6.203922726005449
+    "UR": 7.333481455231411,
+    "KPRF": 6.750749186208794,
+    "LDPR": 4.254970168892264,
+    "Mean_MAE": 6.113066936777489
   },
   {
     "Model": "StackingEnsemble",

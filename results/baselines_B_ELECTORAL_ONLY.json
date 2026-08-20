@@ -2,7 +2,7 @@
   {
     "model": "NaivePreviousElection",
     "experiment": "B",
-    "feature_group": "ALL_FEATURES",
+    "feature_group": "ELECTORAL_ONLY",
     "level": "region",
     "train_metrics": [
       {
@@ -193,27 +193,14 @@
     "n_train": 249,
     "n_test": 83,
     "feature_columns": [
-      "GRP_per_capita_lag1",
       "KPRF_share_lag1",
       "LDPR_share_lag1",
       "UR_share_lag1",
       "age_working_share_lag1",
-      "average_salary_lag1",
-      "birth_rate_lag1",
-      "death_rate_lag1",
-      "doctors_per_1000_lag1",
-      "hospital_beds_per_1000_lag1",
-      "housing_area_per_capita_lag1",
-      "migration_rate_lag1",
-      "natural_population_growth_lag1",
-      "population_lag1",
-      "poverty_rate_lag1",
       "pres_leading_candidate_share_lag",
       "pres_turnout_lag",
-      "real_disposable_income_lag1",
       "turnout_rate",
       "turnout_rate_lag1",
-      "unemployment_rate_lag1",
       "urban_population_share_lag1"
     ],
     "target_columns": [
@@ -225,7 +212,7 @@
   {
     "model": "HistoricalMean",
     "experiment": "B",
-    "feature_group": "ALL_FEATURES",
+    "feature_group": "ELECTORAL_ONLY",
     "level": "region",
     "train_metrics": [
       {
@@ -416,27 +403,14 @@
     "n_train": 249,
     "n_test": 83,
     "feature_columns": [
-      "GRP_per_capita_lag1",
       "KPRF_share_lag1",
       "LDPR_share_lag1",
       "UR_share_lag1",
       "age_working_share_lag1",
-      "average_salary_lag1",
-      "birth_rate_lag1",
-      "death_rate_lag1",
-      "doctors_per_1000_lag1",
-      "hospital_beds_per_1000_lag1",
-      "housing_area_per_capita_lag1",
-      "migration_rate_lag1",
-      "natural_population_growth_lag1",
-      "population_lag1",
-      "poverty_rate_lag1",
       "pres_leading_candidate_share_lag",
       "pres_turnout_lag",
-      "real_disposable_income_lag1",
       "turnout_rate",
       "turnout_rate_lag1",
-      "unemployment_rate_lag1",
       "urban_population_share_lag1"
     ],
     "target_columns": [
@@ -448,7 +422,7 @@
   {
     "model": "WeightedHistoricalMean",
     "experiment": "B",
-    "feature_group": "ALL_FEATURES",
+    "feature_group": "ELECTORAL_ONLY",
     "level": "region",
     "train_metrics": [
       {
@@ -642,27 +616,14 @@
     "n_train": 249,
     "n_test": 83,
     "feature_columns": [
-      "GRP_per_capita_lag1",
       "KPRF_share_lag1",
       "LDPR_share_lag1",
       "UR_share_lag1",
       "age_working_share_lag1",
-      "average_salary_lag1",
-      "birth_rate_lag1",
-      "death_rate_lag1",
-      "doctors_per_1000_lag1",
-      "hospital_beds_per_1000_lag1",
-      "housing_area_per_capita_lag1",
-      "migration_rate_lag1",
-      "natural_population_growth_lag1",
-      "population_lag1",
-      "poverty_rate_lag1",
       "pres_leading_candidate_share_lag",
       "pres_turnout_lag",
-      "real_disposable_income_lag1",
       "turnout_rate",
       "turnout_rate_lag1",
-      "unemployment_rate_lag1",
       "urban_population_share_lag1"
     ],
     "target_columns": [

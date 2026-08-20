@@ -815,6 +815,17 @@ def forecast_baseline(
     train_df = df[df["year"].isin(train_years)]
     target_columns = get_target_columns_from_df(train_df, level)
 
+    # The WeightedHistoricalMean decay for the 2026 forecast is tuned on
+    # experiment B (train 2003-2011, val 2016), then refit on all history
+    # (see AGENTS.md "Допущения"). Explicit model_kwargs win over tuning.
+    if model_name == "WeightedHistoricalMean" and not model_kwargs:
+        b_split = get_experiment_splits("B")
+        b_train = df[df["year"].isin(sorted(b_split.train_years))]
+        b_val = df[df["year"].isin(sorted(b_split.val_years))]
+        tune_res = tune_weighted_historical_mean(b_train, b_val, target_columns)
+        model_kwargs = dict(model_kwargs)
+        model_kwargs.update(tune_res["params"] or {})
+
     region_ids = sorted(df["region_id"].unique())
     X_pred = pd.DataFrame({"region_id": region_ids, "year": test_year})
     pred = np.empty((len(region_ids), len(target_columns)))

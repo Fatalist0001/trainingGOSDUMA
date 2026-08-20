@@ -2,7 +2,7 @@
   {
     "model": "NaivePreviousElection",
     "experiment": "B",
-    "feature_group": "ALL_FEATURES",
+    "feature_group": "ROSSTAT_ONLY",
     "level": "region",
     "train_metrics": [
       {
@@ -194,9 +194,6 @@
     "n_test": 83,
     "feature_columns": [
       "GRP_per_capita_lag1",
-      "KPRF_share_lag1",
-      "LDPR_share_lag1",
-      "UR_share_lag1",
       "age_working_share_lag1",
       "average_salary_lag1",
       "birth_rate_lag1",
@@ -208,11 +205,7 @@
       "natural_population_growth_lag1",
       "population_lag1",
       "poverty_rate_lag1",
-      "pres_leading_candidate_share_lag",
-      "pres_turnout_lag",
       "real_disposable_income_lag1",
-      "turnout_rate",
-      "turnout_rate_lag1",
       "unemployment_rate_lag1",
       "urban_population_share_lag1"
     ],
@@ -225,7 +218,7 @@
   {
     "model": "HistoricalMean",
     "experiment": "B",
-    "feature_group": "ALL_FEATURES",
+    "feature_group": "ROSSTAT_ONLY",
     "level": "region",
     "train_metrics": [
       {
@@ -417,9 +410,6 @@
     "n_test": 83,
     "feature_columns": [
       "GRP_per_capita_lag1",
-      "KPRF_share_lag1",
-      "LDPR_share_lag1",
-      "UR_share_lag1",
       "age_working_share_lag1",
       "average_salary_lag1",
       "birth_rate_lag1",
@@ -431,11 +421,7 @@
       "natural_population_growth_lag1",
       "population_lag1",
       "poverty_rate_lag1",
-      "pres_leading_candidate_share_lag",
-      "pres_turnout_lag",
       "real_disposable_income_lag1",
-      "turnout_rate",
-      "turnout_rate_lag1",
       "unemployment_rate_lag1",
       "urban_population_share_lag1"
     ],
@@ -448,7 +434,7 @@
   {
     "model": "WeightedHistoricalMean",
     "experiment": "B",
-    "feature_group": "ALL_FEATURES",
+    "feature_group": "ROSSTAT_ONLY",
     "level": "region",
     "train_metrics": [
       {
@@ -643,9 +629,6 @@
     "n_test": 83,
     "feature_columns": [
       "GRP_per_capita_lag1",
-      "KPRF_share_lag1",
-      "LDPR_share_lag1",
-      "UR_share_lag1",
       "age_working_share_lag1",
       "average_salary_lag1",
       "birth_rate_lag1",
@@ -657,11 +640,7 @@
       "natural_population_growth_lag1",
       "population_lag1",
       "poverty_rate_lag1",
-      "pres_leading_candidate_share_lag",
-      "pres_turnout_lag",
       "real_disposable_income_lag1",
-      "turnout_rate",
-      "turnout_rate_lag1",
       "unemployment_rate_lag1",
       "urban_population_share_lag1"
     ],

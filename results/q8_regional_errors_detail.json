@@ -6975,582 +6975,582 @@
     "region_name": "Алтайский край",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 9.17451226364661,
-    "region_bias": 0.9946415082224386
+    "region_mae": 9.521105211940835,
+    "region_bias": 1.0547648648923473
   },
   {
     "region_name": "Амурская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 11.180526533438298,
-    "region_bias": -2.829583223556197
+    "region_mae": 11.526680789707946,
+    "region_bias": -2.769798900833438
   },
   {
     "region_name": "Архангельская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 5.508311871490206,
-    "region_bias": -0.3648071197939764
+    "region_mae": 5.706557908978382,
+    "region_bias": -0.3051760554675245
   },
   {
     "region_name": "Астраханская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 3.4078959883112847,
-    "region_bias": 1.8445432438967864
+    "region_mae": 3.753992994578276,
+    "region_bias": 1.904161358539324
   },
   {
     "region_name": "Белгородская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 2.5114642435074486,
-    "region_bias": -2.5114642435074486
+    "region_mae": 2.4517845089763526,
+    "region_bias": -2.4517845089763526
   },
   {
     "region_name": "Брянская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 4.913377560589637,
-    "region_bias": -3.984986078223628
+    "region_mae": 4.567231767577092,
+    "region_bias": -3.9253707323561584
   },
   {
     "region_name": "Владимирская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 4.526527396670614,
-    "region_bias": -0.19644781794984154
+    "region_mae": 4.724977861426281,
+    "region_bias": -0.13661498854136234
   },
   {
     "region_name": "Волгоградская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 2.0437238959135793,
-    "region_bias": -2.0437238959135793
+    "region_mae": 2.2430071624433747,
+    "region_bias": -1.984127016485969
   },
   {
     "region_name": "Вологодская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 8.113420997946628,
-    "region_bias": 1.028376500616287
+    "region_mae": 8.311666327903334,
+    "region_bias": 1.0880013940616813
   },
   {
     "region_name": "Воронежская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 3.8296272623738488,
-    "region_bias": -2.57361958146628
+    "region_mae": 3.6312670967549443,
+    "region_bias": -2.5138621222751376
   },
   {
     "region_name": "Еврейская автономная область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 6.44883869616044,
-    "region_bias": -3.3166660526399014
+    "region_mae": 6.794950262968952,
+    "region_bias": -3.2569767426193423
   },
   {
     "region_name": "Забайкальский край",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 9.371345478107452,
-    "region_bias": -2.4773428625463882
+    "region_mae": 9.717460830424097,
+    "region_bias": -2.4176433068901506
   },
   {
     "region_name": "Ивановская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 6.281486169730503,
-    "region_bias": -0.7456459669524745
+    "region_mae": 6.627734501296719,
+    "region_bias": -0.6859360852285713
   },
   {
     "region_name": "Иркутская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 8.957203524898018,
-    "region_bias": -1.8190998973475079
+    "region_mae": 9.304590017900415,
+    "region_bias": -1.7564726361531264
   },
   {
     "region_name": "Кабардино-Балкарская Республика",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 13.932020708225124,
-    "region_bias": -6.534426311004144
+    "region_mae": 13.733830969435791,
+    "region_bias": -6.474879663106286
   },
   {
     "region_name": "Калининградская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 4.196076043242366,
-    "region_bias": 0.26981686642760927
+    "region_mae": 4.474329043288415,
+    "region_bias": 0.3295906363435262
   },
   {
     "region_name": "Калужская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 4.31238850139384,
-    "region_bias": -1.1254965248039202
+    "region_mae": 4.65853756801587,
+    "region_bias": -1.065856041521742
   },
   {
     "region_name": "Камчатский край",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 5.1262093681452585,
-    "region_bias": -2.070520030760116
+    "region_mae": 5.324534579596672,
+    "region_bias": -2.010750762425832
   },
   {
     "region_name": "Карачаево-Черкесская Республика",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 15.872848264309217,
-    "region_bias": -4.437436563655488
+    "region_mae": 15.526786064052468,
+    "region_bias": -4.377903713170606
   },
   {
     "region_name": "Кемеровская область - Кузбасс",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 12.364441712527034,
-    "region_bias": -5.173388199974316
+    "region_mae": 12.018350427659456,
+    "region_bias": -5.113780361266471
   },
   {
     "region_name": "Кировская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 9.12968108665905,
-    "region_bias": -0.43013541076186
+    "region_mae": 9.328055243095184,
+    "region_bias": -0.37040638708454193
   },
   {
     "region_name": "Костромская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 9.725708196790423,
-    "region_bias": -0.3971718475526493
+    "region_mae": 10.126719859935799,
+    "region_bias": -0.27096067926881534
   },
   {
     "region_name": "Краснодарский край",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 4.398656439447621,
-    "region_bias": -3.2448122065965594
+    "region_mae": 4.191140802127129,
+    "region_bias": -3.1851516639361357
   },
   {
     "region_name": "Красноярский край",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 6.547006851210464,
-    "region_bias": -0.05147926515444171
+    "region_mae": 6.89311118761194,
+    "region_bias": 0.008190645832001428
   },
   {
     "region_name": "Курганская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 5.781145679011392,
-    "region_bias": 0.3624226422586645
+    "region_mae": 6.127264100811703,
+    "region_bias": 0.4220249213803348
   },
   {
     "region_name": "Курская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 2.593918406578696,
-    "region_bias": -1.659178501131399
+    "region_mae": 2.38632115411592,
+    "region_bias": -1.5994330168565665
   },
   {
     "region_name": "Ленинградская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 2.156773846891765,
-    "region_bias": 0.416006986621045
+    "region_mae": 2.2483207591290633,
+    "region_bias": 0.475597191311295
   },
   {
     "region_name": "Липецкая область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 2.6129954705963514,
-    "region_bias": -2.22030919607896
+    "region_mae": 2.405445169144294,
+    "region_bias": -2.160610529329224
   },
   {
     "region_name": "Магаданская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 4.875247216571851,
-    "region_bias": -1.1341616886243369
+    "region_mae": 5.22133251336155,
+    "region_bias": -1.0745459692861292
   },
   {
     "region_name": "Московская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 3.0795069069934495,
-    "region_bias": -0.3643118460056349
+    "region_mae": 3.4259009132729363,
+    "region_bias": -0.30402320068573435
   },
   {
     "region_name": "Мурманская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 6.840657116291907,
-    "region_bias": 0.619315599185235
+    "region_mae": 7.038894768680604,
+    "region_bias": 0.6789380596221767
   },
   {
     "region_name": "Ненецкий автономный округ",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 8.237968314056483,
-    "region_bias": -1.915078606274107
+    "region_mae": 8.584031832103406,
+    "region_bias": -1.8555242408559522
   },
   {
     "region_name": "Нижегородская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 3.544459811556491,
-    "region_bias": -2.5600365588614022
+    "region_mae": 3.336919202434934,
+    "region_bias": -2.5003590852991304
   },
   {
     "region_name": "Новгородская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 5.732676147160011,
-    "region_bias": 1.1973635656641857
+    "region_mae": 6.078803203469448,
+    "region_bias": 1.2569790953005089
   },
   {
     "region_name": "Новосибирская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 8.81651718883161,
-    "region_bias": -0.7805758098848058
+    "region_mae": 9.163647383052625,
+    "region_bias": -0.7194768932369483
   },
   {
     "region_name": "Омская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 10.076046105705087,
-    "region_bias": -0.8096375168389495
+    "region_mae": 10.422219907386529,
+    "region_bias": -0.749976008900361
   },
   {
     "region_name": "Оренбургская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 8.593282219119576,
-    "region_bias": -2.2605458692481513
+    "region_mae": 8.939506824240963,
+    "region_bias": -2.2007399044879263
   },
   {
     "region_name": "Орловская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 3.4884114971169775,
-    "region_bias": -2.016035461787313
+    "region_mae": 3.838858631444387,
+    "region_bias": -1.9469217663152716
   },
   {
     "region_name": "Пензенская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 5.595469280906525,
-    "region_bias": -3.6149331550528783
+    "region_mae": 5.249330092607453,
+    "region_bias": -3.5553036290438986
   },
   {
     "region_name": "Пермский край",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 4.123663133100307,
-    "region_bias": 0.4444450748501752
+    "region_mae": 4.46975883549999,
+    "region_bias": 0.5040589763105962
   },
   {
     "region_name": "Приморский край",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 8.055036563350036,
-    "region_bias": -0.701281385226776
+    "region_mae": 8.401164672364352,
+    "region_bias": -0.6416234590448067
   },
   {
     "region_name": "Псковская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 3.9348336031820677,
-    "region_bias": -0.39096073939912596
+    "region_mae": 4.284123219805587,
+    "region_bias": -0.32727530793251286
   },
   {
     "region_name": "Республика Адыгея (Адыгея)",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 3.9463563090617044,
-    "region_bias": -3.3399589389580897
+    "region_mae": 3.738927020790961,
+    "region_bias": -3.280412301888585
   },
   {
     "region_name": "Республика Алтай",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 2.68422748315046,
-    "region_bias": -1.6325735369966068
+    "region_mae": 3.030301646492926,
+    "region_bias": -1.5730225237102886
   },
   {
     "region_name": "Республика Башкортостан",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 3.2942890024064684,
-    "region_bias": -3.2942890024064684
+    "region_mae": 3.234739526982715,
+    "region_bias": -3.234739526982715
   },
   {
     "region_name": "Республика Бурятия",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 5.377921277553825,
-    "region_bias": -0.7797383480665268
+    "region_mae": 5.723999443159927,
+    "region_bias": -0.7201952211624286
   },
   {
     "region_name": "Республика Дагестан",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 19.29685260045821,
-    "region_bias": -6.035170334262706
+    "region_mae": 18.95079035621747,
+    "region_bias": -5.97563526400621
   },
   {
     "region_name": "Республика Ингушетия",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 13.242510937957151,
-    "region_bias": -0.935976362777763
+    "region_mae": 12.896449726664722,
+    "region_bias": -0.8764422985854635
   },
   {
     "region_name": "Республика Калмыкия",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 9.953770921710364,
-    "region_bias": -3.575342290418414
+    "region_mae": 9.607709746628185,
+    "region_bias": -3.515819886119022
   },
   {
     "region_name": "Республика Карелия",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 6.944105263288855,
-    "region_bias": 2.350497936422298
+    "region_mae": 7.142364043980005,
+    "region_bias": 2.410132619992917
   },
   {
     "region_name": "Республика Коми",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 8.679075169919898,
-    "region_bias": 0.633587376407764
+    "region_mae": 8.877378810535667,
+    "region_bias": 0.6933135364116575
   },
   {
     "region_name": "Республика Марий Эл",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 5.910221616171626,
-    "region_bias": -2.876189106052981
+    "region_mae": 6.117669540401001,
+    "region_bias": -2.8166196556688576
   },
   {
     "region_name": "Республика Мордовия",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 16.2628918348324,
-    "region_bias": -6.003120270244961
+    "region_mae": 15.916820373653529,
+    "region_bias": -5.9435659449973235
   },
   {
     "region_name": "Республика Саха (Якутия)",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 1.5099229529398208,
-    "region_bias": 1.462395654488984
+    "region_mae": 1.7174442705617021,
+    "region_bias": 1.5220900262837134
   },
   {
     "region_name": "Республика Северная Осетия - Алания",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 11.093303929523685,
-    "region_bias": -4.76872533354092
+    "region_mae": 10.895077725699986,
+    "region_bias": -4.7091223380564236
   },
   {
     "region_name": "Республика Татарстан (Татарстан)",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 17.934307210891138,
-    "region_bias": -4.973753004406814
+    "region_mae": 17.588239799188216,
+    "region_bias": -4.914211621758297
   },
   {
     "region_name": "Республика Тыва",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 16.85186269048794,
-    "region_bias": -4.574596071234384
+    "region_mae": 16.505799296132487,
+    "region_bias": -4.515057958680381
   },
   {
     "region_name": "Республика Хакасия",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 9.335823168652055,
-    "region_bias": -1.0675102543803525
+    "region_mae": 9.681938789188107,
+    "region_bias": -1.0079133137025444
   },
   {
     "region_name": "Ростовская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 3.5063809425253907,
-    "region_bias": -3.022129117664322
+    "region_mae": 3.2988926638545846,
+    "region_bias": -2.9625083902430345
   },
   {
     "region_name": "Рязанская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 2.7387750847663934,
-    "region_bias": -2.498940245105057
+    "region_mae": 2.5311814019043752,
+    "region_bias": -2.439220754745835
   },
   {
     "region_name": "Самарская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 2.0509887717741506,
-    "region_bias": -2.0509887717741506
+    "region_mae": 1.9913469858554318,
+    "region_bias": -1.9913469858554318
   },
   {
     "region_name": "Саратовская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 7.763038230104655,
-    "region_bias": -3.827937856719709
+    "region_mae": 7.4169349759779735,
+    "region_bias": -3.7683298997124997
   },
   {
     "region_name": "Сахалинская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 5.128050184315312,
-    "region_bias": -1.9008859960198137
+    "region_mae": 5.474124047756991,
+    "region_bias": -1.841297055458733
   },
   {
     "region_name": "Свердловская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 5.8909697184527365,
-    "region_bias": 2.01481528091241
+    "region_mae": 6.089208167465981,
+    "region_bias": 2.0744380676978165
   },
   {
     "region_name": "Смоленская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 4.1376760482931445,
-    "region_bias": -2.670516867743544
+    "region_mae": 4.484071193913451,
+    "region_bias": -2.6105830264464345
   },
   {
     "region_name": "Ставропольский край",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 3.396806678775079,
-    "region_bias": -2.7541626783361832
+    "region_mae": 3.189342914637932,
+    "region_bias": -2.6945700680163043
   },
   {
     "region_name": "Тамбовская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 6.72039165965237,
-    "region_bias": -2.090817234216861
+    "region_mae": 6.3742889676768115,
+    "region_bias": -2.031235627721848
   },
   {
     "region_name": "Тверская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 3.9570014968534415,
-    "region_bias": -0.36730898125085315
+    "region_mae": 4.303252562143352,
+    "region_bias": -0.3075628455118255
   },
   {
     "region_name": "Томская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 6.953836159442065,
-    "region_bias": 0.389407431932223
+    "region_mae": 7.152089856119827,
+    "region_bias": 0.44904514786631883
   },
   {
     "region_name": "Тульская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 2.035017646591626,
-    "region_bias": -2.035017646591626
+    "region_mae": 1.9753552460125927,
+    "region_bias": -1.9753552460125927
   },
   {
     "region_name": "Тюменская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 4.17501141158053,
-    "region_bias": -2.7158499621830376
+    "region_mae": 3.9675527772634673,
+    "region_bias": -2.6562493152941955
   },
   {
     "region_name": "Удмуртская Республика",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 0.6723730977883774,
-    "region_bias": -0.4948649468637812
+    "region_mae": 0.5978071742055379,
+    "region_bias": -0.4350918402585962
   },
   {
     "region_name": "Ульяновская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 4.008569119470084,
-    "region_bias": -2.665652181121177
+    "region_mae": 4.354765017812764,
+    "region_bias": -2.6059698364549195
   },
   {
     "region_name": "Хабаровский край",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 9.956190508464372,
-    "region_bias": -1.2605605370575403
+    "region_mae": 10.302329127534016,
+    "region_bias": -1.2008407432763601
   },
   {
     "region_name": "Ханты-Мансийский автономный округ - Югра",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 6.110795741016702,
-    "region_bias": -1.8415728783776426
+    "region_mae": 6.309024713922799,
+    "region_bias": -1.7819590630747904
   },
   {
     "region_name": "Челябинская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 6.746144732541104,
-    "region_bias": 2.767992657588371
+    "region_mae": 6.9444042353425175,
+    "region_bias": 2.827644985502135
   },
   {
     "region_name": "Чеченская Республика",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 23.56983950127197,
-    "region_bias": -6.396840192517305
+    "region_mae": 23.223776802623036,
+    "region_bias": -6.337303455770807
   },
   {
     "region_name": "Чувашская Республика - Чувашия",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 0.9522867611090291,
-    "region_bias": -0.5176022055995174
+    "region_mae": 0.7447926203337042,
+    "region_bias": -0.4579740896852105
   },
   {
     "region_name": "Чукотский автономный округ",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 7.838323427258345,
-    "region_bias": -3.5559999416643415
+    "region_mae": 7.630745028072006,
+    "region_bias": -3.4962179578878367
   },
   {
     "region_name": "Ямало-Ненецкий автономный округ",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 9.043408420392035,
-    "region_bias": -3.979849265625417
+    "region_mae": 8.835928658608484,
+    "region_bias": -3.9202165499269213
   },
   {
     "region_name": "Ярославская область",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 6.819841313265442,
-    "region_bias": 1.3377544957411047
+    "region_mae": 7.166090305008939,
+    "region_bias": 1.3974857910617988
   },
   {
     "region_name": "город Москва",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 5.138445452502498,
-    "region_bias": 3.7514760126447535
+    "region_mae": 5.336745266820219,
+    "region_bias": 3.8111953689522533
   },
   {
     "region_name": "город Санкт-Петербург",
     "Experiment": "A",
     "Model": "MLPSklearn",
-    "region_mae": 4.687150477261917,
-    "region_bias": 4.431741940915702
+    "region_mae": 4.885408708534765,
+    "region_bias": 4.491395386391079
   },
   {
     "region_name": "Алтайский край",

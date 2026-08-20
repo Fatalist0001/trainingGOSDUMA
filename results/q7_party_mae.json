@@ -1,10 +1,10 @@
 [
   {
     "Model": "WeightedHistoricalMean",
-    "UR": 6.787,
-    "KPRF": 5.11,
-    "LDPR": 4.074,
-    "Mean_MAE": 5.324
+    "UR": 6.261,
+    "KPRF": 4.744,
+    "LDPR": 4.231,
+    "Mean_MAE": 5.078
   },
   {
     "Model": "HistoricalMean",

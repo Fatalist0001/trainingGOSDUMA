@@ -16,9 +16,16 @@
   {
     "Model": "WeightedHistoricalMean",
     "Class": "baseline",
-    "A_MAE": 4.44343141480715,
-    "B_MAE": 6.203922726005449,
-    "Mean_MAE": 5.3236770704062994
+    "A_MAE": 4.043844725855717,
+    "B_MAE": 6.113066936777489,
+    "Mean_MAE": 5.078455831316603
+  },
+  {
+    "Model": "HistGradientBoosting",
+    "Class": "tree",
+    "A_MAE": 5.942943031115458,
+    "B_MAE": 8.171238722082743,
+    "Mean_MAE": 7.0570908765991005
   },
   {
     "Model": "ElasticNet",
@@ -35,13 +42,6 @@
     "Mean_MAE": 6.550959857610575
   },
   {
-    "Model": "LinearRegression",
-    "Class": "linear",
-    "A_MAE": 12.469857893869168,
-    "B_MAE": 8.19544387696977,
-    "Mean_MAE": 10.332650885419469
-  },
-  {
     "Model": "KNN",
     "Class": "tree",
     "A_MAE": 6.103304394827712,
@@ -49,18 +49,32 @@
     "Mean_MAE": 6.826380036742606
   },
   {
-    "Model": "HistGradientBoosting",
-    "Class": "tree",
-    "A_MAE": 5.942943031115458,
-    "B_MAE": 8.171238722082743,
-    "Mean_MAE": 7.0570908765991005
-  },
-  {
     "Model": "MLPTorch",
     "Class": "neural",
     "A_MAE": 7.466815239980838,
     "B_MAE": 9.38716562934442,
     "Mean_MAE": 8.42699043466263
+  },
+  {
+    "Model": "MLPSklearn",
+    "Class": "neural",
+    "A_MAE": 6.806095134649087,
+    "B_MAE": 9.003977643963792,
+    "Mean_MAE": 7.9050363893064395
+  },
+  {
+    "Model": "LinearRegression",
+    "Class": "linear",
+    "A_MAE": 12.469857893869168,
+    "B_MAE": 8.19544387696977,
+    "Mean_MAE": 10.332650885419469
+  },
+  {
+    "Model": "WeightedEnsemble",
+    "Class": "ensemble",
+    "A_MAE": 6.40288984095336,
+    "B_MAE": 8.847330929705768,
+    "Mean_MAE": 7.625110385329564
   },
   {
     "Model": "RandomForest",
@@ -77,25 +91,11 @@
     "Mean_MAE": 6.336034610341526
   },
   {
-    "Model": "MLPSklearn",
-    "Class": "neural",
-    "A_MAE": 6.806095134649087,
-    "B_MAE": 9.003977643963792,
-    "Mean_MAE": 7.9050363893064395
-  },
-  {
     "Model": "StackingEnsemble",
     "Class": "ensemble",
     "A_MAE": 27.04354164930045,
     "B_MAE": 12.029376971164394,
     "Mean_MAE": 19.536459310232424
-  },
-  {
-    "Model": "WeightedEnsemble",
-    "Class": "ensemble",
-    "A_MAE": 6.40288984095336,
-    "B_MAE": 8.847330929705768,
-    "Mean_MAE": 7.625110385329564
   },
   {
     "Model": "XGBoost",

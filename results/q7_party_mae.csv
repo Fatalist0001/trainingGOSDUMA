@@ -1,5 +1,5 @@
 Model,UR,KPRF,LDPR,Mean_MAE
-WeightedHistoricalMean,6.787,5.11,4.074,5.324
+WeightedHistoricalMean,6.261,4.744,4.231,5.078
 HistoricalMean,7.245,5.502,4.035,5.594
 GRU,6.904,6.349,4.725,5.992
 LSTM,6.908,6.334,4.763,6.002

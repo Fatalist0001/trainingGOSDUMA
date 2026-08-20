@@ -1,5 +1,5 @@
 Class,A_MAE,B_MAE,Mean_MAE
-baseline,4.868,6.45,5.659
+baseline,4.735,6.42,5.577
 ensemble,16.723,10.438,13.581
 linear,8.535,7.749,8.142
 neural,7.136,9.196,8.166
