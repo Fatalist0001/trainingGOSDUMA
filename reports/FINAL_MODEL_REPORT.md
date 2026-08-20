@@ -171,9 +171,8 @@ StackingEnsemble (27.04/12.03) **непригоден**: мета-модель �
 `results/forecast_{C,D}_WeightedHistoricalMean_federal.csv`. Это экстраполяция
 исторического тренда; для валидации нужны реальные итоги 2026 года.
 
-Для сравнения, **Transformer** (лучшая временная модель на прежнем прогоне) как
-альтернатива сохранён в `predictions/Transformer/{C,D}/2026_forecast.csv` и
-`results/forecast_{C,D}_Transformer_federal.csv` (реальные доли, без нормировки); как
+Для сравнения временная альтернатива — Transformer (`predict_2026.py --model Transformer`).
+Он уступает WeightedHistoricalMean по бенчмарку (5.33/6.97 против 4.04/6.11) и как
 основной прогноз не используется.
 
 ---

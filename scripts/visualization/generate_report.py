@@ -91,7 +91,10 @@ def main():
     dirs = get_output_dirs()
     results_dir = dirs["results_dir"]
 
-    bench = pd.read_csv(results_dir / "benchmark_all_20260819.csv")
+    bench_files = sorted(results_dir.glob("benchmark_all_*.csv"))
+    if not bench_files:
+        raise FileNotFoundError("No benchmark_all_*.csv found in results/")
+    bench = pd.read_csv(bench_files[-1])
     feat = pd.read_csv(results_dir / "ablation_feature.csv")
     hist = pd.read_csv(results_dir / "ablation_history.csv")
 
